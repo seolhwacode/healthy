@@ -18,7 +18,7 @@
 		<%if(id != null){ %>
 			<p>
 				<a href=""><%=id %></a> 님 로그인 중...
-				<a href="">로그아웃</a>
+				<a href="${pageContext.request.contextPath}/users/logout.jsp">로그아웃</a>
 			</p>
 		<%} %>
 		<ul>
