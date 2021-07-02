@@ -105,7 +105,50 @@ public class UsersDao {
 		}
 	}
 	
-	
+	//로그인 - 아이디 & 비밀번호가 매칭되는 row 가 있는지 검사
+	//있다 -> login 성송
+	//없다 -> 로그인 실패
+	public boolean isValid(UsersDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//return 할 가용성 값 - 회원이고, id, pwd 가 일치하면 true / 불가능하면 false
+		boolean isValid = false;
+
+		try {
+			//Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성
+			String sql = "SELECT 1 FROM users"
+					+ " WHERE id = ? AND pwd = ?";
+			//PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩 할 내용이 있으면 여기서 바인딩
+			pstmt.setString(1, dto.getId());
+			pstmt.setString(2, dto.getPwd());
+
+			//select 문 수행하고, 결과를 ResultSet 으로 받아오기
+			rs = pstmt.executeQuery();
+			//ResultSet 객체가 존재하면, 해당하는 row 가 있다는 것 -> isValid=true
+			if (rs.next()) {
+				isValid = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return isValid;
+	}
 	
 	
 	
