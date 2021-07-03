@@ -22,7 +22,8 @@
 	boolean isValid = UsersDao.getInstance().isValid(dto);
 	
 	//isValid == true : 로그인 성공 -> session 에 "id" 라는 key 이름으로 id 값을 넣는다.
-	session.setAttribute("id", id);
+	if(isValid)
+		session.setAttribute("id", id);
 	//응답
 	
 %>
