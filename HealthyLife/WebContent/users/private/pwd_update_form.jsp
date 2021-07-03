@@ -114,7 +114,6 @@
 			
 			//현재 사용 중인 비밀번호와 같으면 -> 사용 불가능한 비밀번호임
 			let isSame = inputPwd === "<%=resultDto.getPwd() %>";
-			console.log(isSame);
 			
 			//만일 입력한 비밀번호(pwd)가 정규표현식과 매칭되지 않는다면 -> 올바른 형식이 아님
 			//만일, 입력한 비밀번호가 기존에 사용하던 비밀번호일 경우? -> 사용할 수 없음
@@ -151,6 +150,19 @@
 				//다시 입력해달라는 alert 띄우기
 				alert("다시 입력해주세요.");
 			}
+		});
+		
+		//form 에서 "reset" 이벤트가 일어났을 때 콜백함수 등록 -> "is-invalid", "is-valid" 다 삭제
+		document.querySelector("#pwdForm").addEventListener("reset", function(){
+			//새로운 비밀번호 입력 & 새로운 비밀번호 확인 문서객체 가져오기
+			let newPwd = document.querySelector("#newPwd");
+			let newPwd2 = document.querySelector("#newPwd2");
+			
+			//새로운 비밀번호 입력 & 새로운 비밀번호 확인에 "is-invalid", "is-valid" class 다 삭제			
+			newPwd.classList.remove("is-valid");
+			newPwd.classList.remove("is-invalid");
+			newPwd2.classList.remove("is-valid");
+			newPwd2.classList.remove("is-invalid");
 		});
 	</script>
 	
