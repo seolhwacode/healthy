@@ -34,6 +34,9 @@
    .data{
    		margin: auto 0px;
    }
+   .row{
+   		padding: 0 12px;
+   }
 </style>
 </head>
 <body>

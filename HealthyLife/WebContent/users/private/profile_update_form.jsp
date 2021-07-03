@@ -24,20 +24,20 @@
 <style>
    	/* 프로필 이미지를 작은 원형으로 만든다 */
    	#profileImage{
-      	width: 200px;
-      	height: 200px;
+      	width: 150px;
+      	height: 150px;
      	border: 1px solid #cecece;
     	border-radius: 50%;
    	}
    	#newProfileImage{
-      	width: 200px;
-      	height: 200px;
+      	width: 150px;
+      	height: 150px;
       	border: 1px solid #cecece;
       	border-radius: 50%;
    	}
 	.container{
-   		width: 600px;
-		
+   		width: 500px;
+		margin-top: 100px;
    	}
    	#image{
    		display: none;
@@ -52,16 +52,20 @@
    	#imageForm{
    		text-align: right;
    		margin-top: 20px;
+   		margin-right: 15px
    	}
    	#update_form{
    		text-align: center;
    		margin-top: 20px;
    	}
+   	.row{
+   		padding: 0 12px;
+   	}
 </style>
 </head>
 <body>
-	<div class="container mt-5">
-		<h1>프로필 사진 수정</h1>
+	<div class="container">
+		<h1 class="ps-4">프로필 사진 수정</h1>
 		<div class="row text-center mt-5">
 			<div class="col-5">
 			<%if(resultDto.getProfile() == null){ %>
