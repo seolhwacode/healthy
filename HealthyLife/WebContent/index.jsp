@@ -17,7 +17,7 @@
 		<h1>인덱스 페이지입니다.</h1>
 		<%if(id != null){ %>
 			<p>
-				<a href=""><%=id %></a> 님 로그인 중...
+				<a href="${pageContext.request.contextPath}/users/private/info.jsp"><%=id %></a> 님 로그인 중...
 				<a href="${pageContext.request.contextPath}/users/logout.jsp">로그아웃</a>
 			</p>
 		<%} %>

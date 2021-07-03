@@ -6,6 +6,12 @@
 <%
 	//로그인 후에 이동해야할 목적지를 form 에서 읽어온다.
 	String url = request.getParameter("url");
+
+	if(url == null){
+		String cpath = request.getContextPath();
+		url = cpath + "/index.jsp";
+	}
+
 	//목적지 인코딩 -> 로그인 실패일 경우, 다시 뒤에 get 방식으로 넣어주여야 하기 때문
 	String encodedUrl = URLEncoder.encode(url);
 
@@ -22,7 +28,8 @@
 	boolean isValid = UsersDao.getInstance().isValid(dto);
 	
 	//isValid == true : 로그인 성공 -> session 에 "id" 라는 key 이름으로 id 값을 넣는다.
-	session.setAttribute("id", id);
+	if(isValid)
+		session.setAttribute("id", id);
 	//응답
 	
 %>
