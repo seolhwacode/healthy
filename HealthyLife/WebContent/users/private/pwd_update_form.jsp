@@ -1,5 +1,18 @@
+<%@page import="test.users.dao.UsersDao"%>
+<%@page import="test.users.dto.UsersDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	//1. session 영역에서 로그인된 아이디 얻어내기
+	String id = (String)session.getAttribute("id");
+
+	//id 를 통해서 -> 현재 pwd 가져올 것
+	UsersDto dto = new UsersDto();
+	dto.setId(id);
+	
+	//현재 pwd 를 가지고 있다.
+	UsersDto resultDto = UsersDao.getInstance().getData(dto);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,7 +73,7 @@
 			pwdInputCheck.classList.remove("is-valid");
 			
 			//비밀번호 확인(newPwd2) 입력 없으면 -> 확인할 필요 X
-			if(newPwd2 === ""){ㄴ
+			if(newPwd2 === ""){
 				//비밀번호가 매칭되지 않는다
 				isPwd2InputValid = false;
 				return;	//함수 끝
@@ -98,9 +111,15 @@
 			//비밀번호 검증할 정규식 : 5 ~ 15 글자 이내로 입력
 			//정규식 내부에 공백이 들어가면 안된다!!
 			const reg_pwd = /^.{5,15}$/;
+			
+			//현재 사용 중인 비밀번호와 같으면 -> 사용 불가능한 비밀번호임
+			let isSame = inputPwd === "<%=resultDto.getPwd() %>";
+			console.log(isSame);
+			
 			//만일 입력한 비밀번호(pwd)가 정규표현식과 매칭되지 않는다면 -> 올바른 형식이 아님
-			if(!reg_pwd.test(inputPwd)){
-				//정규 표현식에 매칭되지 않음 -> 가용하지 않은 비밀번호
+			//만일, 입력한 비밀번호가 기존에 사용하던 비밀번호일 경우? -> 사용할 수 없음
+			if(!reg_pwd.test(inputPwd) || isSame){
+				//정규 표현식에 매칭되지 않음 or 현재 사용중인 비밀번호와 같음 -> 가용하지 않은 비밀번호
 				isPwdInputValid = false;
 				//pwd input 에 가용하지 않음 표시 -> "is-invalid" class 추가
 				this.classList.add("is-invalid");
