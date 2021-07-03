@@ -150,7 +150,52 @@ public class UsersDao {
 		return isValid;
 	}
 	
-	
+	//id 에 해당하는 사용자 정보를 db 에서 찾아 UsersDto 를 만들어 return
+	public UsersDto getData(UsersDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//return 할 UsersDto
+		UsersDto returnDto = null;
+
+		try {
+			//Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성
+			String sql = "SELECT pwd, profile, regdate"
+					+ " FROM users"
+					+ " WHERE id = ?";
+			//PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩 할 내용이 있으면 여기서 바인딩
+			pstmt.setString(1, dto.getId());
+
+			//select 문 수행하고, 결과를 ResultSet 으로 받아오기
+			rs = pstmt.executeQuery();
+			//ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
+			if (rs.next()) {
+				returnDto = new UsersDto();
+				returnDto.setId(dto.getId());
+				returnDto.setPwd(rs.getString("pwd"));
+				returnDto.setProfile(rs.getString("profile"));
+				returnDto.setRegdate(rs.getString("regdate"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return returnDto;
+	}
 	
 	
 	
