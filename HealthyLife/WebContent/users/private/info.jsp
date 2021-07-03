@@ -18,6 +18,7 @@
 <head>
 <meta charset="UTF-8">
 <title>/users/private/info.jsp</title>
+<jsp:include page="../../include/resource.jsp"></jsp:include>
 </head>
 <body>
 	<div class="container">
