@@ -16,14 +16,13 @@
 .navbar-text {
     padding-top: .5rem;
     padding-bottom: .5rem;
-    padding-left: 264px;
+    padding-left:130px;
     }
     
 #user {
 	text-align : -webkit-right;
 	color: white;
-	
-	width:170px;
+
 }
 
 a>#user2{

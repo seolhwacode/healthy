@@ -66,32 +66,55 @@
 <meta charset="UTF-8">
 <title>/h_food/list.jsp</title>
 <jsp:include page="/include/resource.jsp"></jsp:include>
+<style>
+	#thead{
+		background:white;
+		color : #2252e3;
+		font-size :20px;
+	}
+
+	.container {
+		text-align: center;
+	}
+	
+	#insert {
+		text-align: right;
+		margin-top: 10px;
+	}
+	
+	h1 {
+		margin-bottom:20px !important;
+	}
+	
+</style>
 </head>
 <body>
 <jsp:include page="/include/navbar.jsp"></jsp:include>
 <div class="container">
-	<a href="private/insertform.jsp">Create New Text</a>
-	<h1>List of articles about healthy food</h1>
-	<table>
+	<div id="insert">
+	<button class="btn btn-primary me-md-2" style="background:white;" type="button"><a href="private/insertform.jsp">Create New Text</a></button>
+	</div>
+	<h1>For healthy food</h1>
+	<table class="table" >
 		<thead>
-			<tr>
-				<th>num</th>
-				<th>writer</th>
-				<th>title</th>
-				<th>hits</th>
-				<th>registration date</th>
+			<tr id="thead">
+				<th scope="col">num</th>
+				<th scope="col">writer</th>
+				<th scope="col">title</th>
+				<th scope="col">hits</th>
+				<th scope="col">registration date</th>
 			</tr>
 		</thead>
 		<tbody>
       <%for(HfoodDto tmp:list){%>
-         <tr>
-            <td><%=tmp.getNum() %></td>
-            <td><%=tmp.getWriter() %></td>
-            <td>
+         <tr id="tbody">
+            <td scope="row"><%=tmp.getNum() %></td>
+            <td scope="row"><%=tmp.getWriter() %></td>
+            <td scope="row">
               <%=tmp.getTitle() %>
             </td>
-            <td><%=tmp.getViewCount() %></td>
-            <td><%=tmp.getRegdate() %></td>
+            <td scope="row"><%=tmp.getViewCount() %></td>
+            <td scope="row"><%=tmp.getRegdate() %></td>
          </tr>
       <%} %>
       </tbody>

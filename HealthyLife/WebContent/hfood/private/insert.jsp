@@ -25,15 +25,30 @@
 </head>
 <body>
 	<%if(isSuccess){ %>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script>
-		alert("새글 추가 완료 !");
-		location.href="${pageContext.request.contextPath}/hfood/list.jsp";
-	</script> 
-	<%}else{ %>
-	<script>
-		alert("글 저장 실패!");
-		location.href="${pageContext.request.contextPath}/hfood/private/insertform.jsp";
+      swal({
+    	  title: "레시피 공유 완료!",
+    	  icon: "success",
+    	  button: "oh yeah!",
+    	  
+    	}).then(function() {
+    		location.href="../list.jsp";
+    	});
+
 	</script>
+	
+	<%}else{ %>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script>
+	  	swal({
+	      	title: "글 등록 실패ㅠㅠ",
+	      	button: "again!"     	  
+	  	}).then(function() {
+	  		location.href="insertform.jsp";
+	  	});
+	</script>
+    
 	<%} %>
 </body>
 </html>

@@ -10,21 +10,42 @@
    #content{
       height: 500px;
    }
+   
+   .container {
+	  width : 50%;
+	  margin-top:50px;
+	  border: solid  #2252e3 3px;
+	  padding : 50px;
+   }
+   
+   h1 {
+		margin-bottom:30px;
+		text-align:center;
+		
+   }
+   
+   #title { 
+   		height:50px;
+   		font-size : 30px;
+   		font-style : italic;
+   }
+   
+   
 </style>
 </head>
 <body>
-<div class="container">
-   <h1>새글 작성 폼</h1>
+<div class="container rounded-3">
    <form action="insert.jsp" method="post" id="insertForm">
-      <div class="mb-3">
-         <label class="form-label" for="title">제목</label>
-         <input class="form-control" type="text" name="title" id="title"/>
-      </div>
-      <div class="mb-3">
-         <label class="form-label" for="content">내용</label>
-         <textarea class="form-control"  name="content" id="content"></textarea>
-      </div>
-      <button class="btn btn-primary" type="submit">저장</button>
+   		<h1>당신만의 건강한 레시피를 공유해주세요!</h1>
+      	<div class="mb-3">         
+         	<input class="form-control" type="text" name="title" id="title" placeholder="제목"/>
+      	</div>
+      	<div class="mb-3">
+         	<textarea class="form-control"  name="content" id="content"></textarea>
+      	</div>
+      	<div style="text-align:right; margin-right:20px;">
+   			<button class="btn btn-primary me-md-3" style="background:#2252e3;" type="submit">저장</button>
+		</div>   
    </form>
 </div>
 <%--
