@@ -36,7 +36,7 @@
 		</table>
 		
 		<a href="">프로필 변경</a>
-		<a href="">비밀번호 변경</a>
+		<a href="${pageContext.request.contextPath}/users/private/pwd_update_form.jsp">비밀번호 변경</a>
 		<a href="">탈퇴</a>
 		
 	</div>
