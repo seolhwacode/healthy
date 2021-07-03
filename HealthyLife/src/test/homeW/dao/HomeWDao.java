@@ -183,13 +183,13 @@ public class HomeWDao {
 			//실행할 sql 문 작성
 			String sql = "INSERT INTO home_workout"
 					+" (num, writer, title, content, viewCount, regdate)"
-					+" VALUES(home_workout_seq.NEXTVAL, ?, ?, ?, ?, SYSDATE)";
+					+" VALUES(home_workout_seq.NEXTVAL, qwerqwer, ?, ?, ?, SYSDATE)";
 			pstmt = conn.prepareStatement(sql);
 			//?에 바인딩할 내용이 있으면 여기서 바인딩
-			pstmt.setString(1, dto.getWriter());
-			pstmt.setString(2, dto.getTitle());
-			pstmt.setString(3, dto.getContent());
-			pstmt.setInt(4, dto.getViewCount());
+			//pstmt.setString(1, dto.getWriter());
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setInt(3, dto.getViewCount());
 		
 			//insert or update or delete 문 수행하고 변화된 row 의 갯수 리턴 받기
 			flag = pstmt.executeUpdate();
