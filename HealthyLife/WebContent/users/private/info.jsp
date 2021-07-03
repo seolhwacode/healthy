@@ -38,8 +38,20 @@
 		
 		<a href="">프로필 변경</a>
 		<a href="${pageContext.request.contextPath}/users/private/pwd_update_form.jsp">비밀번호 변경</a>
-		<a href="${pageContext.request.contextPath}/users/private/delete.jsp">탈퇴</a>
+		<a href="javascript:deleteConfirm()">탈퇴</a>
 		
 	</div>
+	
+	<script>
+	function deleteConfirm(){
+		let isDelete = confirm("<%=id %> 님 정말로 탈퇴하시겠습니까?");
+		if(isDelete){
+			//탈퇴
+			location.href = "${pageContext.request.contextPath}/users/private/delete.jsp";
+		}
+		//no 면 탈퇴 안함 : 아무 일도 없다.
+	}
+	</script>
+
 </body>
 </html>
