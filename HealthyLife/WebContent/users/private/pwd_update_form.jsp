@@ -19,39 +19,51 @@
 <meta charset="UTF-8">
 <title>/users/private/pwd_update_form.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
+<style>
+	h1{
+		text-align: center;
+	}
+	.form-container{
+		width: 400px;
+		margin: 100px auto;
+	}
+</style>
 </head>
 <body>
 	<div class="container">
-		<h1>비밀번호 변경</h1>
-		<form id="pwdForm" action="${pageContext.request.contextPath}/users/private/pwd_update.jsp" method="post">
-			<div>
-				<label class="form-label" for="pwd">기존 비밀번호</label>
-				<input class="form-control" type="password" id="pwd" name="pwd" />
-			</div>
-			<div>
-				<label class="form-label" for="newPwd">새 비밀번호</label>
-				<small class="form-text text-muted"> : 5 ~ 15 글자 이내로 입력하세요.</small>
-				<input class="form-control" type="password" id="newPwd" name="newPwd" />
-				
-				<%-- 가용하지 않을 때 feedback--%>
-				<div class="invalid-feedback" id="pwd-invalid-feedback">비밀번호 형식에 맞지 않습니다.</div>
-				<%-- 가용할 때 띄우는 feedback --%>
-				<div class="valid-feedback" id="pwd-valid-feedback">사용할 수 있는 비밀번호 입니다.</div>
-			</div>
-			<div>
-				<label class="form-label" for="newPwd2">새 비밀번호</label>
-				<input class="form-control" type="password" id="newPwd2" name="newPwd2" />
-				
-				<%-- 가용하지 않을 때 feedback--%>
-				<div class="invalid-feedback" id="pwd2-invalid-feedback">일치하지 않습니다.</div>
-				<%-- 가용할 때 띄우는 feedback --%>
-				<div class="valid-feedback" id="pwd2-valid-feedback">ok</div>
-			</div>
-			<div>
-				<button type="submit">변경</button>
-				<button type="reset">리셋</button>
-			</div>
-		</form>
+		
+		<div class="form-container">
+			<h1>비밀번호 변경</h1>
+			<form class="mt-4" id="pwdForm" action="${pageContext.request.contextPath}/users/private/pwd_update.jsp" method="post">
+				<div>
+					<label class="form-label" for="pwd">기존 비밀번호</label>
+					<input class="form-control" type="password" id="pwd" name="pwd" />
+				</div>
+				<div>
+					<label class="form-label" for="newPwd">새 비밀번호</label>
+					<small class="form-text text-muted"> : 5 ~ 15 글자 이내로 입력하세요.</small>
+					<input class="form-control" type="password" id="newPwd" name="newPwd" />
+					
+					<%-- 가용하지 않을 때 feedback--%>
+					<div class="invalid-feedback" id="pwd-invalid-feedback">비밀번호 형식에 맞지 않습니다.</div>
+					<%-- 가용할 때 띄우는 feedback --%>
+					<div class="valid-feedback" id="pwd-valid-feedback">사용할 수 있는 비밀번호 입니다.</div>
+				</div>
+				<div>
+					<label class="form-label" for="newPwd2">새 비밀번호</label>
+					<input class="form-control" type="password" id="newPwd2" name="newPwd2" />
+					
+					<%-- 가용하지 않을 때 feedback--%>
+					<div class="invalid-feedback" id="pwd2-invalid-feedback">일치하지 않습니다.</div>
+					<%-- 가용할 때 띄우는 feedback --%>
+					<div class="valid-feedback" id="pwd2-valid-feedback">ok</div>
+				</div>
+				<div class="mt-3 text-center">
+					<button class="btn btn-primary" type="submit">변경</button>
+					<button class="btn btn-danger" type="reset">리셋</button>
+				</div>
+			</form>
+		</div>
 	</div>
 	
 	<script>

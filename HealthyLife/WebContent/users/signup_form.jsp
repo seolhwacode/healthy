@@ -6,45 +6,61 @@
 <meta charset="UTF-8">
 <title>/users/signup_form.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<style>
+	h1{
+		text-align: center;
+	}
+	.form-container{
+		width: 400px;
+		margin: 100px auto;
+	}
+	.form-container button{
+		width: 100%;
+	}
+</style>
 </head>
 <body>
 	<div class="container">
-		<h1>회원가입</h1>
-		<form action="${pageContext.request.contextPath}/users/signup.jsp" method="post" id="loginForm">
-			<div>
-				<%-- 아이디 입력 --%>
-				<label class="form-label" for="id">아이디</label>
-				<small class="form-text text-muted"> : 영문자 소문자로 시작하고, 5 ~ 10글자 이내로 입력하세요.</small>
-				<input class="form-control" type="text" id="id" name="id" />
-				
-				<%-- 가용하지 않을 때의 feedback --%>
-				<div class="invalid-feedback" id="id-invalid-feedback"></div>
-				<%-- 가용할 때의 feedback --%>
-				<div class="valid-feedback" id="id-valid-feedback">사용할 수 있는 아이디입니다.</div>
-			</div>
-			<div>
-				<%-- 비밀번호 입력 --%>
-				<label class="form-label" for="pwd">비밀번호</label>
-				<small class="form-text text-muted"> : 5 ~ 15 글자 이내로 입력하세요.</small>
-				<input class="form-control" type="password" id="pwd" name="pwd" />
-				
-				<%-- 가용하지 않을 때 feedback--%>
-				<div class="invalid-feedback" id="pwd-invalid-feedback">비밀번호 형식에 맞지 않습니다.</div>
-				<%-- 가용할 때 띄우는 feedback --%>
-				<div class="valid-feedback" id="pwd-valid-feedback">사용할 수 있는 비밀번호 입니다.</div>
-			</div>
-			<div>
-				<%-- 비밀번호 확인 : 위의 비밀번호와 동일하게 입력하였는지 확인하기 --%>
-				<label class="form-label" for="pwd2">비민번호 확인</label>
-				<input class="form-control" type="password" id="pwd2" name="pwd2" />
-				
-				<%-- 가용하지 않을 때 feedback--%>
-				<div class="invalid-feedback" id="pwd2-invalid-feedback">일치하지 않습니다.</div>
-				<%-- 가용할 때 띄우는 feedback --%>
-				<div class="valid-feedback" id="pwd2-valid-feedback">ok</div>
-			</div>
-			<button class="btn btn-primary" type="submit">회원가입</button>
-		</form>
+		<div class="form-container">
+			<h1>회원가입</h1>
+			<form action="${pageContext.request.contextPath}/users/signup.jsp" method="post" id="loginForm">
+				<div>
+					<%-- 아이디 입력 --%>
+					<label class="form-label" for="id">아이디</label>
+					<small class="form-text text-muted"> : 영문자 소문자로 시작, 5~10글자 이내로 입력하세요.</small>
+					<input class="form-control" type="text" id="id" name="id" />
+					
+					<%-- 가용하지 않을 때의 feedback --%>
+					<div class="invalid-feedback" id="id-invalid-feedback"></div>
+					<%-- 가용할 때의 feedback --%>
+					<div class="valid-feedback" id="id-valid-feedback">사용할 수 있는 아이디입니다.</div>
+				</div>
+				<div>
+					<%-- 비밀번호 입력 --%>
+					<label class="form-label" for="pwd">비밀번호</label>
+					<small class="form-text text-muted"> : 5~15 글자 이내로 입력하세요.</small>
+					<input class="form-control" type="password" id="pwd" name="pwd" />
+					
+					<%-- 가용하지 않을 때 feedback--%>
+					<div class="invalid-feedback" id="pwd-invalid-feedback">비밀번호 형식에 맞지 않습니다.</div>
+					<%-- 가용할 때 띄우는 feedback --%>
+					<div class="valid-feedback" id="pwd-valid-feedback">사용할 수 있는 비밀번호 입니다.</div>
+				</div>
+				<div>
+					<%-- 비밀번호 확인 : 위의 비밀번호와 동일하게 입력하였는지 확인하기 --%>
+					<label class="form-label" for="pwd2">비민번호 확인</label>
+					<input class="form-control" type="password" id="pwd2" name="pwd2" />
+					
+					<%-- 가용하지 않을 때 feedback--%>
+					<div class="invalid-feedback" id="pwd2-invalid-feedback">일치하지 않습니다.</div>
+					<%-- 가용할 때 띄우는 feedback --%>
+					<div class="valid-feedback" id="pwd2-valid-feedback">ok</div>
+				</div>
+				<div class="mt-3 text-center">
+					<button class="btn btn-primary" type="submit">회원가입</button>
+				</div>
+			</form>
+		</div>
 	</div>
 	
 	<script>
