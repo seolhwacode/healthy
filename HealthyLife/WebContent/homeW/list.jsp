@@ -39,7 +39,7 @@
    int startPageNum = 1 + ((pageNum-1)/PAGE_DISPLAY_COUNT)*PAGE_DISPLAY_COUNT;
    //하단 끝 페이지 번호
    int endPageNum=startPageNum+PAGE_DISPLAY_COUNT-1;
-   /*
+   
    //전체 row 의 갯수 
    int totalRow=dao.getCount();
    //전체 페이지의 갯수
@@ -48,14 +48,39 @@
    if(endPageNum > totalPageCount){
       endPageNum=totalPageCount; //보정해 준다.
    }
-   */
-%> 
+   
+%>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>/homeW/list.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<style>
+   .page-ui a{
+      text-decoration: none;
+      color: #000;
+   }
+   
+   .page-ui a:hover{
+      text-decoration: underline;
+   }
+   
+   .page-ui a.active{
+      color: red;
+      font-weight: bold;
+      text-decoration: underline;
+   }
+   .page-ui ul{
+      list-style-type: none;
+      padding: 0;
+   }
+   
+   .page-ui ul > li{
+      float: left;
+      padding: 5px;
+   }
+</style>
 </head>
 <body>
 <div class="container">
@@ -77,14 +102,38 @@
             <td><%=tmp.getNum() %></td>
             <td><%=tmp.getWriter() %></td>
             <td>
-               <a href="<%=tmp.getTitle()%>"></a>
+               <a href="detail.jsp?num=<%=tmp.getNum() %>"><%=tmp.getTitle()%></a>
             </td>
             <td><%=tmp.getViewCount() %></td>
             <td><%=tmp.getRegdate() %></td>
          </tr>
-      <%} %>
+      	<%} %>
 		</tbody>
 	</table>
+	<div class="page-ui clearfix">
+      <ul>
+         <%if(startPageNum != 1){ %>
+            <li>
+               <a href="list.jsp?pageNum=<%=startPageNum-1 %>">Prev</a>
+            </li>   
+         <%} %>
+         
+         <%for(int i=startPageNum; i<=endPageNum ; i++){ %>
+            <li>
+               <%if(pageNum == i){ %>
+                  <a class="active" href="list.jsp?pageNum=<%=i %>"><%=i %></a>
+               <%}else{ %>
+                  <a href="list.jsp?pageNum=<%=i %>"><%=i %></a>
+               <%} %>
+            </li>   
+         <%} %>
+         <%if(endPageNum < totalPageCount){ %>
+            <li>
+               <a href="list.jsp?pageNum=<%=endPageNum+1 %>">Next</a>
+            </li>
+         <%} %>
+      </ul>
+   </div>
 </div>
 </body>
 </html>
