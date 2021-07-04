@@ -7,7 +7,7 @@
     pageEncoding="UTF-8"%>
 <%
 	//한 페이지에 몇개씩 표시할 것인지
-	final int PAGE_ROW_COUNT=5;
+	final int PAGE_ROW_COUNT=10;
 	//하단 페이지를 몇개씩 표시할 것인지
 	final int PAGE_DISPLAY_COUNT=5;
 	
@@ -54,11 +54,22 @@
 	int totalRow=0;
 	//만일 검색 키워드가 넘어온다면 
 	
-	   list=HfoodDao.getInstance().getList(dto);
-	   //키워드가 없을때 호출하는 메소드를 이용해서 전제 row 의 갯수를 얻어온다.
-	   totalRow=HfoodDao.getInstance().getCount();
+	list=HfoodDao.getInstance().getList(dto);
+	//키워드가 없을때 호출하는 메소드를 이용해서 전제 row 의 갯수를 얻어온다.
+	totalRow=HfoodDao.getInstance().getCount();
 
+	//하단 시작 페이지 번호 
+	   int startPageNum = 1 + ((pageNum-1)/PAGE_DISPLAY_COUNT)*PAGE_DISPLAY_COUNT;
+	   //하단 끝 페이지 번호
+	   int endPageNum=startPageNum+PAGE_DISPLAY_COUNT-1;
+	   
 
+	   //전체 페이지의 갯수
+	   int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
+	   //끝 페이지 번호가 전체 페이지 갯수보다 크다면 잘못된 값이다.
+	   if(endPageNum > totalPageCount){
+	      endPageNum=totalPageCount; //보정해 준다.
+	   }
 %>
 <!DOCTYPE html>
 <html>
@@ -77,6 +88,8 @@
 		text-align: center;
 	}
 	
+	
+	
 	#insert {
 		text-align: right;
 		margin-top: 10px;
@@ -84,8 +97,38 @@
 	
 	h1 {
 		margin-bottom:20px !important;
+		text-align: center;
 	}
 	
+	#pageNum{
+		  display: table;
+		  margin-left: auto;
+		  margin-right: auto;
+		  padding : 20px;
+	}
+	.page-ui a{
+      text-decoration: none;
+      color: #000;
+      
+   }
+   
+   .page-ui a:hover{
+      text-decoration: underline;
+   }
+   
+   .page-ui a.active{
+      color: #2252e3;
+      font-weight: bold;
+   }
+   .page-ui ul{
+      list-style-type: none;
+      padding: 0;
+   }
+   
+   .page-ui ul > li{
+      float: left;
+      padding: 5px;
+   }
 </style>
 </head>
 <body>
@@ -99,26 +142,60 @@
 		<thead>
 			<tr id="thead">
 				<th scope="col">num</th>
-				<th scope="col">writer</th>
 				<th scope="col">title</th>
-				<th scope="col">hits</th>
+				<th scope="col">writer</th>
 				<th scope="col">registration date</th>
+				<th scope="col">hits</th>
 			</tr>
 		</thead>
 		<tbody>
       <%for(HfoodDto tmp:list){%>
          <tr id="tbody">
             <td scope="row"><%=tmp.getNum() %></td>
-            <td scope="row"><%=tmp.getWriter() %></td>
             <td scope="row">
-              <%=tmp.getTitle() %>
+               <a href="detail.jsp?num=<%=tmp.getNum()%>"><%=tmp.getTitle() %></a>
             </td>
-            <td scope="row"><%=tmp.getViewCount() %></td>
+            <td scope="row"><%=tmp.getWriter() %></td>
             <td scope="row"><%=tmp.getRegdate() %></td>
+            <td scope="row"><%=tmp.getViewCount() %></td>
          </tr>
       <%} %>
       </tbody>
 	</table>
+	<div  class="page-ui clearfix">
+      <ul id="pageNum">
+         <%if(startPageNum != 1){ %>
+            <li>
+               	<a href="list.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">
+               	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2252e3" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+				  <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+				</svg>
+               	</a>
+            </li>   
+         <%} %>
+         
+         <%for(int i=startPageNum; i<=endPageNum ; i++){ %>
+            <li>
+               <%if(pageNum == i){ %>
+                  <a class="active" href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+               <%}else{ %>
+                  <a href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+               <%} %>
+            </li>   
+         <%} %>
+         <%if(endPageNum < totalPageCount){ %>
+            <li>
+               	<a href="list.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">
+               	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2252e3" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+				  <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+				</svg>
+				</a>
+            </li>
+         <%} %>
+      </ul>
+   </div>
 </div>
 </body>
 </html>
