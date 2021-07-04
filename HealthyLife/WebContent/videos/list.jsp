@@ -45,8 +45,10 @@
 	int endPageNum = startPageNum + PAGE_DISPLAY_COUNT - 1;
 	
 	//전체 row 의 개수
-	int totalPageCount = VideosDao.getInstance().getCount();
+	int totalRow = VideosDao.getInstance().getCount();
 	
+	//전체 페이지의 개수 : (전체 row 의 개수 / 보여지는 리스트 개수) 올림
+	int totalPageCount = (int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
 	//끝 페이지 번호가 전체 페이지 개수보다 크다면, 잘못된 값이다.
 	if(endPageNum > totalPageCount){
 		//보정해준다.
