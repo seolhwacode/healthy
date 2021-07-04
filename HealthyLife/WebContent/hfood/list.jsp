@@ -52,22 +52,42 @@
 	List<HfoodDto> list=null;
 	//전체 row 의 갯수를 담을 지역변수를 미리 만든다.
 	int totalRow=0;
-	//만일 검색 키워드가 넘어온다면 
-	
-	list=HfoodDao.getInstance().getList(dto);
-	//키워드가 없을때 호출하는 메소드를 이용해서 전제 row 의 갯수를 얻어온다.
-	totalRow=HfoodDao.getInstance().getCount();
 
-	//하단 시작 페이지 번호 
-	   int startPageNum = 1 + ((pageNum-1)/PAGE_DISPLAY_COUNT)*PAGE_DISPLAY_COUNT;
-	   //하단 끝 페이지 번호
-	   int endPageNum=startPageNum+PAGE_DISPLAY_COUNT-1;
+	if(!keyword.equals("")){
+	      //검색 조건이 무엇이냐에 따라 분기 하기
+	      if(condition.equals("title_content")){//제목 + 내용 검색인 경우
+	         //검색 키워드를 CafeDto 에 담아서 전달한다.
+	         dto.setTitle(keyword);
+	         dto.setContent(keyword);
+	         //제목+내용 검색일때 호출하는 메소드를 이용해서 목록 얻어오기 
+	         list=HfoodDao.getInstance().getListTC(dto);
+	         //제목+내용 검색일때 호출하는 메소드를 이용해서 row  의 갯수 얻어오기
+	         totalRow=HfoodDao.getInstance().getCountTC(dto);
+	      }else if(condition.equals("title")){ //제목 검색인 경우
+	         dto.setTitle(keyword);
+	         list=HfoodDao.getInstance().getListT(dto);
+	         totalRow=HfoodDao.getInstance().getCountT(dto);
+	      }else if(condition.equals("writer")){ //작성자 검색인 경우
+	         dto.setWriter(keyword);
+	         list=HfoodDao.getInstance().getListW(dto);
+	         totalRow=HfoodDao.getInstance().getCountW(dto);
+	      } // 다른 검색 조건을 추가 하고 싶다면 아래에 else if() 를 계속 추가 하면 된다.
+	   }else{//검색 키워드가 넘어오지 않는다면
+	      //키워드가 없을때 호출하는 메소드를 이용해서 파일 목록을 얻어온다. 
+	      list=HfoodDao.getInstance().getList(dto);
+	      //키워드가 없을때 호출하는 메소드를 이용해서 전제 row 의 갯수를 얻어온다.
+	      totalRow=HfoodDao.getInstance().getCount();
+	   }
+		//하단 시작 페이지 번호 
+	   	int startPageNum = 1 + ((pageNum-1)/PAGE_DISPLAY_COUNT)*PAGE_DISPLAY_COUNT;
+	   	//하단 끝 페이지 번호
+	   	int endPageNum=startPageNum+PAGE_DISPLAY_COUNT-1;
 	   
 
-	   //전체 페이지의 갯수
-	   int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
-	   //끝 페이지 번호가 전체 페이지 갯수보다 크다면 잘못된 값이다.
-	   if(endPageNum > totalPageCount){
+	   	//전체 페이지의 갯수
+	   	int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
+	   	//끝 페이지 번호가 전체 페이지 갯수보다 크다면 잘못된 값이다.
+	   	if(endPageNum > totalPageCount){
 	      endPageNum=totalPageCount; //보정해 준다.
 	   }
 %>
@@ -153,7 +173,7 @@
          <tr id="tbody">
             <td scope="row"><%=tmp.getNum() %></td>
             <td scope="row">
-               <a href="detail.jsp?num=<%=tmp.getNum()%>"><%=tmp.getTitle() %></a>
+               <a href="detail.jsp?num=<%=tmp.getNum()%>&keyword=<%=encodedK %>&condition=<%=condition%>"><%=tmp.getTitle() %></a>
             </td>
             <td scope="row"><%=tmp.getWriter() %></td>
             <td scope="row"><%=tmp.getRegdate() %></td>
@@ -173,7 +193,7 @@
 				</svg>
                	</a>
             </li>   
-         <%} %>
+         <% } %>
          
          <%for(int i=startPageNum; i<=endPageNum ; i++){ %>
             <li>
@@ -194,8 +214,29 @@
 				</a>
             </li>
          <%} %>
+        
       </ul>
    </div>
+	<div style="clear:both;"></div>
+   
+   	<form action="list.jsp" method="get"> 
+      <label for="condition">검색조건</label>
+      <select name="condition" id="condition">
+         <option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
+         <option value="title" <%=condition.equals("title") ? "selected" : ""%>>제목</option>
+         <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
+      </select>
+      <input type="text" id="keyword" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
+      <button class="btn btn-primary me-md-2" type="submit">검색</button>
+     
+   	</form>   
+   
+   	<%if(!condition.equals("")){ %>
+      <p>
+         <strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
+      </p>
+   	<%} %>
+
 </div>
 </body>
 </html>
