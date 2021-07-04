@@ -11,21 +11,33 @@
 		height: 300px;
 		width: 700px;
 	}
+	.content_container{
+		margin-top: 20px;
+	}
 </style>
 </head>
 <body>
 	<div class="container">
 		<h1>게시글 작성하기</h1>
 		<form action="${pageContext.request.contextPath}/videos/private/insert.jsp" method="post" id="insertForm">
-			<div class="">
+			<div>
+				<label class="form-label" for="type">게시판 선택</label>
+		        <select class="form-control" name="type" id="type">
+		            <option value="yoga">요가</option>
+		            <option value="stretching">스트레칭</option>
+		            <option value="diet">다이어트</option>
+		            <option value="rehabili">재활 및 교정</option>
+		        </select>
+			</div>
+			<div>
 				<label class="form-label" for="title">제목</label>
 				<input class="form-control" type="text" id="title" name="title" />
 			</div>
 			<div>
 				<label class="form-label" for="video">동영상 URL</label>
-				<input class="form-control" type="text" id="video" name="video" />
+				<input class="form-control" type="url" id="video" name="video" />
 			</div>
-			<div>
+			<div class="content_container">
 				<%-- content 는 없을 수도 있다. --%>
 				<textarea name="content" id="content"></textarea>
 			</div>
@@ -86,7 +98,6 @@
 			
 			//textarea 이외에 입력한 내용을 여기서 검증하고
 			const title = document.querySelector("#title").value;
-			const url = document.querySelector("#video").value;
 			
 			//url 형식 검사 정규식
 			const reg_url = /^(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/
@@ -99,12 +110,7 @@
 				e.preventDefault();
 			}
 			
-			//url 입력 형식이 잘못되었다.
-			if(!reg_url.test()){
-				alert("동영상 url 형식이 올바르지 않습니다.");
-				e.preventDefault();
-			}
-			
+			<%-- url 검사는 input 에서 자동으로 해줌 -> 필요없어짐(삭제) --%>
 			<%-- content 는 없을 수도 있다. --%>
 		});
 	</script>
