@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import test.homeW.dto.HomeWDto;
 import test.util.DbcpBean;
 
@@ -208,6 +207,296 @@ public class HomeWDao {
 		}
 		return dto2;
 	}
+	
+	/*
+    *  Title 검색일때 실행할 메소드
+    *  HomeWDto 의 title 이라는 필드에 검색 키워드가 들어 있다.
+    */
+	public List<HomeWDto> getListT(HomeWDto dto){
+		List<HomeWDto> list=new ArrayList<HomeWDto>();
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			//Connection 객체의 참조값 얻어오기 
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성
+			String sql ="SELECT *" + 
+		               "      FROM" + 
+		               "          (SELECT result1.*, ROWNUM AS rnum" + 
+		               "          FROM" + 
+		               "              (SELECT num,writer,title,viewCount,regdate" + 
+		               "              FROM home_workout" +
+		               "			  WHERE title LIKE '%' || ? ||'%' "+	
+		               "              ORDER BY num DESC) result1)" + 
+		               "      WHERE rnum BETWEEN ? AND ?"; 
+			//PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩할 내용이 있으면 여기서 바인딩
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setInt(2, dto.getStartRowNum());
+			pstmt.setInt(3, dto.getEndRowNum());
+			//select 문 수행하고 결과를 ResultSet 으로 받아오기
+			rs = pstmt.executeQuery();
+			//반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
+			while (rs.next()) {
+			HomeWDto dto2=new HomeWDto();
+			dto2.setNum(rs.getInt("num"));
+			dto2.setWriter(rs.getString("writer"));
+			dto2.setTitle(rs.getString("title"));
+			dto2.setViewCount(rs.getInt("viewCount"));
+			dto2.setRegdate(rs.getString("regdate"));
+			list.add(dto2);
+			
+			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return list;
+	}
+	
+	/*
+    *  Writer 검색일때 실행할 메소드
+    *  HomeWDto 의 writer 이라는 필드에 검색 키워드가 들어 있다.
+    */
+	public List<HomeWDto> getListW(HomeWDto dto){
+		List<HomeWDto> list=new ArrayList<HomeWDto>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			//Connection 객체의 참조값 얻어오기 
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성
+			String sql = "SELECT *" + 
+		               "      FROM" + 
+		               "          (SELECT result1.*, ROWNUM AS rnum" + 
+		               "          FROM" + 
+		               "              (SELECT num,writer,title,viewCount,regdate" + 
+		               "              FROM home_workout" +
+		               "			  WHERE writer LIKE '%' || ? ||'%' "+	
+		               "              ORDER BY num DESC) result1)" + 
+		               "      WHERE rnum BETWEEN ? AND ?"; 
+			//PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩할 내용이 있으면 여기서 바인딩
+			pstmt.setString(1, dto.getWriter());
+			pstmt.setInt(2, dto.getStartRowNum());
+			pstmt.setInt(3, dto.getEndRowNum());
+			//select 문 수행하고 결과를 ResultSet 으로 받아오기
+			rs = pstmt.executeQuery();
+			//반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
+			while (rs.next()) {
+				HomeWDto dto2=new HomeWDto();
+				dto2.setNum(rs.getInt("num"));
+				dto2.setWriter(rs.getString("writer"));
+				dto2.setTitle(rs.getString("title"));
+				dto2.setViewCount(rs.getInt("viewCount"));
+				dto2.setRegdate(rs.getString("regdate"));
+				list.add(dto2);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return list;
+	  }
+	
+	/*
+    *  Title+Cotent 검색일때 실행할 메소드
+    *  HomeWDto 의 title, content 이라는 필드에 검색 키워드가 들어 있다.
+    */
+	public List<HomeWDto> getListTC(HomeWDto dto){
+	      //글목록을 담을 ArrayList 객체 생성
+	      List<HomeWDto> list=new ArrayList<HomeWDto>();
+	      
+	      Connection conn = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         conn = new DbcpBean().getConn();
+	         //select 문 작성
+	         String sql = "SELECT *" + 
+	               "      FROM" + 
+	               "          (SELECT result1.*, ROWNUM AS rnum" + 
+	               "          FROM" + 
+	               "              (SELECT num,writer,title,viewCount,regdate" + 
+	               "              FROM home_workout"+ 
+	               "             WHERE title LIKE '%'||?||'%' OR content LIKE '%'||?||'%' "+               
+	               "              ORDER BY num DESC) result1)" + 
+	               "      WHERE rnum BETWEEN ? AND ?";
+	         pstmt = conn.prepareStatement(sql);
+	         // ? 에 바인딩 할게 있으면 여기서 바인딩한다.
+	         pstmt.setString(1, dto.getTitle());
+	         pstmt.setString(2, dto.getContent());
+	         pstmt.setInt(3, dto.getStartRowNum());
+	         pstmt.setInt(4, dto.getEndRowNum());
+	         //select 문 수행하고 ResultSet 받아오기
+	         rs = pstmt.executeQuery();
+	         //while문 혹은 if문에서 ResultSet 으로 부터 data 추출
+	         while (rs.next()) {
+	        	 HomeWDto dto2=new HomeWDto();
+	            dto2.setNum(rs.getInt("num"));
+	            dto2.setWriter(rs.getString("writer"));
+	            dto2.setTitle(rs.getString("title"));
+	            dto2.setViewCount(rs.getInt("viewCount"));
+	            dto2.setRegdate(rs.getString("regdate"));
+	            list.add(dto2);
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            if (rs != null)
+	               rs.close();
+	            if (pstmt != null)
+	               pstmt.close();
+	            if (conn != null)
+	               conn.close();
+	         } catch (Exception e) {
+	         }
+	      }
+	      return list;
+	   }
+	
+	
+	//title 검색했을 때 나오는 row의 갯수
+	 public int getCountT(HomeWDto dto) {
+	      //글의 갯수를 담을 지역변수 
+	      int count=0;
+	      Connection conn = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         conn = new DbcpBean().getConn();
+	         //select 문 작성
+	         String sql = "SELECT NVL(MAX(ROWNUM), 0) AS num "
+	               + " FROM home_workout"
+	               + " WHERE title LIKE '%'||?||'%' ";
+	         pstmt = conn.prepareStatement(sql);
+	         // ? 에 바인딩 할게 있으면 여기서 바인딩한다.
+	         pstmt.setString(1, dto.getTitle());
+	         //select 문 수행하고 ResultSet 받아오기
+	         rs = pstmt.executeQuery();
+	         //while문 혹은 if문에서 ResultSet 으로 부터 data 추출
+	         if (rs.next()) {
+	            count=rs.getInt("num");
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            if (rs != null)
+	               rs.close();
+	            if (pstmt != null)
+	               pstmt.close();
+	            if (conn != null)
+	               conn.close();
+	         } catch (Exception e) {
+	         }
+	      }
+	      return count;
+	   }
+	
+	//writer 검색했을 때 나오는 row의 갯수
+	 public int getCountW(HomeWDto dto) {
+	      //글의 갯수를 담을 지역변수 
+	      int count=0;
+	      Connection conn = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         conn = new DbcpBean().getConn();
+	         //select 문 작성
+	         String sql = "SELECT NVL(MAX(ROWNUM), 0) AS num "
+	               + " FROM home_workout"
+	               + " WHERE writer LIKE '%'||?||'%' ";
+	         pstmt = conn.prepareStatement(sql);
+	         // ? 에 바인딩 할게 있으면 여기서 바인딩한다.
+	         pstmt.setString(1, dto.getWriter());
+	         //select 문 수행하고 ResultSet 받아오기
+	         rs = pstmt.executeQuery();
+	         //while문 혹은 if문에서 ResultSet 으로 부터 data 추출
+	         if (rs.next()) {
+	            count=rs.getInt("num");
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            if (rs != null)
+	               rs.close();
+	            if (pstmt != null)
+	               pstmt.close();
+	            if (conn != null)
+	               conn.close();
+	         } catch (Exception e) {
+	         }
+	      }
+	      return count;
+	   }
+	
+	//title, content 검색했을 때 나오는 row의 갯수
+	 public int getCountTC(HomeWDto dto) {
+	      //글의 갯수를 담을 지역변수 
+	      int count=0;
+	      Connection conn = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      try {
+	         conn = new DbcpBean().getConn();
+	         //select 문 작성
+	         String sql = "SELECT NVL(MAX(ROWNUM), 0) AS num "
+	               + " FROM home_workout"
+	               + " WHERE title LIKE '%'||?||'%' OR content LIKE '%'||?||'%'";
+	         pstmt = conn.prepareStatement(sql);
+	         // ? 에 바인딩 할게 있으면 여기서 바인딩한다.
+	         pstmt.setString(1, dto.getTitle());
+	         pstmt.setString(2, dto.getContent());
+	         //select 문 수행하고 ResultSet 받아오기
+	         rs = pstmt.executeQuery();
+	         //while문 혹은 if문에서 ResultSet 으로 부터 data 추출
+	         if (rs.next()) {
+	            count=rs.getInt("num");
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } finally {
+	         try {
+	            if (rs != null)
+	               rs.close();
+	            if (pstmt != null)
+	               pstmt.close();
+	            if (conn != null)
+	               conn.close();
+	         } catch (Exception e) {
+	         }
+	      }
+	      return count;
+	   }
+		
+	
 	
 	//새글 저장하는 메소드
 	public boolean insert(HomeWDto dto) {
