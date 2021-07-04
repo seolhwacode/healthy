@@ -66,89 +66,12 @@
    .content{
       border: 1px solid gray;
    }
-   
-   /* 댓글 프로필 이미지를 작은 원형으로 만든다. */
-   .profile-image{
-      width: 50px;
-      height: 50px;
-      border: 1px solid #cecece;
-      border-radius: 50%;
+   ul{
+	   list-style:none;
+	   padding-left:0px;
    }
-   /* ul 요소의 기본 스타일 제거 */
-   .comments ul{
-      padding: 0;
-      margin: 0;
-      list-style-type: none;
-   }
-   .comments dt{
-      margin-top: 5px;
-   }
-   .comments dd{
-      margin-left: 50px;
-   }
-   .comment-form textarea, .comment-form button{
-      float: left;
-   }
-   .comments li{
-      clear: left;
-   }
-   .comments ul li{
-      border-top: 1px solid #888;
-   }
-   .comment-form textarea{
-      width: 84%;
-      height: 100px;
-   }
-   .comment-form button{
-      width: 14%;
-      height: 100px;
-   }
-   /* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다. */
-   .comments .comment-form{
-      display: none;
-   }
-   /* .reply_icon 을 li 요소를 기준으로 배치 하기 */
-   .comments li{
-      position: relative;
-   }
-   .comments .reply-icon{
-      position: absolute;
-      top: 1em;
-      left: 1em;
-      color: red;
-   }
-   pre {
-     display: block;
-     padding: 9.5px;
-     margin: 0 0 10px;
-     font-size: 13px;
-     line-height: 1.42857143;
-     color: #333333;
-     word-break: break-all;
-     word-wrap: break-word;
-     background-color: #f5f5f5;
-     border: 1px solid #ccc;
-     border-radius: 4px;
-   }  
-   .loader{
-   		/*로딩 이미지를 가운데 정렬하기 위해*/
-   		text-align: center;
-   		/*일단 숨겨놓기*/
-   		display:none;
-   }
-   
-   .loader svg{
-   		animation: rotateAni 1s ease-out infinite;
-   }
-   
-   @keyframes rotateAni{
-   		0%{
-   			transform: rotate(0deg);
-   		}
-   		100%{
-   			transform: rotate(360deg);
-   		}
-   }    
+
+
 </style>
 </head>
 <body>
@@ -160,6 +83,7 @@
 	 	<a href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">다음글</a>
 	 <%} %>
 	 <ul>
+	 	<li><a href="list.jsp">목록보기</a></li> 
 	 	<%if(dto.getWriter().equals(id)){ %>
 	        <li><a href="private/updateform.jsp?num=<%=dto.getNum()%>">수정</a></li>
 	        <li><a href="private/delete.jsp?num=<%=dto.getNum()%>">삭제</a></li>
@@ -171,7 +95,7 @@
           <strong><%=keyword %></strong> 검색어로 검색된 내용 자세히 보기 
      	</p>
 	   <%} %>
-	   <table class="table table-warning">
+	   <table class="table table-warning ">
 	      <tr>
 	         <th>글번호</th>
 	         <td><%=dto.getNum() %></td>
@@ -189,15 +113,39 @@
 	         <td><%=dto.getRegdate() %></td>
 	      </tr>
 	      <tr class="table">
-	         <td colspan="2">
+	         <td colspan="6">
 	            <div class="content"><%=dto.getContent() %></div>
 	         </td>
 	      </tr>
 	   </table>
-	   <ul>
-      <li><a href="list.jsp">목록보기</a></li>
-       
-   </ul>
+	   <p><strong>홈트 관련 상품 구매하기</strong></p>
+	   <script language="JavaScript">
+			function random_imglink(){
+		    let myimages=new Array()
+		
+		      /* 각각의 이미지 경로 지정 */
+		      myimages[1]="${pageContext.request.contextPath}/ht_images/hover_roller.png";
+		      myimages[2]="${pageContext.request.contextPath}/ht_images/htmt.jpg";
+		      myimages[3]="${pageContext.request.contextPath}/ht_images/massage_ball.jpg";
+		      myimages[4]="${pageContext.request.contextPath}/ht_images/massage_stick.png";
+		      myimages[5]="${pageContext.request.contextPath}/ht_images/yoga_ring.jpg";
+		  
+		      /* 각각의 이미지 링크 지정 */
+		      let imagelinks=new Array()
+		      imagelinks[1]="https://danoshop.net/product?product_no=380";
+		      imagelinks[2]="https://danoshop.net/product?product_no=327";
+		      imagelinks[3]="https://danoshop.net/product?product_no=451";
+		      imagelinks[4]="https://danoshop.net/product?product_no=478";
+		      imagelinks[5]="https://danoshop.net/product?product_no=453";
+		
+		   let array=Math.floor(Math.random()*myimages.length)
+		   if (array==0)
+		   array=1
+		
+		   document.write('<a href='+'"'+imagelinks[array]+'"'+' target=_blank><img src="'+myimages[array]+'" border=0></a>')
+		   }
+		   random_imglink()
+	  </script>		
 </div>
 </body>
 </html>
