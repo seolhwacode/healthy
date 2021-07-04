@@ -90,7 +90,7 @@
 </head>
 <body>
 	<div class="container">
-		<a href="">새 글 작성</a>
+		<a href="${pageContext.request.contextPath}/videos/private/insert_form.jsp">새 글 작성</a>
 		<h1>글 목록입니다.</h1>
 		<table>
 			<thead>
