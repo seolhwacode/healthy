@@ -25,6 +25,7 @@
 			<!-- 해당 게시판으로 가는 link 추가해주세요. -->
 			<li><a href="${pageContext.request.contextPath}/users/signup_form.jsp">회원가입</a></li>
 			<li><a href="${pageContext.request.contextPath}/users/login_form.jsp">로그인</a></li>
+			<li><a href="${pageContext.request.contextPath}/videos/list.jsp">비디오 자료실</a></li>
 		</ul>
 	</div>
 </body>
