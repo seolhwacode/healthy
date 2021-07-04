@@ -59,6 +59,32 @@
 <head>
 <meta charset="UTF-8">
 <title>/videos/list.jsp</title>
+<jsp:include page="../include/resource.jsp"></jsp:include>
+<style>
+	.page-ui a{
+      text-decoration: none;
+      color: #000;
+   }
+   
+   .page-ui a:hover{
+      text-decoration: underline;
+   }
+   
+   .page-ui a.active{
+      color: red;
+      font-weight: bold;
+      text-decoration: underline;
+   }
+   .page-ui ul{
+      list-style-type: none;
+      padding: 0;
+   }
+   
+   .page-ui ul > li{
+      float: left;
+      padding: 5px;
+   }
+</style>
 </head>
 <body>
 	<div class="container">
@@ -67,7 +93,7 @@
 		<table>
 			<thead>
 				<tr>
-					<th>글 번호</th>
+					<th>글번호</th>
 					<th>제목</th>
 					<th>작성자</th>
 					<th>등록일</th>
@@ -90,7 +116,27 @@
 		</table>
 		
 		<!-- 페이지 표기 -->
-		
+		<div class="page-ui clearfix">
+			<ul>
+				<%-- startPageNum 가 1이면 이전으로 가는  페이지는 없어야한다.--%>
+				<% if(startPageNum != 1) {%>
+					<li>
+						<a href="<%= request.getRequestURI() %>?pageNum=<%= startPageNum - 1%>">Prev</a>
+					</li>
+				<%} %>
+				<%for(int i = startPageNum; i <= endPageNum; i++){ %>
+					<li>
+						<a href="<%= request.getRequestURI() %>?pageNum=<%= i%>" <%= pageNum==i ? "class=\"active\"" : "" %>><%= i %></a>
+					</li>
+				<%} %>
+				<%-- 아래 보여주는 페이지 번호의 끝이 전체 row 보다 작을 때만 next 출력 --%>
+				<%if(endPageNum < totalPageCount){ %>
+					<li>
+						<a href="<%= request.getRequestURI() %>?pageNum=<%= endPageNum + 1%>"><span >Next</span></a>
+					</li>
+				<%} %>
+			</ul>
+		</div>
 	</div>
 </body>
 </html>
