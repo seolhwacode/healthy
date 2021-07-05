@@ -122,15 +122,39 @@
       float: left;
       padding: 5px;
    }
+   h1{
+   		margin-top:30px !important;
+   		margin-bottom:30px !important;
+   		text-align:center;
+   		
+   }
+   #saveId{
+   			text-decoration:none;
+   			color:white;
+   			
+   }
+   .container{
+   		position:rabsolute;
+   }
+   form{
+   		text-align:center;
+   }
+   .btn{
+   		position:relative,top:60px, bottom:0px, right:0px;
+   }
+   
 </style>
 </head>
 <body>
+<jsp:include page="../include/navbar.jsp"></jsp:include>
 <div class="container">
-	<a href="${pageContext.request.contextPath}/homeW/private/insert_form.jsp">작성하기</a>
-	<h1>홈트 정보 공유 게시판입니다</h1>
-	<table>
+	<button class="btn btn-dark" style="float:right" type="submit">
+		<a id="saveId" href="${pageContext.request.contextPath}/homeW/private/insert_form.jsp">작성하기</a>
+	</button>
+	<h1>🦾홈트 정보 공유 게시판🦾</h1>
+	<table class="table">
 		<thead>
-			<tr>
+			<tr class="table-primary">
 				<td>번호</td>
 				<td>작성자</td>
 				<td>제목</td>
