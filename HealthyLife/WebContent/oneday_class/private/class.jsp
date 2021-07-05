@@ -65,7 +65,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 				<div class="modal-body">
-					<form action="booking.jsp" method="get" id="submitForm">
+					<form action="../booking.jsp" method="get" id="submitForm">
 						<div class="mb-3">
 							<label for="className" class="col-form-label">클래스명</label> 
 							<input type="text" class="form-control" name="className" id="className" />
