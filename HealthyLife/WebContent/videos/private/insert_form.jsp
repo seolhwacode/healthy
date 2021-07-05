@@ -22,7 +22,8 @@
 		<form action="${pageContext.request.contextPath}/videos/private/insert.jsp" method="post" id="insertForm">
 			<div>
 				<label class="form-label" for="type">게시판 선택</label>
-		        <select class="form-control" name="type" id="type">
+		        <select class="form-select" name="type" id="type">
+		        	<option value="not-selected">게시판을 선택해주세요.</option>
 		            <option value="yoga">요가</option>
 		            <option value="stretching">스트레칭</option>
 		            <option value="diet">다이어트</option>
@@ -35,6 +36,7 @@
 			</div>
 			<div>
 				<label class="form-label" for="video">동영상 URL</label>
+				<small class="form-text text-muted"> : youtube 공유 주소 또는 상단의 주소 입력</small>
 				<input class="form-control" type="url" id="video" name="video" />
 			</div>
 			<div class="content_container">
@@ -98,12 +100,19 @@
 			
 			//textarea 이외에 입력한 내용을 여기서 검증하고
 			const title = document.querySelector("#title").value;
+			const type = document.querySelector("#type").value;
 			
 			//만일 폼 제출을 막고싶으면 => e.preventDefault() 을 수행해서 폼 제출을 막는다.
 			//제목의 길이가 너무 짧다
 			if(title.length < 3){
 				//제목이 없거나, 길이가 너무 짧다
 				alert("제목을 3글자 이상 입력하세요!");
+				e.preventDefault();
+			}
+			
+			//타입 선택이 없음 -> 선택해주세요!
+			if(type == "not-selected"){
+				alert("게시판을 선택해주세요!");
 				e.preventDefault();
 			}
 			
