@@ -4,12 +4,12 @@
     pageEncoding="UTF-8"%>
 <%
 	String name = request.getParameter("name");
-	String writer = "gura1234";
+	String writer = (String)session.getAttribute("id");
 	String phone = request.getParameter("phone");
-	String className ="Ashtanga";
+	String className = request.getParameter("className");
 	String date = request.getParameter("date");
 	String mention = request.getParameter("mention");
-	
+		
 	BookingDto dto = new BookingDto();
 	dto.setName(name);
 	dto.setWriter(writer);

@@ -14,7 +14,11 @@ tmp.setNum(num);
 BookingDto dto = new BookingDto();
 dto= BookingDao.getInstance().getData(tmp);
 
-
+String writer = (String)session.getAttribute("id");
+if(!writer.equals(dto.getWriter())){
+	response.sendError(HttpServletResponse.SC_FORBIDDEN,"접근할 수 없습니다.");//error code를 전달해야한다.
+	return;
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -24,6 +28,7 @@ dto= BookingDao.getInstance().getData(tmp);
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
+	<jsp:include page="/include/navbar.jsp"></jsp:include>
 	<table>
 		<tr>
 			<th>글 번호</th>
