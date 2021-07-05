@@ -101,9 +101,9 @@
 			
 			//만일 폼 제출을 막고싶으면 => e.preventDefault() 을 수행해서 폼 제출을 막는다.
 			//제목의 길이가 너무 짧다
-			if(title.length < 5){
+			if(title.length < 3){
 				//제목이 없거나, 길이가 너무 짧다
-				alert("제목을 5글자 이상 입력하세요!");
+				alert("제목을 3글자 이상 입력하세요!");
 				e.preventDefault();
 			}
 			
