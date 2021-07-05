@@ -57,6 +57,7 @@ if(endPageNum > totalPageCount){
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="/include/navbar.jsp"></jsp:include>
 <div class="container">
 	<h1>예약 목록</h1>
 	<table>
@@ -85,6 +86,37 @@ if(endPageNum > totalPageCount){
 		<%} %>
 		</tbody>
 	</table>
+	     <ul class="pagination justify-content-center">
+         <%if(startPageNum != 1){ %>
+            <li class="page-item">
+               <a class="page-link" href="bookingList.jsp?pageNum=<%=startPageNum-1 %>">Prev</a>
+            </li>
+         <%}else{ %>
+            <li class="page-item disabled">
+               <a class="page-link" href="javascript:">Prev</a>
+            </li>
+         <%} %>
+         <%for(int i=startPageNum; i<=endPageNum; i++) {%>
+            <%if(i==pageNum){ %>
+               <li class="page-item active">
+                  <a class="page-link" href="bookingList.jsp?pageNum=<%=i %>"><%=i %></a>
+               </li>
+            <%}else{ %>
+               <li class="page-item">
+                  <a class="page-link" href="bookingList.jsp?pageNum=<%=i %>"><%=i %></a>
+               </li>
+            <%} %>
+         <%} %>
+         <%if(endPageNum < totalPageCount){ %>
+            <li class="page-item">
+               <a class="page-link" href="bookingList.jsp?pageNum=<%=endPageNum+1 %>">Next</a>
+            </li>
+         <%}else{ %>
+            <li class="page-item disabled">
+               <a class="page-link" href="javascript:">Next</a>
+            </li>
+         <%} %>
+      </ul>
 </div>
 </body>
 </html>
