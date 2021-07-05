@@ -28,6 +28,7 @@
 			<li><a href="${pageContext.request.contextPath}/users/signup_form.jsp">회원가입</a></li>
 			<li><a href="${pageContext.request.contextPath}/users/login_form.jsp">로그인</a></li>
 			<li><a href="${pageContext.request.contextPath}/hfood/list.jsp">healthy food</a></li>
+      <li><a href="${pageContext.request.contextPath}/homeW/list.jsp">home_workout 게시판</a></li>
 		</ul>
 	</div>
 </body>
