@@ -75,7 +75,7 @@ a { text-decoration:none !important }
           <a class="nav-link" href="#">videos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">oneday_class</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/oneday_class/class.jsp">oneday_class</a>
         </li>
        	<li class="nav-item">
           <a class="nav-link" href="${pageContext.request.contextPath}/hfood/list.jsp">healthy_food</a>
@@ -100,7 +100,7 @@ a { text-decoration:none !important }
 		<div id="navbar-right-menu">
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end" id="user2">
 		  		<button class="btn btn-primary me-md-2" style="background:white;" type="button" ><a href="${pageContext.request.contextPath}/users/signup_form.jsp">signup</a></button>
-		  		<button class="btn btn-primary me-md-3" style="background:white;" type="button"><<a href="${pageContext.request.contextPath}/users/login_form.jsp"></button>
+		  		<button class="btn btn-primary me-md-3" style="background:white;" type="button"><<a href="${pageContext.request.contextPath}/users/login_form.jsp">login</button>
 			</div>
 	   	</div>	
 	<%} %>
