@@ -31,7 +31,7 @@
    <%}else{ %>
    <script>
       alert("글 작성을 실패 했습니다");
-      location.href="${pageContext.request.contextPath}/homeW/private/insertform.jsp";
+      location.href="${pageContext.request.contextPath}/homeW/private/insert_form.jsp";
    </script>
    <%} %>
 </body>

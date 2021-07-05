@@ -4,17 +4,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>/homeW/private/insertform.jsp</title>
+<title>/homeW/private/insert_form.jsp</title>
+<jsp:include page="../../include/resource.jsp"></jsp:include>
 
 <style>
    #content{
       height: 500px;
    }
+   h1{
+   	 	margin-top:30px !important;
+   		margin-bottom:30px !important;
+   		text-align:center;
+   }
+   .container{
+   		
+   }
 </style>
 </head>
 <body>
 <div class="container">
-   <h1>새글 작성 폼</h1>
+   <h1>홈트 정보공유 게시판 입니다</h1>
    <form action="insert.jsp" method="post" id="insertForm">
       <div class="mb-3">
          <label class="form-label" for="title">제목</label>
@@ -106,5 +115,3 @@
 </script>
 </body>
 </html>
-
-

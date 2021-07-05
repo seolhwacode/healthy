@@ -98,11 +98,11 @@
 	   <table class="table table-warning ">
 	      <tr>
 	         <th>글번호</th>
-	         <td><%=dto.getNum() %></td>
+	         <td colspan="5"><%=dto.getNum() %></td>
 	      </tr>
 	      <tr>
 	         <th>제목</th>
-	         <td><%=dto.getTitle() %></td>
+	         <td colspan="5"><%=dto.getTitle() %></td>
 	      </tr>
 	      <tr>
 	         <th>작성자</th>
