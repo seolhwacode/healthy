@@ -31,7 +31,7 @@ a { text-decoration:none !important }
 	        <a class="nav-link" href="${pageContext.request.contextPath}/videos/list.jsp">영상자료</a>
 	        <a class="nav-link" href="${pageContext.request.contextPath}/oneday_class/class.jsp">원데이클래스</a>
 	        <a class="nav-link" href="${pageContext.request.contextPath}/hfood/list.jsp">건강레시피</a>
-	        <a class="nav-link" href="#">추천음악</a>
+	        <a class="nav-link" href="${pageContext.request.contextPath}/music_recommend/list.jsp">추천음악</a>
       	</div>
     </div>
     <div  id="user">

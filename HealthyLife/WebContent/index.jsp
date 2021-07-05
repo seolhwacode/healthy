@@ -35,6 +35,7 @@
         <li><a href="${pageContext.request.contextPath}/homeW/list.jsp">home_workout</a></li>
         <li><a href="${pageContext.request.contextPath}/oneday_class/class.jsp">oneday_class</a></li>
         <li><a href="${pageContext.request.contextPath}/videos/list.jsp">videos</a></li>
+        <li><a href="${pageContext.request.contextPath}/music_recommend/list.jsp">music_recommend</a></li>
 		</ul>
 	</div>
 </body>
