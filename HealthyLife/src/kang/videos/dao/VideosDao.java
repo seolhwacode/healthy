@@ -234,7 +234,7 @@ public class VideosDao {
 				returnDto = new VideosDto();
 				returnDto.setNum(dto.getNum());
 				returnDto.setWriter(rs.getString("writer"));
-				returnDto.setTitle(rs.getString("writer"));
+				returnDto.setTitle(rs.getString("title"));
 				returnDto.setContent(rs.getString("content"));
 				returnDto.setVideo(rs.getString("video"));
 				returnDto.setView_count(rs.getInt("view_count"));
@@ -273,6 +273,45 @@ public class VideosDao {
 			pstmt = conn.prepareStatement(sql);
 			// ? 에 바인딩 할 내용 있으면 여기서 바인딩
 			pstmt.setInt(1, num);
+
+			//update(insert, update, delete) 로 변경된 row 의 개수 return
+			flag = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		//변경된 개수가 1개 이상이면 성공
+		if (flag > 0) {
+			return true;
+		} else {//0 이하면 false
+			return false;
+		}
+	}
+	
+	//게시글 수정하기 - update
+	public boolean update(VideosDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 0; //return 값 확인을 위해 사용
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "UPDATE video_board"
+					+ " SET title = ?, content = ?, video = ?"
+					+ " WHERE num = ?";
+			pstmt = conn.prepareStatement(sql);			
+			// ? 에 바인딩 할 내용 있으면 여기서 바인딩
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, dto.getVideo());
+			pstmt.setInt(4, dto.getNum());
 
 			//update(insert, update, delete) 로 변경된 row 의 개수 return
 			flag = pstmt.executeUpdate();
