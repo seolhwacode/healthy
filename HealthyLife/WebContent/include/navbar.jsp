@@ -69,7 +69,7 @@ a { text-decoration:none !important }
         <a class="nav-link" href="#"> introduction </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">home_workout </a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/homeW/list.jsp">home_workout </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">videos</a>
@@ -78,7 +78,7 @@ a { text-decoration:none !important }
           <a class="nav-link" href="#">oneday_class</a>
         </li>
        	<li class="nav-item">
-          <a class="nav-link" href="#">healthy_food</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/hfood/list.jsp">healthy_food</a>
         </li>
        	<li class="nav-item">
           <a class="nav-link" href="#">music_recommend</a>
@@ -99,8 +99,8 @@ a { text-decoration:none !important }
 	<%} else {%>
 		<div id="navbar-right-menu">
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end" id="user2">
-		  		<button class="btn btn-primary me-md-2" style="background:white;" type="button" ><a href="users/signup_form.jsp">signup</a></button>
-		  		<button class="btn btn-primary me-md-3" style="background:white;" type="button"><a href="users/loginform.jsp">login</a></button>
+		  		<button class="btn btn-primary me-md-2" style="background:white;" type="button" ><a href="${pageContext.request.contextPath}/users/signup_form.jsp">signup</a></button>
+		  		<button class="btn btn-primary me-md-3" style="background:white;" type="button"><<a href="${pageContext.request.contextPath}/users/login_form.jsp"></button>
 			</div>
 	   	</div>	
 	<%} %>

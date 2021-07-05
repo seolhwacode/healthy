@@ -149,6 +149,18 @@
       float: left;
       padding: 5px;
    }
+   
+   #search {
+	 	line-height: 23px;
+		
+   }
+   
+   
+	input:focus { 
+    outline: none !important;
+    border-color: #2252e3;
+    box-shadow: 0 0 3px #2252e3;
+	}
 </style>
 </head>
 <body>
@@ -219,18 +231,19 @@
    </div>
 	<div style="clear:both;"></div>
    
-   	<form action="list.jsp" method="get"> 
-      <label for="condition">검색조건</label>
+   	<form id="search" action="list.jsp" method="get"> 
       <select name="condition" id="condition">
          <option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
          <option value="title" <%=condition.equals("title") ? "selected" : ""%>>제목</option>
          <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
       </select>
-      <input type="text" id="keyword" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
+      <input class= "border border-secondary" type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" value="<%=keyword%>"/>
       <button class="btn btn-primary me-md-2" type="submit">검색</button>
      
-   	</form>   
-   
+   	</form>
+   	
+
+
    	<%if(!condition.equals("")){ %>
       <p>
          <strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
