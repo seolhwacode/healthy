@@ -50,22 +50,36 @@
    		margin: auto 0px;
    	}
    	#imageForm{
-   		text-align: right;
-   		margin-top: 20px;
-   		margin-right: 15px
+   		text-align: center;
+		margin-top: 35px;
+		margin-right: 15px;
    	}
    	#update_form{
-   		text-align: center;
+   		text-align: right;
    		margin-top: 20px;
+   		width : 550px;
+   	}
+   	
+   	#profile_update{
+		border : thick double lightgray;
+		padding: 40px;
+		width: 600px;
    	}
    	.row{
    		padding: 0 12px;
    	}
+   	
+   	h1 {
+   		text-align:center;
+   	}
+   	
+   
 </style>
 </head>
 <body>
 	<div class="container">
-		<h1 class="ps-4">프로필 사진 수정</h1>
+		<div id="profile_update" class="rounded">
+		<h1 class="ps-4" >프로필 사진 수정</h1>
 		<div class="row text-center mt-5">
 			<div class="col-5">
 			<%if(resultDto.getProfile() == null){ %>
@@ -104,21 +118,21 @@
 		<form action="${pageContext.request.contextPath}/users/private/ajax_profile_upload.jsp" method="post" id="imageForm" enctype="multipart/form-data">
 			<input type="file" id="image" name="image" 
 					accept=".jpg, .jpeg, .png, .JPG, .JPEG, .gif" />
-			<button class="btn btn-secondary" id="imageSelect">이미지 선택</button>
-			<button class="btn btn-danger" type="reset" id="deleteImage">사진 삭제</button>
+			<button class="btn btn-light" id="imageSelect">이미지 선택</button>
+			<button class="btn btn-light" type="reset" id="deleteImage">사진 삭제</button>
 		</form>
-		
+		</div>
 		<br />
 		
 		<form action="${pageContext.request.contextPath}/users/private/profile_update.jsp" method="post" id="update_form">
 			<%-- 수정한 프로필 이미지 경로를 form 전송으로 보낸다. --%>
 			<%-- empty 면  db 에 반영 X, 원래 db 에 저장된 profile 사진이 있다면 그 파일 경로 그대로 넣기. => 수정한 파일은 파일이 변경될 때마다 value 값이 바뀐다. --%>
 			<input type="hidden" name="profile" value="<%=resultDto.getProfile() == null ? "empty" : resultDto.getProfile() %>"/>
-			<button class="btn btn-primary" type="submit">적용</button>
+			<button class="btn btn btn-outline-primary" type="submit">적용</button>
 			<%-- 이전 info.jsp 페이지로 돌아간다. --%>
-			<button class="btn btn-danger" id="cancelBtn">취소</button>
+			<button class="btn btn btn-outline-secondary" id="cancelBtn">취소</button>
 		</form>
-
+		
 	</div>
 	
 	
