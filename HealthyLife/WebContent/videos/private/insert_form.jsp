@@ -23,7 +23,7 @@
 			<div>
 				<label class="form-label" for="type">게시판 선택</label>
 		        <select class="form-select" name="type" id="type">
-		        	<option value="not-selected">게시판을 선택해주세요.</option>
+		        	<option value="not-selected">카테고리를 선택해주세요.</option>
 		            <option value="yoga">요가</option>
 		            <option value="stretching">스트레칭</option>
 		            <option value="diet">다이어트</option>
