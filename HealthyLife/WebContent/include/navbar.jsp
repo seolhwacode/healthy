@@ -81,7 +81,7 @@ a { text-decoration:none !important }
           <a class="nav-link" href="${pageContext.request.contextPath}/hfood/list.jsp">healthy_food</a>
         </li>
        	<li class="nav-item">
-          <a class="nav-link" href="#">music_recommend</a>
+          <a class="nav-link" href="${pageContext.request.contextPath}/music_recommend/list.jsp">music_recommend</a>
         </li>     
        
       </ul>
