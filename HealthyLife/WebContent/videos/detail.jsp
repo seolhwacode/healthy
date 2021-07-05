@@ -26,6 +26,17 @@
 	
 //현재 로그인 중인 id
 	String id = (String)session.getAttribute("id");
+//video url 을 유튜브 출력하기위한 url 형태로 바꾸기
+	//영상의 url 을 파싱
+	String[] splitResults;
+	//? 가 들은 경우 : youtube 창에서 맨 위의 주소창의 url 을 복사해온 경우
+	if(resultDto.getVideo().contains("?")){
+		splitResults = resultDto.getVideo().split("=");
+	}else{
+		splitResults = resultDto.getVideo().split("/");
+	}
+	//마지막 단어를 사용해서 유튜브 영상 출력을 위한 url 만들기
+	String video = "https://www.youtube.com/embed/" + splitResults[splitResults.length - 1];	
 %>
 <!DOCTYPE html>
 <html>
@@ -94,7 +105,7 @@
 				<th>동영상</th>
 				<td>
 					<%-- https://youtu.be/R6ti4FCLom4 에서 => /R6ti4FCLom4 부분만 잘라서 새로 db 에 input 해야한다. 이거 고치지--%>
-					<iframe width="560" height="315" src="<%=resultDto.getVideo() %>" title="YouTube video player" frameborder="0" 
+					<iframe width="560" height="315" src="<%=video %>" title="YouTube video player" frameborder="0" 
 					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 					</iframe>
 				</td>
