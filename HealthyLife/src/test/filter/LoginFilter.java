@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 // /users/private/* 하위에서 일어나는 모든 요청에 filtering
 // /cafe/private/* 
 // 여러 장소에 filtering 하게 되었다! -> urlPatterns = {필터링 경로, ... } 로 여러 url 패턴을 넣을 수 있다!
-@WebFilter(urlPatterns = { "/users/private/*" })
+@WebFilter(urlPatterns = { "/users/private/*", "/videos/private/*" })
 public class LoginFilter implements Filter{
 
 	@Override
@@ -74,7 +74,7 @@ public class LoginFilter implements Filter{
 	         //3. 로그인을 하지 않았다면  /users/loginform.jsp 페이지로 리다일렉트 이동 시킨다. (HttpServletResponse)
 	         String cPath=req.getContextPath();
 	         HttpServletResponse resp=(HttpServletResponse)response;
-	         resp.sendRedirect(cPath+"/users/loginform.jsp?url="+encodedUrl);
+	         resp.sendRedirect(cPath+"/users/login_form.jsp?url="+encodedUrl);
 
 		}
 

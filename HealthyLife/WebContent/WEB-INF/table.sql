@@ -8,4 +8,19 @@ CREATE TABLE users(
 	regdate DATE	-- 가입일
 );
 
+-- 비디오 자료실 테이블
+CREATE TABLE video_board(
+	num NUMBER PRIMARY KEY,	-- 글번호
+	writer VARCHAR2(100) NOT NULL,	-- 작성자(users의 id)
+	title VARCHAR2(100) NOT NULL,	-- 글 제목
+	content CLOB,	-- 글 내용
+	video VARCHAR2(200) NOT NULL,	-- 비디오 link
+	view_count NUMBER DEFAULT 0,	-- 조회수
+	regdate DATE,	-- 글 작성일
+	good_count NUMBER DEFAULT 0,	-- 좋아요 수
+	type VARCHAR2(100)	-- 게시판 종류(운동 분류)
+);
+
+-- 비디오 자료실의 게시글 번호를 얻어낼 시퀀스
+CREATE SEQUENCE video_board_seq;
 
