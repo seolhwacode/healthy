@@ -19,7 +19,7 @@
       <div class="card-body">
         <h5 class="card-title">구라요가와 함께하는 아쉬탕가</h5>
         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto provident repellat cum a tempora incidunt vitae architecto possimus accusamus eveniet amet debitis natus repellendus! Veritatis recusandae praesentium aliquid quam eos.</p>
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-class="Ashtanga">예약하기</button>
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-class="구라요가와 함께하는 아쉬탕가">예약하기</button>
       </div>
     </div>
   </div>
@@ -65,7 +65,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 				<div class="modal-body">
-					<form action="../booking.jsp" method="get" id="submitForm">
+					<form action="/private/booking.jsp" method="get" id="submitForm">
 						<div class="mb-3">
 							<label for="className" class="col-form-label">클래스명</label> 
 							<input type="text" class="form-control" name="className" id="className" />
