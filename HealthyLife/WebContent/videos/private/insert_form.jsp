@@ -99,9 +99,6 @@
 			//textarea 이외에 입력한 내용을 여기서 검증하고
 			const title = document.querySelector("#title").value;
 			
-			//url 형식 검사 정규식
-			const reg_url = /^(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/
-			
 			//만일 폼 제출을 막고싶으면 => e.preventDefault() 을 수행해서 폼 제출을 막는다.
 			//제목의 길이가 너무 짧다
 			if(title.length < 5){
