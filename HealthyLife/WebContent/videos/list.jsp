@@ -107,7 +107,7 @@
 			<%for(VideosDto tmp:list){ %>
 				<tr>
 					<td><%=tmp.getNum() %></td>
-					<td><a href=""><%=tmp.getTitle() %></a></td>
+					<td><a href="${pageContext.request.contextPath}/videos/detail.jsp?num=<%=tmp.getNum() %>"><%=tmp.getTitle() %></a></td>
 					<td><%=tmp.getWriter() %></td>
 					<td><%=tmp.getRegdate() %></td>
 					<td><%=tmp.getView_count() %></td>

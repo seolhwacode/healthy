@@ -165,5 +165,99 @@ public class VideosDao {
 		}
 	}
 	
+	//게시글 조회수 증가
+	public boolean addViewCount(int num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 0; //return 값 확인을 위해 사용
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "UPDATE video_board"
+					+ " SET view_count = view_count + 1"
+					+ " WHERE num = ?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 바인딩 할 내용 있으면 여기서 바인딩
+			pstmt.setInt(1, num);
+
+			//update(insert, update, delete) 로 변경된 row 의 개수 return
+			flag = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		//변경된 개수가 1개 이상이면 성공
+		if (flag > 0) {
+			return true;
+		} else {//0 이하면 false
+			return false;
+		}
+	}
+	
+	//게시글 1개의 데이터 가져오기
+	public VideosDto getData(VideosDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//return 할 VideosDto
+		VideosDto returnDto = null;
+
+		try {
+			//Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성
+			String sql = "SELECT *" + 
+					" FROM" + 
+					"	(SELECT num, writer, title, content, video, view_count, regdate, good_count, type," + 
+					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
+					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) AS nextNum" + 
+					"	FROM video_board" + 
+					"	ORDER BY num DESC)" + 
+					" WHERE num = ?";
+			//PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩 할 내용이 있으면 여기서 바인딩
+			pstmt.setInt(1, dto.getNum());
+
+			//select 문 수행하고, 결과를 ResultSet 으로 받아오기
+			rs = pstmt.executeQuery();
+			//반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
+			if (rs.next()) {
+				returnDto = new VideosDto();
+				returnDto.setNum(dto.getNum());
+				returnDto.setWriter(rs.getString("writer"));
+				returnDto.setTitle(rs.getString("writer"));
+				returnDto.setContent(rs.getString("content"));
+				returnDto.setVideo(rs.getString("video"));
+				returnDto.setView_count(rs.getInt("view_count"));
+				returnDto.setRegdate(rs.getString("regdate"));
+				returnDto.setGood_count(rs.getInt("good_count"));
+				returnDto.setType(rs.getString("type"));
+				returnDto.setPrevNum(rs.getInt("prevNum"));
+				returnDto.setNextNum(rs.getInt("nextNum"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return returnDto;
+	}
 	
 }
