@@ -46,7 +46,7 @@
 		<ul>
 			<li><a href="list.jsp">목록보기</a></li>
 			<%if(resultDto.getWriter().equals(id)){ %>
-				<li><a href="${pageContext.request.contextPath}/video/private/update_form.jsp?num=<%=num %>">수정</a></li>
+				<li><a href="${pageContext.request.contextPath}/videos/private/update_form.jsp?num=<%=num %>">수정</a></li>
 				<li><a href="javascript:deleteConfirm()">삭제</a></li>
 			<%} %>
 		</ul>
