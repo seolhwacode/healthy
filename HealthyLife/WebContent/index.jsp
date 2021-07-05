@@ -11,10 +11,12 @@
 <head>
 <meta charset="UTF-8">
 <title>/index.jsp</title>
+<jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="/include/navbar.jsp"></jsp:include>
 	<div class="container">
-		<h1>인덱스 페이지입니다.</h1>
+		
 		<%if(id != null){ %>
 			<p>
 				<a href="${pageContext.request.contextPath}/users/private/info.jsp"><%=id %></a> 님 로그인 중...
@@ -22,10 +24,13 @@
 			</p>
 		<%} %>
 		<ul>
-			<!-- 해당 게시판으로 가는 link 추가해주세요. -->
-			<li><a href="${pageContext.request.contextPath}/users/signup_form.jsp">회원가입</a></li>
-			<li><a href="${pageContext.request.contextPath}/users/login_form.jsp">로그인</a></li>
-			<li><a href="${pageContext.request.contextPath}/videos/list.jsp">비디오 자료실</a></li>
+        <!-- 해당 게시판으로 가는 link 추가해주세요. -->
+        <li><a href="${pageContext.request.contextPath}/users/signup_form.jsp">회원가입</a></li>
+        <li><a href="${pageContext.request.contextPath}/users/login_form.jsp">로그인</a></li>
+        <li><a href="${pageContext.request.contextPath}/hfood/list.jsp">healthy food</a></li>
+        <li><a href="${pageContext.request.contextPath}/homeW/list.jsp">home_workout</a></li>
+        <li><a href="${pageContext.request.contextPath}/oneday_class/class.jsp">oneday_class</a></li>
+        <li><a href="${pageContext.request.contextPath}/videos/list.jsp">videos</a></li>
 		</ul>
 	</div>
 </body>
