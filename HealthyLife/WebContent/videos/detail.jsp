@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="test.users.dao.UsersDao"%>
 <%@page import="test.users.dto.UsersDto"%>
 <%@page import="kang.videos.dao.VideosDao"%>
@@ -11,12 +12,59 @@
 	//detail.jsp 가 호출되면, viewCount 가 +1 
 	VideosDao.getInstance().addViewCount(num);
 	
+/*
+   [ 검색 키워드에 관련된 처리 ]
+   -검색 키워드가 파라미터로 넘어올수도 있고 안넘어 올수도 있다.      
+*/	
+	String keyword = request.getParameter("keyword");
+	String condition = request.getParameter("condition");
+	String type = request.getParameter("type");
+	//만일 키워드가 넘어오지 않는다면?
+	if(keyword == null){
+		//키워드 검색 조건에 빈 문자열을 넣어준다.
+		//클라이언트 웹브라우저에 출력할 때 "null" 을 출력되지 않게 하기 위해서
+		keyword = "";
+		condition = "";
+	}
+	//type 없을 때 or "not-selected" 일 때 => ""
+	if("not-selected".equals(type) || type == null){
+		type = "";
+	}
+	
+	//특수기호를 인코딩한 키워드를 미리 준비한다.
+	String encodeK = URLEncoder.encode(keyword);
+	
 	//getData 에 넘길 VideosDto 만듬
 	VideosDto dto = new VideosDto();
 	dto.setNum(num);
 	
-	//해당하는 게시글 가져오기
-	VideosDto resultDto = VideosDao.getInstance().getData(dto);
+	//가져올 data 를 담을 dto 를 미리 만든다.
+	VideosDto resultDto = null;
+	
+	//만약 컴색 키워드가 넘어온다면
+	if(!keyword.equals("")){
+		//검색 조건이 무엇이냐에 따라 분기 하기
+		if(condition.equals("title_content")){//제목 + 내용 검색인 경우
+			//검색 키워드를 CafeDto 에 담아서 전달한다.
+	      	dto.setTitle(keyword);
+	      	dto.setContent(keyword);
+	      	//제목+내용 검색일때 호출하는 메소드를 이용해서 데이터
+	      	resultDto = VideosDao.getInstance().getDataTC(dto);
+		}else if(condition.equals("title")){ //제목 검색인 경우
+			dto.setTitle(keyword);
+			resultDto = VideosDao.getInstance().getDataT(dto);
+		}else if(condition.equals("writer")){ //작성자 검색인 경우
+			dto.setWriter(keyword);
+			resultDto = VideosDao.getInstance().getDataW(dto);
+		}
+	}else if(!type.equals("")){//카테고리 검색인 경우 -> type 이 날아온다.
+		dto.setType(type);
+		resultDto = VideosDao.getInstance().getDataTy(dto);
+	}else{//검색 키워드가 넘어오지 않는다면
+		//키워드가 없을때 호출하는 메소드를 이용해서 파일 목록을 얻어온다.
+		resultDto = VideosDao.getInstance().getData(dto);
+	}
+	
 	
 //profile 사진 읽어오기
 	//읽어온 	resultDto 의 writer 와 id 가 같은 profile 을 읽어온다.
@@ -57,10 +105,10 @@
 	<div class="container">
 		<div class="ArticleContentBox">
 			<%if(resultDto.getPrevNum() != 0){ %>
-			<a href="detail.jsp?num=<%=resultDto.getPrevNum() %>">이전글</a>
+			<a href="detail.jsp?num=<%=resultDto.getPrevNum() %>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>">이전글</a>
 			<%} %>
 			<%if(resultDto.getNextNum()!=0){ %>
-			<a href="detail.jsp?num=<%=resultDto.getNextNum() %>">다음글</a>
+			<a href="detail.jsp?num=<%=resultDto.getNextNum() %>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>">다음글</a>
 			<%} %>
 			
 			<!-- 목록보기 / 삭제 버튼 -->

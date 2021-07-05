@@ -41,6 +41,10 @@
 		keyword = "";
 		condition = "";
 	}
+	//type 없을 때 or "not-selected" 일 때 => ""
+	if("not-selected".equals(type) || type == null){
+		type = "";
+	}
 	
 	//특수기호를 인코딩한 키워드를 미리 준비한다.
 	String encodeK = URLEncoder.encode(keyword);
@@ -73,11 +77,11 @@
 			dto.setWriter(keyword);
 	      	list = VideosDao.getInstance().getListW(dto);
 	      	totalRow = VideosDao.getInstance().getCountW(dto);
-		}else if(condition.equals("type")){//카테고리 검색인 경우
- 			dto.setType(type);
-	      	list = VideosDao.getInstance().getListTy(dto);
-	      	totalRow = VideosDao.getInstance().getCountTy(dto);
 		}
+	}else if(!type.equals("")){//카테고리 검색인 경우 -> type 이 날아온다.
+		dto.setType(type);
+      	list = VideosDao.getInstance().getListTy(dto);
+      	totalRow = VideosDao.getInstance().getCountTy(dto);
 	}else{//검색 키워드가 넘어오지 않는다면
 		//키워드가 없을때 호출하는 메소드를 이용해서 파일 목록을 얻어온다.
 		list = VideosDao.getInstance().getList(dto);
@@ -156,7 +160,7 @@
 			<%for(VideosDto tmp:list){ %>
 				<tr>
 					<td><%=tmp.getNum() %></td>
-					<td><a href="${pageContext.request.contextPath}/videos/detail.jsp?num=<%=tmp.getNum() %>"><%=tmp.getTitle() %></a></td>
+					<td><a href="${pageContext.request.contextPath}/videos/detail.jsp?num=<%=tmp.getNum() %>&condition=<%=condition%>&keyword=<%=keyword%>&type=<%=type %>"><%=tmp.getTitle() %></a></td>
 					<td><%=tmp.getWriter() %></td>
 					<td><%=tmp.getRegdate() %></td>
 					<td><%=tmp.getView_count() %></td>
@@ -172,18 +176,18 @@
 				<%-- startPageNum 가 1이면 이전으로 가는  페이지는 없어야한다.--%>
 				<% if(startPageNum != 1) {%>
 					<li>
-						<a href="<%= request.getRequestURI() %>?pageNum=<%= startPageNum - 1%>&condition=<%=condition%>&keyword=<%=keyword%>&type=<%=type %>">Prev</a>
+						<a href="<%= request.getRequestURI() %>?pageNum=<%= startPageNum - 1%>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>">Prev</a>
 					</li>
 				<%} %>
 				<%for(int i = startPageNum; i <= endPageNum; i++){ %>
 					<li>
-						<a href="<%= request.getRequestURI() %>?pageNum=<%= i%>&condition=<%=condition%>&keyword=<%=keyword%>&type=<%=type %>" <%= pageNum==i ? "class=\"active\"" : "" %>><%= i %></a>
+						<a href="<%= request.getRequestURI() %>?pageNum=<%= i%>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>" <%= pageNum==i ? "class=\"active\"" : "" %>><%= i %></a>
 					</li>
 				<%} %>
 				<%-- 아래 보여주는 페이지 번호의 끝이 전체 row 보다 작을 때만 next 출력 --%>
 				<%if(endPageNum < totalPageCount){ %>
 					<li>
-						<a href="<%= request.getRequestURI() %>?pageNum=<%= endPageNum + 1%>&condition=<%=condition%>&keyword=<%=keyword%>&type=<%=type %>"><span >Next</span></a>
+						<a href="<%= request.getRequestURI() %>?pageNum=<%= endPageNum + 1%>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>"><span >Next</span></a>
 					</li>
 				<%} %>
 			</ul>
@@ -210,6 +214,12 @@
 		        </select>
 				<button type="submit">검색</button>
 			</form>
+			
+		<%if(!"".equals(condition)){ %>
+			<p>
+				<strong><%=totalRow %></strong> 개의 글이 검색되었습니다.
+			</p>
+		<%} %>
 		</div>
 			
 		<script>

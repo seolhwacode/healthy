@@ -687,6 +687,251 @@ public class VideosDao {
 		return returnDto;
 	}
 	
+	//getDataTC : title + content 검색 - 글 하나의 데이터를 리턴하는 메소드
+	public VideosDto getDataTC(VideosDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//return 할 VideosDto
+		VideosDto returnDto = null;
+
+		try {
+			//Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성
+			String sql = "SELECT *" + 
+					" FROM" + 
+					"	(SELECT num, writer, title, content, video, view_count, regdate, good_count, type," + 
+					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
+					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) AS nextNum" + 
+					"	FROM video_board" + 
+					"   WHERE title LIKE '%'||?||'%' OR content LIKE '%'||?||'%' " +
+					"	ORDER BY num DESC)" + 
+					" WHERE num = ?";
+			//PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩 할 내용이 있으면 여기서 바인딩
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setInt(3, dto.getNum());
+
+			//select 문 수행하고, 결과를 ResultSet 으로 받아오기
+			rs = pstmt.executeQuery();
+			//반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
+			if (rs.next()) {
+				returnDto = new VideosDto();
+				returnDto.setNum(dto.getNum());
+				returnDto.setWriter(rs.getString("writer"));
+				returnDto.setTitle(rs.getString("title"));
+				returnDto.setContent(rs.getString("content"));
+				returnDto.setVideo(rs.getString("video"));
+				returnDto.setView_count(rs.getInt("view_count"));
+				returnDto.setRegdate(rs.getString("regdate"));
+				returnDto.setGood_count(rs.getInt("good_count"));
+				returnDto.setType(rs.getString("type"));
+				returnDto.setPrevNum(rs.getInt("prevNum"));
+				returnDto.setNextNum(rs.getInt("nextNum"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return returnDto;
+	}
+	
+	//getDataT : title 검색 - 글 하나의 데이터를 리턴하는 메소드
+	public VideosDto getDataT(VideosDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//return 할 VideosDto
+		VideosDto returnDto = null;
+
+		try {
+			//Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성
+			String sql = "SELECT *" + 
+					" FROM" + 
+					"	(SELECT num, writer, title, content, video, view_count, regdate, good_count, type," + 
+					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
+					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) AS nextNum" + 
+					"	FROM video_board" + 
+					"   WHERE title LIKE '%'||?||'%' " +
+					"	ORDER BY num DESC)" + 
+					" WHERE num = ?";
+			//PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩 할 내용이 있으면 여기서 바인딩
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setInt(2, dto.getNum());
+
+			//select 문 수행하고, 결과를 ResultSet 으로 받아오기
+			rs = pstmt.executeQuery();
+			//반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
+			if (rs.next()) {
+				returnDto = new VideosDto();
+				returnDto.setNum(dto.getNum());
+				returnDto.setWriter(rs.getString("writer"));
+				returnDto.setTitle(rs.getString("title"));
+				returnDto.setContent(rs.getString("content"));
+				returnDto.setVideo(rs.getString("video"));
+				returnDto.setView_count(rs.getInt("view_count"));
+				returnDto.setRegdate(rs.getString("regdate"));
+				returnDto.setGood_count(rs.getInt("good_count"));
+				returnDto.setType(rs.getString("type"));
+				returnDto.setPrevNum(rs.getInt("prevNum"));
+				returnDto.setNextNum(rs.getInt("nextNum"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return returnDto;
+	}
+	
+	//getDataW : writer 검색 - 글 하나의 데이터를 리턴하는 메소드
+	public VideosDto getDataW(VideosDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//return 할 VideosDto
+		VideosDto returnDto = null;
+
+		try {
+			//Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성
+			String sql = "SELECT *" + 
+					" FROM" + 
+					"	(SELECT num, writer, title, content, video, view_count, regdate, good_count, type," + 
+					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
+					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) AS nextNum" + 
+					"	FROM video_board" + 
+					"   WHERE writer LIKE '%'||?||'%' " +
+					"	ORDER BY num DESC)" + 
+					" WHERE num = ?";
+			//PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩 할 내용이 있으면 여기서 바인딩
+			pstmt.setString(1, dto.getWriter());
+			pstmt.setInt(2, dto.getNum());
+
+			//select 문 수행하고, 결과를 ResultSet 으로 받아오기
+			rs = pstmt.executeQuery();
+			//반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
+			if (rs.next()) {
+				returnDto = new VideosDto();
+				returnDto.setNum(dto.getNum());
+				returnDto.setWriter(rs.getString("writer"));
+				returnDto.setTitle(rs.getString("title"));
+				returnDto.setContent(rs.getString("content"));
+				returnDto.setVideo(rs.getString("video"));
+				returnDto.setView_count(rs.getInt("view_count"));
+				returnDto.setRegdate(rs.getString("regdate"));
+				returnDto.setGood_count(rs.getInt("good_count"));
+				returnDto.setType(rs.getString("type"));
+				returnDto.setPrevNum(rs.getInt("prevNum"));
+				returnDto.setNextNum(rs.getInt("nextNum"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return returnDto;
+	}
+	
+	//getDataTy : type 검색 - 글 하나의 데이터를 리턴하는 메소드
+	public VideosDto getDataTy(VideosDto dto) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//return 할 VideosDto
+		VideosDto returnDto = null;
+
+		try {
+			//Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성
+			String sql = "SELECT *" + 
+					" FROM" + 
+					"	(SELECT num, writer, title, content, video, view_count, regdate, good_count, type," + 
+					"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
+					"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) AS nextNum" + 
+					"	FROM video_board"+ 
+					"	WHERE type = ?" + 
+					"	ORDER BY num DESC)" + 
+					" WHERE num = ?";
+			//PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩 할 내용이 있으면 여기서 바인딩
+			pstmt.setString(1, dto.getType());
+			pstmt.setInt(2, dto.getNum());
+
+			//select 문 수행하고, 결과를 ResultSet 으로 받아오기
+			rs = pstmt.executeQuery();
+			//반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
+			if (rs.next()) {
+				returnDto = new VideosDto();
+				returnDto.setNum(dto.getNum());
+				returnDto.setWriter(rs.getString("writer"));
+				returnDto.setTitle(rs.getString("title"));
+				returnDto.setContent(rs.getString("content"));
+				returnDto.setVideo(rs.getString("video"));
+				returnDto.setView_count(rs.getInt("view_count"));
+				returnDto.setRegdate(rs.getString("regdate"));
+				returnDto.setGood_count(rs.getInt("good_count"));
+				returnDto.setType(rs.getString("type"));
+				returnDto.setPrevNum(rs.getInt("prevNum"));
+				returnDto.setNextNum(rs.getInt("nextNum"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return returnDto;
+	}
+	
 	//게시글 지우기
 	public boolean delete(int num) {
 		Connection conn = null;
