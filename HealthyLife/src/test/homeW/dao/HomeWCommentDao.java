@@ -29,18 +29,18 @@ public class HomeWCommentDao {
 			//Connection 객체의 참조값 얻어오기 
 			conn = new DbcpBean().getConn();
 			//실행할 sql 문 작성
-			String sql =" SELECT *"
-					+" FROM"
-					+" 		(SELECT result1.* ,ROWNUM AS rnum"
-					+" 		FROM"
-					+" 			(SELECT num, writer, content, target_id, ref_group, comment_group, deleted,"
-					+"			home_workout_comment.regdate, profile"
-					+" 			FROM home_workout_comment"
-					+" 			INNER JOIN users"
-					+" 			ON home_workout_comment.writer=users.id"
-					+" 			WHERE ref_group=?"
-					+" 			ORDER BY comment_group ASC, num ASC) result1)"
-					+" WHERE rnum BETWEEN ? AND ?";
+			String sql ="SELECT *"
+					+ " FROM"
+					+ " 		(SELECT result1.* ,ROWNUM AS rnum"
+					+ " 		FROM"
+					+ " 			(SELECT num, writer, content, target_id, ref_group, comment_group, deleted,"
+					+ "			home_workout_comment.regdate, profile"
+					+ " 			FROM home_workout_comment"
+					+ " 			INNER JOIN users"
+					+ " 			ON home_workout_comment.writer=users.id"
+					+ " 			WHERE ref_group=?"
+					+ " 			ORDER BY comment_group ASC, num ASC) result1)"
+					+ " WHERE rnum BETWEEN ? AND ?";
 					
 			//PreparedStatement 객체의 참조값 얻어오기
 			pstmt = conn.prepareStatement(sql);
@@ -91,8 +91,8 @@ public class HomeWCommentDao {
 			//Connection 객체의 참조값 얻어오기 
 			conn = new DbcpBean().getConn();
 			//실행할 sql 문 작성
-			String sql = " SELECT home_workout_comment_seq.NEXTVAL AS seq"
-					+" FROM dual";
+			String sql = "SELECT home_workout_comment_seq.NEXTVAL AS seq"
+					+ " FROM dual";
 			
 			//PreparedStatement 객체의 참조값 얻어오기
 			pstmt = conn.prepareStatement(sql);
@@ -102,7 +102,7 @@ public class HomeWCommentDao {
 			rs = pstmt.executeQuery();
 			//반복문 돌면서 ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
 			if (rs.next()) {
-				seq=rs.getInt(seq);
+				seq=rs.getInt("seq");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,9 +129,9 @@ public class HomeWCommentDao {
 		try {
 			conn = new DbcpBean().getConn();
 			//실행할 sql 문 작성
-			String sql = " INSERT INTO home_workout_comment"
-					+" (num, writer, content, target_id, ref_group, comment_group, regdate)"
-					+" VALUES(?, ?, ?, ?, ?, ?, SYSDATE)";
+			String sql = "INSERT INTO home_workout_comment"
+					+ " (num, writer, content, target_id, ref_group, comment_group, regdate)"
+					+ " VALUES(?, ?, ?, ?, ?, ?, SYSDATE)";
 			
 			pstmt = conn.prepareStatement(sql);
 			//?에 바인딩할 내용이 있으면 여기서 바인딩
