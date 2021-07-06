@@ -1,4 +1,4 @@
-package kang.videos.dao;
+package videos.board.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import kang.videos.dto.VideosDto;
 import test.util.DbcpBean;
+import videos.board.dto.VideosDto;
 
 public class VideosDao {
 	private static VideosDao dao;

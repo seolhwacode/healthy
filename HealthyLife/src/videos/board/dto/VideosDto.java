@@ -1,4 +1,4 @@
-package kang.videos.dto;
+package videos.board.dto;
 
 public class VideosDto {
 	private int num;	//글번호
