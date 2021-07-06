@@ -1,3 +1,6 @@
+<%@page import="java.util.List"%>
+<%@page import="test.homeW.dao.HomeWCommentDao"%>
+<%@page import="test.homeW.dto.HomeWCommentDto"%>
 <%@page import="test.homeW.dto.HomeWDto"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="test.homeW.dao.HomeWDao"%>
@@ -46,6 +49,11 @@
 	 //특수기호를 인코딩한 키워드를 미리 준비한다. 
 	 String encodedK=URLEncoder.encode(keyword);
 	 
+	 //원글의 글번호를 이용해서 해당글에 달린 댓글 목록을 얻어온다
+	 HomeWCommentDto commentDto=new HomeWCommentDto();
+	 commentDto.setRef_group(num);
+	 
+	 List<HomeWCommentDto> commentList=HomeWCommentDao.getInstance().getList(commentDto);
 	 
 	 //로그인된 아이디 (로그인을 하지 않았으면 null 이다)
 	 String id=(String)session.getAttribute("id");
@@ -146,8 +154,33 @@
 		   }
 		   random_imglink()
 		   random_imglink()
-		   
-	  </script>		
+	  </script>
+	  
+	  <!-- 댓글 목록 가져오기 -->
+	  <div class="comments">
+	  	<ul>
+	  		<%for(HomeWCommentDto tmp: commentList){ %>
+	  			<li>
+	  				<dl>
+	  					<dt>프로필 이미지, 작성자 아이디 , 삭제 표시할 예정</dt>
+	  					<dd>
+	  						<pre><%=tmp.getContent() %></pre>
+	  					</dd>
+	  				</dl>
+	  			</li>
+	  		<%} %>
+	  		
+	  	</ul>
+	  </div>
+	  <!-- 원글의 댓글을 작성할 댓글 폼 -->
+	  <form action="private/comment_insert.jsp" method="post">
+	  		<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
+	  		<input type="hidden" name="ref_group" value="<%=num %>" />
+	  		<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
+	  		<input type="hidden" name="target_id" value="<%=dto.getWriter() %>" />
+	  		<textarea name="content" ></textarea>
+	  		<button type="submit">등록</button>
+	  </form>		
 </div>
 </body>
 </html>
