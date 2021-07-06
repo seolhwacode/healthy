@@ -127,7 +127,10 @@
 				</tr>
 				<tr>
 					<th>제목</th>
-					<td><%=resultDto.getTitle() %></td>
+					<td>
+						<span>[<%=resultDto.getType() %>]</span>
+						<%=resultDto.getTitle() %>
+					</td>
 				</tr>
 				<tr>
 					<th>좋아요</th>
