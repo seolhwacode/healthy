@@ -204,13 +204,12 @@
    <div style="clear:both;"></div>
    
    <form action="list.jsp" method="get"> 
-      <label for="condition">검색조건</label>
       <select name="condition" id="condition">
          <option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
          <option value="title" <%=condition.equals("title") ? "selected" : ""%>>제목</option>
          <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
       </select>
-      <input type="text" id="keyword" name="keyword" placeholder="검색어..." value="<%=keyword%>"/>
+      <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요 " value="<%=keyword%>"/>
       <button type="submit">검색</button>
    </form>   
    
