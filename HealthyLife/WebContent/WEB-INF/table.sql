@@ -24,3 +24,13 @@ CREATE TABLE video_board(
 -- 비디오 자료실의 게시글 번호를 얻어낼 시퀀스
 CREATE SEQUENCE video_board_seq;
 
+-- video_board - getData : 검색어 없을 때
+SELECT *
+FROM
+	(SELECT num, writer, title, content, video, view_count, regdate, good_count, type,
+	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum,
+	LEAD(num, 1, 0) OVER(ORDER BY num DESC) AS nextNum
+	FROM video_board
+	ORDER BY num DESC)
+WHERE num = 21;
+

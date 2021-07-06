@@ -1,10 +1,22 @@
+<%@page import="kang.videos.dao.VideosDao"%>
+<%@page import="kang.videos.dto.VideosDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	//GET 파라미터로 전달되는 해당 게시글의 num 읽어오기
+	int num = Integer.parseInt(request.getParameter("num"));
+
+	//해당 게시글의 데이터 읽어서 화면에 출력
+	VideosDto insertDto = new VideosDto();
+	insertDto.setNum(num);
+	
+	VideosDto dto = VideosDao.getInstance().getData(insertDto);
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>/videos/private/insert_form.jsp</title>
+<title>/videos/private/update_form.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
 	#content{
@@ -18,41 +30,38 @@
 </head>
 <body>
 	<div class="container">
-		<h1>게시글 작성하기</h1>
-		<form action="${pageContext.request.contextPath}/videos/private/insert.jsp" method="post" id="insertForm">
-			<div>
-				<label class="form-label" for="type">게시판 선택</label>
-		        <select class="form-select" name="type" id="type">
-		        	<option value="not-selected">카테고리를 선택해주세요.</option>
-		            <option value="yoga">요가</option>
-		            <option value="stretching">스트레칭</option>
-		            <option value="diet">다이어트</option>
-		            <option value="rehabili">재활 및 교정</option>
-		        </select>
-			</div>
+		<h1>게시글 수정</h1>
+		<form action="${pageContext.request.contextPath}/videos/private/update.jsp" method="post" id="updateForm">
+			<input type="hidden" name="num" value="<%=num %>" />
 			<div>
 				<label class="form-label" for="title">제목</label>
-				<input class="form-control" type="text" id="title" name="title" />
+				<input class="form-control" type="text" id="title" name="title" value="<%=dto.getTitle() %>" />
 			</div>
 			<div>
-				<label class="form-label" for="video">동영상 URL</label>
-				<small class="form-text text-muted"> : youtube 공유 주소 또는 상단의 주소 입력</small>
-				<input class="form-control" type="url" id="video" name="video" />
+				<label class="form-label" for="video">동영상</label>
+				<input class="form-control" type="url" id="video" name="video" value="<%=dto.getVideo()%>"/>
 			</div>
-			<div class="content_container">
-				<%-- content 는 없을 수도 있다. --%>
-				<textarea name="content" id="content"></textarea>
+			<div>
+				<label class="form-label" for="content">내용</label>
+				<textarea name="content" id="content"><%=dto.getContent() %></textarea>
 			</div>
-			<button class="btn btn-primary" type="submit">등록</button>
+			<button class="btn btn-primary" type="submit">수정</button>
+			<button class="btn btn-danger" id="goBackBtn">취소</button>
 		</form>
-		
 	</div>
 	
 	<!-- SmartEditor 에서 필요한 javascript 로딩  -->
 	<script src="${pageContext.request.contextPath }/SmartEditor/js/HuskyEZCreator.js"></script>
 	<script>
-	   	var oEditors = [];
-	   
+		document.querySelector("#goBackBtn").addEventListener("click", function(e){
+			//혹시 모를 폼 제출 막기
+			e.preventDefault();
+			location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num %>";
+		});
+		
+		
+		var oEditors = [];
+		   
 	   	//추가 글꼴 목록
 	   	//var aAdditionalFontSet = [["MS UI Gothic", "MS UI Gothic"], ["Comic Sans MS", "Comic Sans MS"],["TEST","TEST"]];
 	   
@@ -93,26 +102,19 @@
 	   	}
 	   	
 		//폼에 submit 이벤트가 일어났을 때, 실행할 함수 등록
-		document.querySelector("#insertForm").addEventListener("submit", function(e){
+		document.querySelector("#updateForm").addEventListener("submit", function(e){
 			// 에디터의 내용이 textarea에 적용됩니다.
 			//에디터에 입력한 내용이 textarea 의 value 값이 될 수 있도록 변환한다.
 			oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
 			
 			//textarea 이외에 입력한 내용을 여기서 검증하고
 			const title = document.querySelector("#title").value;
-			const type = document.querySelector("#type").value;
 			
 			//만일 폼 제출을 막고싶으면 => e.preventDefault() 을 수행해서 폼 제출을 막는다.
 			//제목의 길이가 너무 짧다
-			if(title.length < 3){
+			if(title.length < 5){
 				//제목이 없거나, 길이가 너무 짧다
-				alert("제목을 3글자 이상 입력하세요!");
-				e.preventDefault();
-			}
-			
-			//타입 선택이 없음 -> 선택해주세요!
-			if(type == "not-selected"){
-				alert("게시판을 선택해주세요!");
+				alert("제목을 5글자 이상 입력하세요!");
 				e.preventDefault();
 			}
 			
@@ -120,6 +122,5 @@
 			<%-- content 는 없을 수도 있다. --%>
 		});
 	</script>
-	
 </body>
 </html>
