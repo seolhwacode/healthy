@@ -36,5 +36,5 @@
 	 HomeWCommentDao.getInstance().insert(dto);
 	 //성공했으면 다시 해당 글로 이동하기
 	 String cpath=request.getContextPath();
-	 response.sendRedirect(cpath+"homeW/detail.jsp?num="+ref_group);
+	 response.sendRedirect(cpath+"/homeW/detail.jsp?num="+ref_group);
 %> 
