@@ -13,7 +13,7 @@
 <jsp:include page="/include/navbar.jsp"></jsp:include>
 <div class="container-fluid">
 <div class="row" id="classes">
-  <div class="col col-sm-4">
+  <div class="col col-sm-6">
     <div class="card text-center h-100 w-50">
       <img src="https://images.unsplash.com/photo-1588286840104-8957b019727f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="card-img-top" alt="...">
       <div class="card-body">
@@ -23,7 +23,7 @@
       </div>
     </div>
   </div>
-  <div class="col col-sm-4">
+  <div class="col col-sm-6">
     <div class="card text-center h-100 w-50" >
       <img src="https://images.unsplash.com/photo-1517931524326-bdd55a541177?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="card-img-top" alt="...">
       <div class="card-body">
@@ -33,7 +33,7 @@
       </div>
     </div>
   </div>
-  <div class="col col-sm-4">
+  <div class="col col-sm-6">
     <div class="card text-center h-100 w-50">
       <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" class="card-img-top" alt="...">
       <div class="card-body">
@@ -43,7 +43,7 @@
       </div>
     </div>
   </div>
-  <div class="col col-sm-4">
+  <div class="col col-sm-6">
     <div class="card text-center">
       <img src="https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=967&q=80" class="card-img-top" alt="...">
       <div class="card-body">
@@ -65,7 +65,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 				<div class="modal-body">
-					<form action="/private/booking.jsp" method="get" id="submitForm">
+					<form action="${pageContext.request.contextPath}/oneday_class/private/booking.jsp" method="get" id="submitForm">
 						<div class="mb-3">
 							<label for="className" class="col-form-label">클래스명</label> 
 							<input type="text" class="form-control" name="className" id="className" />

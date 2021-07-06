@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="java.util.List"%>
 <%@page import="oneday.booking.dao.BookingDao"%>
 <%@page import="oneday.booking.dto.BookingDto"%>
@@ -24,23 +25,64 @@ int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
 //보여줄 페이지의 끝 ROWNUM
 int endRowNum=pageNum*PAGE_ROW_COUNT;
 
+/*
+[ 검색 키워드에 관련된 처리 ]
+-검색 키워드가 파라미터로 넘어올수도 있고 안넘어 올수도 있다.      
+*/
+String keyword=request.getParameter("keyword");
+String condition=request.getParameter("condition");
+//만일 키워드가 넘어오지 않는다면 
+if(keyword==null){
+//키워드와 검색 조건에 빈 문자열을 넣어준다. 
+//클라이언트 웹브라우저에 출력할때 "null" 을 출력되지 않게 하기 위해서  
+keyword="";
+condition=""; 
+}
+
+//특수기호를 인코딩한 키워드를 미리 준비한다. 
+String encodedK=URLEncoder.encode(keyword);
+
 //BookingDto 객체에 startRowNum 과 endRowNum 을 담는다.
 BookingDto dto=new BookingDto();
 dto.setStartRowNum(startRowNum);
 dto.setEndRowNum(endRowNum);
 
-//BookingDao 객체의 참조값 얻어와서 
-BookingDao dao=BookingDao.getInstance();
-//글목록 얻어오기 
-List<BookingDto> list=dao.getList(dto);
+//ArrayList 객체의 참조값을 담을 지역변수를 미리 만든다.
+List<BookingDto> list=null;
+//전체 row 의 갯수를 담을 지역변수를 미리 만든다.
+int totalRow=0;
+//만일 검색 키워드가 넘어온다면 
+if(!keyword.equals("")){
+   //검색 조건이 무엇이냐에 따라 분기 하기
+   if(condition.equals("className")){//클래스명 검색인 경우
+      //검색 키워드를 BookingDto 에 담아서 전달한다.
+      dto.setClassName(keyword);
+      //클래스명 검색일때 호출하는 메소드를 이용해서 목록 얻어오기 
+      list=BookingDao.getInstance().getListC(dto);
+      //클래스명 검색일때 호출하는 메소드를 이용해서 row  의 갯수 얻어오기
+      totalRow=BookingDao.getInstance().getCountC(dto);
+   }else if(condition.equals("name")){ //이름 검색인 경우
+      dto.setName(keyword);
+      list=BookingDao.getInstance().getListN(dto);
+      totalRow=BookingDao.getInstance().getCountN(dto);
+   }else if(condition.equals("writer")){ //작성자 검색인 경우
+      dto.setWriter(keyword);
+      list=BookingDao.getInstance().getListW(dto);
+      totalRow=BookingDao.getInstance().getCountW(dto);
+   } // 다른 검색 조건을 추가 하고 싶다면 아래에 else if() 를 계속 추가 하면 된다.
+}else{//검색 키워드가 넘어오지 않는다면
+   //키워드가 없을때 호출하는 메소드를 이용해서 파일 목록을 얻어온다. 
+   list=BookingDao.getInstance().getList(dto);
+   //키워드가 없을때 호출하는 메소드를 이용해서 전제 row 의 갯수를 얻어온다.
+   totalRow=BookingDao.getInstance().getCount();
+}
+
 
 //하단 시작 페이지 번호 
 int startPageNum = 1 + ((pageNum-1)/PAGE_DISPLAY_COUNT)*PAGE_DISPLAY_COUNT;
 //하단 끝 페이지 번호
 int endPageNum=startPageNum+PAGE_DISPLAY_COUNT-1;
 
-//전체 row 의 갯수 
-int totalRow=dao.getCount();
 //전체 페이지의 갯수
 int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
 //끝 페이지 번호가 전체 페이지 갯수보다 크다면 잘못된 값이다.
@@ -79,7 +121,7 @@ if(endPageNum > totalPageCount){
 				<td><%=tmp.getViewCount() %></td>
 				<td><%=tmp.getWriter() %></td>
 				<td><%=tmp.getName() %></td>
-				<td><a href="detail.jsp?num=<%=tmp.getNum()%>"><%=tmp.getClassName()%></a></td>
+				<td><a href="detail.jsp?num=<%=tmp.getNum()%>&keyword=<%=encodedK%>&condition=<%=condition%>"><%=tmp.getClassName()%></a></td>
 				<td><%=tmp.getClassDate() %></td>
 				
 			</tr>
@@ -89,7 +131,7 @@ if(endPageNum > totalPageCount){
 	     <ul class="pagination justify-content-center">
          <%if(startPageNum != 1){ %>
             <li class="page-item">
-               <a class="page-link" href="bookingList.jsp?pageNum=<%=startPageNum-1 %>">Prev</a>
+               <a class="page-link" href="bookingList.jsp?pageNum=<%=startPageNum-1 %>&keyword=<%=encodedK%>&condition=<%=condition%>">Prev</a>
             </li>
          <%}else{ %>
             <li class="page-item disabled">
@@ -99,17 +141,17 @@ if(endPageNum > totalPageCount){
          <%for(int i=startPageNum; i<=endPageNum; i++) {%>
             <%if(i==pageNum){ %>
                <li class="page-item active">
-                  <a class="page-link" href="bookingList.jsp?pageNum=<%=i %>"><%=i %></a>
+                  <a class="page-link" href="bookingList.jsp?pageNum=<%=i %>&keyword=<%=encodedK%>&condition=<%=condition%>"><%=i %></a>
                </li>
             <%}else{ %>
                <li class="page-item">
-                  <a class="page-link" href="bookingList.jsp?pageNum=<%=i %>"><%=i %></a>
+                  <a class="page-link" href="bookingList.jsp?pageNum=<%=i %>&keyword=<%=encodedK%>&condition=<%=condition%>"><%=i %></a>
                </li>
             <%} %>
          <%} %>
          <%if(endPageNum < totalPageCount){ %>
             <li class="page-item">
-               <a class="page-link" href="bookingList.jsp?pageNum=<%=endPageNum+1 %>">Next</a>
+               <a class="page-link" href="bookingList.jsp?pageNum=<%=endPageNum+1 %>&keyword=<%=encodedK%>&condition=<%=condition%>">Next</a>
             </li>
          <%}else{ %>
             <li class="page-item disabled">
@@ -117,6 +159,28 @@ if(endPageNum > totalPageCount){
             </li>
          <%} %>
       </ul>
+      
+      <div style="clear:both;"></div>
+   
+   	<form id="search" action="bookingList.jsp" method="get"> 
+      <select name="condition" id="condition">
+         <option value="className" <%=condition.equals("className") ? "selected" : ""%>>클래스명</option>
+         <option value="name" <%=condition.equals("name") ? "selected" : ""%>>예약자</option>
+         <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
+      </select>
+      <input class= "border border-secondary" type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" value="<%=keyword%>"/>
+      <button class="btn btn-primary me-md-2" type="submit">검색</button>
+     
+   	</form>
+   	
+
+
+   	<%if(!condition.equals("")){ %>
+      <p>
+         <strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
+      </p>
+   	<%} %>
+      
 </div>
 </body>
 </html>
