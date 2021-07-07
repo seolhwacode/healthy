@@ -215,7 +215,13 @@
 		<div class="commet_box">
 			<ul class="comment_list">
 			<%for(VideosCommentDto tmp:commentList){ %>
-				
+				<%if(tmp.getDeleted().equals("yes")){ %>
+				<li class="comment_item" id="commet_item_<%=tmp.getNum() %>">삭제된 댓글입니다.</li>
+				<%
+					//continue : 아래의 코드를 수행하지 않고, for 문으로 실행순서를 다시 보내기
+					continue;
+				}%>
+
 				<%-- li : class="comment_item", id="commet_item_댓글num" --%>
 				<%if(tmp.getNum() == tmp.getComment_group()){ %>
 				<%-- tmp.getNum() == tmp.getComment_group() : 게시글에 댓글 -> 들여쓰기 X --%>
@@ -292,12 +298,15 @@
 	</div>
 	
 	
+	<%-- grua_util.js 를 통해서 ajax 전송 --%>
+	<script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 	<script>
 		//로그인 상태 - 댓글을 달려면 로그인을 꼭 해야한다!
 		let isLogin = <%=isLogin %>;
 		
 		//페이지 로딩시에 출력되는 댓글들에 이벤트 리스너들 추가
 		addReplyListener(".reply_link");
+		addDeleteListener(".delete_link");
 	
 		//게시글 삭제 confirm 함수
 		function deleteConfirm(){
@@ -326,7 +335,7 @@
 		
 		
 		
-		//인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
+		//댓글에 댓글 달기 : 인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
 		//sel = ".reply_link" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
 		//sel = ".page-N .reply_link" (N : currentPage) 형식의 내용이다.
 		function addReplyListener(sel){
@@ -370,6 +379,40 @@
 						}, {once:true}); */
 						replyForm.style.display = "none";
 					}
+				});
+			}
+		}
+		
+		//댓글 삭제 : 인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
+		//sel = ".reply_link" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
+		//sel = ".page-N .reply_link" (N : currentPage) 형식의 내용이다.
+		function addDeleteListener(sel){
+			//댓글 삭제 링크의 참조값을 배열에 담아오기
+			let deleteLinks = document.querySelectorAll(sel);
+			//모든 댓글 삭제 링크에 이벤트 리스너 추가
+			for(let i = 0; i < deleteLinks.length; i++){
+				deleteLinks[i].addEventListener("click", function(){
+					//클릭 이벤트가 일어난 버튼의 "data-num" 속성의 value 값을 읽어온다.
+					//data-num : 댓글의 num(pk) 을 가지고 있다.
+					const num = this.getAttribute("data-num");
+					//사용자에게 댓글 삭제 확인 메시지
+					const isDelete = confirm("댓글을 삭제하시겠습니까?");
+					if(isDelete){
+						//gura_util.js 에 있는 함수를 이용해서 ajax 요청
+						ajaxPromise("${pageContext.request.contextPath}/videos/private/comment_delete.jsp", "post", "num="+num)
+						.then(function(response){
+							return response.json();
+						})
+						.then(function(data){
+							//data : { isSuccess : true/false }
+							//댓글 삭제가 성공
+							if(data.isSuccess){
+								//댓글이 있는 곳에 삭제된 댓글입니다를 출력해준다.
+								document.querySelector("#commet_item_" + num).innerText = "삭제된 댓글입니다.";
+							}
+						});
+					}
+					
 				});
 			}
 		}

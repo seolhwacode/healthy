@@ -158,4 +158,40 @@ public class VideosCommentDao {
 		}
 		return list;
 	}
+	
+	//delete : 댓글 지우기. 댓글의 num(pk) 로 해당 row 를 찾아 deleted 의 값을 "yes" 로 바꿈
+	public boolean delete(int num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 0; //return 값 확인을 위해 사용
+
+		try {
+			conn = new DbcpBean().getConn();
+			String sql = "UPDATE video_board_comment"
+					+ " SET deleted = 'yes' "
+					+ " WHERE num = ?";
+			pstmt = conn.prepareStatement(sql);
+			// ? 에 바인딩 할 내용 있으면 여기서 바인딩
+			pstmt.setInt(1, num);
+
+			//update(insert, update, delete) 로 변경된 row 의 개수 return
+			flag = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		//변경된 개수가 1개 이상이면 성공
+		if (flag > 0) {
+			return true;
+		} else {//0 이하면 false
+			return false;
+		}
+	}
 }
