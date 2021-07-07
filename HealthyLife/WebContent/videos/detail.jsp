@@ -215,7 +215,7 @@
 		<div class="commet_box">
 			<ul class="comment_list">
 			<%for(VideosCommentDto tmp:commentList){ %>
-							
+				
 				<%-- li : class="comment_item", id="commet_item_댓글num" --%>
 				<%if(tmp.getNum() == tmp.getComment_group()){ %>
 				<%-- tmp.getNum() == tmp.getComment_group() : 게시글에 댓글 -> 들여쓰기 X --%>
@@ -293,6 +293,13 @@
 	
 	
 	<script>
+		//로그인 상태 - 댓글을 달려면 로그인을 꼭 해야한다!
+		let isLogin = <%=isLogin %>;
+		
+		//페이지 로딩시에 출력되는 댓글들에 이벤트 리스너들 추가
+		addReplyListener(".reply_link");
+	
+		//게시글 삭제 confirm 함수
 		function deleteConfirm(){
 			//삭제할지 물어봄
 			let isDelete = confirm("삭제하시겠습니까?");
@@ -303,12 +310,19 @@
 			//no : false -> 아무 일도 없음
 		}
 		
-		
-		//로그인 상태 - 댓글을 달려면 로그인을 꼭 해야한다!
-		let isLogin = <%=isLogin %>;
-		
-		//페이지 로딩시에 출력되는 댓글들에 이벤트 리스너들 추가
-		addReplyListener(".reply_link");
+		//게시글에 댓글 달기 -> login 검사하기
+		document.querySelector(".insert_form").addEventListener("submit", function(e){
+			//로그인 하지 않았으면 -> 폼 전송 막음 -> 로그인 폼으로 이동한다.
+			if(!isLogin){
+				//폼 전송 막기
+				e.preventDefault();
+				//로그인 폼으로 이동
+				const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+				if(isMove){
+					location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
+				}
+			}
+		});
 		
 		
 		
@@ -326,7 +340,7 @@
 					if(!isLogin){
 						const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
 						if(isMove){
-							location.href = "${pageContext.request.contextPath}/videos/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
+							location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
 						}
 					}
 					
