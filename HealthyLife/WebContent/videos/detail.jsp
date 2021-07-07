@@ -113,7 +113,7 @@
 		border-radius: 6px;
 		margin-top: 50px;
 	}
-	.insert-form textarea{
+	.comment_form textarea{
 		width: 500px;
 		height: 100px;
 	}
@@ -121,6 +121,10 @@
 	.commet_profile-image{
 		width: 30px;
 		height: 30px;
+	}
+	/*댓글에 댓글을 다는 form 은 처음에는 숨겨져있다.*/
+	.re_insert_form{
+		display: none;
 	}
 	    
 </style>
@@ -208,10 +212,18 @@
 		</div>
 		
 <%-- 댓글 리스트 출력 --%>
-		<div>
-			<ul>
+		<div class="commet_box">
+			<ul class="comment_list">
 			<%for(VideosCommentDto tmp:commentList){ %>
-				<li>
+							
+				<%-- li : class="comment_item", id="commet_item_댓글num" --%>
+				<%if(tmp.getNum() == tmp.getComment_group()){ %>
+				<%-- tmp.getNum() == tmp.getComment_group() : 게시글에 댓글 -> 들여쓰기 X --%>
+				<li class="comment_item" id="commet_item_<%=tmp.getNum() %>">
+				<%}else{ %>
+				<%-- tmp.getNum() != tmp.getComment_group() : 게시글에 댓글 -> 들여쓰기 O --%>
+				<li class="comment_item" id="commet_item_<%=tmp.getNum() %>" style="padding-left:50px;">
+				<%} %>				
 					<dl>
 						<!-- <dt>프로필 이미지, 작성자 아아디, 수정, 삭제 표시할 예정</dt> -->
 						<dt>
@@ -238,35 +250,45 @@
 							<!-- 댓글 작성 일자 -->
 							<span><%=tmp.getRegdate() %></span>
 							<!-- 답글 다는 링크 -->
-							<a href="javascript:">답글</a>
+							<a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply_link">댓글</a>
 						<%if(id != null && tmp.getWriter().equals(id)){ %>
-							<!-- 수정, 삭제 링크 -->
-							<a href="javascript:">수정</a>
-							<a href="javascript:">삭제</a>
+							<!-- 수정, 삭제 링크 : 댓글 num(pk) 데이터로 넘기기 -->
+							<a data-num="<%=tmp.getNum() %>" href="javascript:" class="update_link">수정</a>
+							<a data-num="<%=tmp.getNum() %>" href="javascript:" class="delete_link">삭제</a>
 						<%} %>
 						</dt>
 						<dd>
 							<pre><%=tmp.getContent() %></pre>
 						</dd>
 					</dl>
+					<form id="reply_form_<%=tmp.getNum() %>" class="comment_form re_insert_form" 
+							action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" 
+							method="post">
+						<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
+						<input type="hidden" name="ref_group" value="<%=resultDto.getNum()%>"/>
+						<!-- '댓글'의 작성자가 대상자가 된다. -->
+						<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
+                  		<!-- '댓글' 의 comment_group 을 따라간다. -->
+                  		<input type="hidden" name="comment_group" value="<%=tmp.getComment_group()%>"/>
+                  		<textarea name="content"></textarea>
+                  		<button type="submit">등록</button>
+					</form>
 				</li>
 			<%} %>
 			</ul>
 		</div>
 
 <%-- 원글에 댓글을 작성할 폼 --%>
-		<div class="insert-form-wrapper">
-			<form class="comment-form insert-form" action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" method="post">
-				<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
+		<div class="insert_form_wrapper">
+			<form class="comment_form insert_form" action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" method="post">
+				<!-- 원글의 작성자가 대상자가 된다. -->
 				<input type="hidden" name="target_id" value="<%=resultDto.getWriter() %>" />
 				<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
 				<input type="hidden" name="ref_group" value="<%=num %>" />
 				<textarea name="content"><%= isLogin ? "" : "댓글 작성을 위해 로그인이 필요합니다." %></textarea>
 				<button type="submit">등록</button>
 			</form>
-		</div>
-
-		
+		</div>		
 	</div>
 	
 	
@@ -279,6 +301,63 @@
 				location.href = "${pageContext.request.contextPath}/videos/private/delete.jsp?num=<%=num %>";
 			}
 			//no : false -> 아무 일도 없음
+		}
+		
+		
+		//로그인 상태 - 댓글을 달려면 로그인을 꼭 해야한다!
+		let isLogin = <%=isLogin %>;
+		
+		//페이지 로딩시에 출력되는 댓글들에 이벤트 리스너들 추가
+		addReplyListener(".reply_link");
+		
+		
+		
+		//인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
+		//sel = ".reply_link" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
+		//sel = ".page-N .reply_link" (N : currentPage) 형식의 내용이다.
+		function addReplyListener(sel){
+			//댓글 링크의 참조값을 배열에 담아오기
+			let replyLinks = document.querySelectorAll(sel);
+			//반복문 돌면서 모든 링크에 이벤트 리스터 함수 등록하기
+			for(let i = 0; i < replyLinks.length; i++){
+				replyLinks[i].addEventListener("click", function(){
+					
+					//댓글을 달려면 로그인을 꼭 해야한다! -> 로그인 페이지로 이동
+					if(!isLogin){
+						const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+						if(isMove){
+							location.href = "${pageContext.request.contextPath}/videos/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
+						}
+					}
+					
+					
+					//click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다.
+					//data-num : 댓글의 num(pk) 을 가지고 있다.
+					const num = this.getAttribute("data-num");
+					//열고 닫을 reForm 객체를 가져온다. - 번호를 이용해서 댓글의 댓글 폼을 선택
+					const replyForm = document.querySelector("#reply_form_"+num);
+					
+					//링크의 텍스트를 읽어옴
+					let current = this.innerText;
+					
+					if(current === "댓글"){
+						//텍스트가 "답글" -> "취소" 로 바꾸고, reForm 의 display = "block" 으로 변경	
+						this.innerText = "취소";
+						//replyForm.classList.remove("animate__fadeOutDown");
+						//replyForm.classList.add("animate__fadeInDown");
+						replyForm.style.display = "block";
+					}else if(current === "취소"){
+						//텍스트가 "취소" -> "답글" 로 바꾸고, reForm 의 display = "none" 으로 변경
+						this.innerText = "댓글";
+						//replyForm.classList.remove("animate__fadeInDown");
+						//replyForm.classList.add("animate__fadeOutDown");
+						/* replyForm.addEventListener("animationend", function(){
+							replyForm.style.display = "none";
+						}, {once:true}); */
+						replyForm.style.display = "none";
+					}
+				});
+			}
 		}
 	</script>
 </body>
