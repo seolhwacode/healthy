@@ -74,6 +74,10 @@
 	
 //현재 로그인 중인 id
 	String id = (String)session.getAttribute("id");
+	//로그인 여부
+	boolean isLogin = false;
+	if(id != null)
+		isLogin = true;
 //video url 을 유튜브 출력하기위한 url 형태로 바꾸기
 	//영상의 url 을 파싱
 	String[] splitResults;
@@ -97,6 +101,10 @@
 		border: 1px solid #ebecef;
 		border-radius: 6px;
 		margin-top: 50px;
+	}
+	.insert-form textarea{
+		width: 500px;
+		height: 100px;
 	}
 	    
 </style>
@@ -182,6 +190,27 @@
 				</tr>
 			</table>
 		</div>
+		
+<%-- 댓글 리스트 출력 --%>
+		<div>
+			<ul>
+				
+			</ul>
+		</div>
+
+<%-- 원글에 댓글을 작성할 폼 --%>
+		<div class="insert-form-wrapper">
+			<form class="comment-form insert-form" action="${pageContext.request.contextPath}/videos/private/insert_comment.jsp" method="post">
+				<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
+				<input type="hidden" name="target_id" value="<%=resultDto.getWriter() %>" />
+				<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
+				<input type="hidden" name="ref_group" value="<%=num %>" />
+				<textarea name="content"><%= isLogin ? "" : "댓글 작성을 위해 로그인이 필요합니다." %></textarea>
+				<button type="submit">등록</button>
+			</form>
+		</div>
+
+		
 	</div>
 	
 	
