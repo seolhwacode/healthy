@@ -37,7 +37,7 @@ a { text-decoration:none !important }
     <div  id="user">
 	<%if(id != null){ %>
 		<a>
-			<a href="../users/private/info.jsp" class="link-light"><%=id %></a>님 로그인 상태입니다.
+			<a href="${pageContext.request.contextPath}/users/private/info.jsp" class="link-light"><%=id %></a>님 로그인 상태입니다.
 			
 		</a>
 	<%} else {%>

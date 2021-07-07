@@ -167,9 +167,9 @@
 <jsp:include page="/include/navbar.jsp"></jsp:include>
 <div class="container">
 	<div id="insert">
-	<button class="btn btn-primary me-md-2" style="background:white;" type="button"><a href="private/insertform.jsp">Create New Text</a></button>
+	<button class="btn btn-primary me-md-2" style="background:white;" type="button"><a href="private/insertform.jsp">새글 작성</a></button>
 	</div>
-	<h1>For healthy food</h1>
+	<h1>건강 레시피</h1>
 	<table class="table" >
 		<thead>
 			<tr id="thead">
@@ -229,19 +229,26 @@
         
       </ul>
    </div>
-	<div style="clear:both;"></div>
-   
-   	<form id="search" action="list.jsp" method="get"> 
-      <select name="condition" id="condition">
-         <option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
-         <option value="title" <%=condition.equals("title") ? "selected" : ""%>>제목</option>
-         <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
-      </select>
-      <input class= "border border-secondary" type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" value="<%=keyword%>"/>
-      <button class="btn btn-primary me-md-2" type="submit">검색</button>
-     
-   	</form>
-   	
+	<div style="clear:both;"></div> <!-- 부트스트랩에서 clearfix를 포함하고 있어 현재 jsp에서는 생략 가능  -->
+   		
+   		<div class="input-group mb-3">
+   		<form class="input-group-text" id="search" action="list.jsp" method="get"> 
+	      	<select name="condition" id="condition">
+		         <option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
+		         <option value="title" <%=condition.equals("title") ? "selected" : ""%>>제목</option>
+		         <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
+	      	</select>
+      	<!-- style="display: flex; justify-content: center;" 감싸는 outer에 배치하면 가운데 정렬할 수 있음  -->
+	      		<div class="input-group-text">
+	      		<input class= "border border-secondary" type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" value="<%=keyword%>"/>
+	      		<button type="submit" style="background-color: #2252e3; color:white;" class="input-group-text" id="inputGroupPrepend2">
+	      		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	  				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+				</svg>
+				</button>
+				</div>
+   		</form>
+   		</div>
 
 
    	<%if(!condition.equals("")){ %>
