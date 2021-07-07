@@ -43,25 +43,8 @@
 	
 	//5. VideosCommentDao 의 insert() 메소드를 사용하여 db 에 저장
 	boolean isSuccess = VideosCommentDao.getInstance().insert(dto);
+	
+	//6. 원래 페이지로 돌아가기
+	String cpath = request.getContextPath();
+	response.sendRedirect(cpath + "/videos/detail.jsp?num=" + ref_group);
 %>
-
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>/videos/private/insert_comment.jsp</title>
-</head>
-<body>
-<%if(isSuccess){ %>
-	<script>
-		alert("게시글 작성하였습니다.");
-		location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=ref_group %>";
-	</script>
-<%}else{ %>
-	<script>
-		alert("게시글 작성 실패!");
-		location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=ref_group %>";
-	</script>
-<%} %>
-</body>
-</html>
