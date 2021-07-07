@@ -1,3 +1,6 @@
+<%@page import="videos.board.dao.VideosCommentDao"%>
+<%@page import="java.util.List"%>
+<%@page import="videos.board.dto.VideosCommentDto"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="test.users.dao.UsersDao"%>
 <%@page import="test.users.dto.UsersDto"%>
@@ -89,6 +92,14 @@
 	}
 	//마지막 단어를 사용해서 유튜브 영상 출력을 위한 url 만들기
 	String video = "https://www.youtube.com/embed/" + splitResults[splitResults.length - 1];	
+	
+	
+//댓글 리스트 가져오기
+	//원글의 글번호를 이용해서 해당 글에 달린 댓글 목록을 얻어온다.
+	VideosCommentDto commentDto = new VideosCommentDto();
+	commentDto.setRef_group(num);
+	//VideosCommentDao 의 getList() 메소드를 사용하여 게시글의 댓글 읽어오기
+	List<VideosCommentDto> commentList = VideosCommentDao.getInstance().getList(commentDto);
 %>
 <!DOCTYPE html>
 <html>
@@ -105,6 +116,11 @@
 	.insert-form textarea{
 		width: 500px;
 		height: 100px;
+	}
+	/*댓글의 프로필 사진 크기*/
+	.commet_profile-image{
+		width: 30px;
+		height: 30px;
 	}
 	    
 </style>
@@ -194,13 +210,53 @@
 <%-- 댓글 리스트 출력 --%>
 		<div>
 			<ul>
-				
+			<%for(VideosCommentDto tmp:commentList){ %>
+				<li>
+					<dl>
+						<!-- <dt>프로필 이미지, 작성자 아아디, 수정, 삭제 표시할 예정</dt> -->
+						<dt>
+							<span class="comment_profile_wrapper">
+							<!-- 프로필 이미지 -->
+							<%if(tmp.getProfile() == null){ %>
+								<%-- 프로필 이미지 없음 -> 기본 이미지 출력 --%>
+								<svg class="commet_profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+			  						<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+			  						<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+								</svg>
+							<%}else{ %>
+								<%-- 해당 이미지 출력 --%>
+								<img class="commet_profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile() %>" alt="프로필 사진" />
+							<%} %>
+							</span>
+							<!-- 작성자 id -->
+							<span><%=tmp.getWriter() %></span>
+						<%-- num != comment_group : 댓글에 단 댓글이다. --%>
+						<%if(tmp.getNum() != tmp.getComment_group()){ %>
+							<!-- 댓글의 댓글을 달 때, 어느 댓글인지 id 사용자 출력 -->
+							@<i><%=tmp.getTarget_id() %></i>
+						<%} %>
+							<!-- 댓글 작성 일자 -->
+							<span><%=tmp.getRegdate() %></span>
+							<!-- 답글 다는 링크 -->
+							<a href="javascript:">답글</a>
+						<%if(id != null && tmp.getWriter().equals(id)){ %>
+							<!-- 수정, 삭제 링크 -->
+							<a href="javascript:">수정</a>
+							<a href="javascript:">삭제</a>
+						<%} %>
+						</dt>
+						<dd>
+							<pre><%=tmp.getContent() %></pre>
+						</dd>
+					</dl>
+				</li>
+			<%} %>
 			</ul>
 		</div>
 
 <%-- 원글에 댓글을 작성할 폼 --%>
 		<div class="insert-form-wrapper">
-			<form class="comment-form insert-form" action="${pageContext.request.contextPath}/videos/private/insert_comment.jsp" method="post">
+			<form class="comment-form insert-form" action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" method="post">
 				<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
 				<input type="hidden" name="target_id" value="<%=resultDto.getWriter() %>" />
 				<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
