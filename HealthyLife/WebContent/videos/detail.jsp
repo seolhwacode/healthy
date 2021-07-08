@@ -146,6 +146,10 @@
 	.re_insert_form{
 		display: none;
 	}
+	/*댓글 수정하는 form 은 처음에는 숨겨져있다.*/
+/* 	.update_form{
+		display: none;
+	} */
 	    
 </style>
 </head>
@@ -287,6 +291,7 @@
 							<pre><%=tmp.getContent() %></pre>
 						</dd>
 					</dl>
+					<%-- 댓글에 댓글을 다는 from --%>
 					<form id="reply_form_<%=tmp.getNum() %>" class="comment_form re_insert_form" 
 							action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" 
 							method="post">
@@ -299,6 +304,15 @@
                   		<textarea name="content"></textarea>
                   		<button type="submit">등록</button>
 					</form>
+					
+					<%-- 댓글 수정 form --%>
+					<%if(tmp.getWriter().equals(id)){ %>
+					<form id="update_form_<%=tmp.getNum() %>" class="comment_form update_form" action="${pageContext.request.contextPath}/videos/private/comment_update.jsp" method="post">
+						<input type="hidden" name="num" value="<%=tmp.getNum() %>" />
+						<textarea name="content" cols="30" rows="10"><%=tmp.getContent() %></textarea>
+						<button type="submit">수정</button>
+					</form>
+					<%} %>
 				</li>
 			<%} %>
 			</ul>
@@ -331,6 +345,7 @@
 		//페이지 로딩시에 출력되는 댓글들에 이벤트 리스너들 추가
 		addReplyListener(".reply_link");
 		addDeleteListener(".delete_link");
+		addUpdateFormListener(".update_form");
 	
 		//게시글 삭제 confirm 함수
 		function deleteConfirm(){
@@ -389,6 +404,7 @@
 					//새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록하기
 					addDeleteListener(".page-" + currentPage + " .delete_link");
 					addReplyListener(".page-" + currentPage + " .reply_link");
+					addUpdateFormListener(".page-" + currentPage + " .update_form");
 				});
 			}
 			
@@ -483,6 +499,66 @@
 					
 				});
 			}
+		}
+		
+		//댓글 수정 : 인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
+		//sel = ".reply_link" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
+		//sel = ".page-N .reply_link" (N : currentPage) 형식의 내용이다.
+		function addUpdateFormListener(sel){
+			//댓글 수정 폼의 참조값을 배열에 담아오기
+	 		let updateForms = document.querySelectorAll(sel);
+			for(let i = 0; i < updateForms.length; i++){
+				//폼에 submit 이벤트가 일어났을 때 호출되는 함수 등록
+				updateForms[i].addEventListener("submit", function(e){
+					//submit 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
+					const form = this;
+					
+					//폼 제출 막기
+					e.preventDefault();
+					
+					//이벤트가 일어난 form 을 ajax 전송하도록 한다.
+					ajaxFormPromise(form)
+					.then(function(response){
+						return response.json();
+					})
+					.then(function(data){
+						//data = { isSuccess:true/false }
+						if(data.isSuccess){
+							//수정 성공 : 내용 수정 
+							//num : form 에 num 으로 들어있음
+							//수정폼에 입력하나 value 값을 pre 요소에도 출력하기
+							 
+							//	document.querySelector() : html 문서 전체에서의 특정 요소의 참조값을 찾는 기능
+								
+							//	특정 문서객체의 참조값.querySelector() : 해당 문서 객체의 자손 요소 중에서 특정 요소의 참조값을 찾는 기능
+							
+							const num = form.querySelector("input[name=num]").value;
+							const content = form.querySelector("textarea[name=content]").value;
+							document.querySelector("#commet_item_"+num+" pre").innerText = content;
+							form.style.display="none";
+						}else{
+							//수정 실패
+							alert("댓글 수정 실패");
+						}
+					});
+				});
+				
+			}
+		}
+		
+		//댓글 수정 form on/off : 인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
+		//sel = ".reply_link" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
+		//sel = ".page-N .reply_link" (N : currentPage) 형식의 내용이다.
+		function addUpdateListener(sel){
+			//댓글 수정 링크의 참조값을 배열에 담아오기 
+		   	let updateLinks = document.querySelectorAll(sel);
+		   	for(let i = 0; i < updateLinks.length; i++){
+		   		updateLinks[i].addEventListener("click", function(){
+		   			//click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다. 
+		   			const num = this.getAttribute("data-num");
+		   			document.querySelector("#updateForm"+num).style.display="block";
+		   		});
+		   	}
 		}
 	</script>
 </body>
