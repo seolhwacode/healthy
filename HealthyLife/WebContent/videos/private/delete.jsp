@@ -1,5 +1,5 @@
-<%@page import="kang.videos.dto.VideosDto"%>
-<%@page import="kang.videos.dao.VideosDao"%>
+<%@page import="videos.board.dto.VideosDto"%>
+<%@page import="videos.board.dao.VideosDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
