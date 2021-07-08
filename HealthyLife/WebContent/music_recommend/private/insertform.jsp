@@ -24,6 +24,10 @@
          <label class="form-label" for="content">내용</label>
          <textarea class="form-control"  name="content" id="content"></textarea>
       </div>
+      <div class="mb-3">
+         <label class="form-label" for="music">음악 주소</label>
+         <textarea class="form-control"  name="music" id="music"></textarea>
+      </div>
       <button class="btn btn-primary" type="submit">저장</button>
    </form>
 </div>

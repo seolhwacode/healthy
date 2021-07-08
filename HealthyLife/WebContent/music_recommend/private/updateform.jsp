@@ -29,6 +29,10 @@
          <label for="content">내용</label>
          <textarea name="content" id="content"><%=dto.getContent() %></textarea>
       </div>
+      <div class="mb-3">
+         <label for="music">음악 주소</label>
+         <textarea name="music" id="music"><%=dto.getMusic() %></textarea>
+      </div>
       <button type="submit" onclick="submitContents(this);">수정확인</button>
       <button type="reset">취소</button>
    </form>

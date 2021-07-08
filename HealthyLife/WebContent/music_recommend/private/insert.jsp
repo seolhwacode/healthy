@@ -8,11 +8,14 @@
    //1. 폼 전송되는 글제목과 내용을 읽어와서
    String title=request.getParameter("title");
    String content=request.getParameter("content");
+   String music=request.getParameter("music");
+   
    //2. DB 에 저장하고
    MRDto dto=new MRDto();
    dto.setWriter(writer);
    dto.setTitle(title);
    dto.setContent(content);
+   dto.setMusic(music);
 
    boolean isSuccess=MRDao.getInstance().insert(dto);
 
