@@ -88,6 +88,12 @@ if(id != null){
 	.comments .comment-form{
 		display: none;
 	}
+	
+	.loader{
+		text-align: center;
+	}
+	
+
 </style>
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
@@ -243,6 +249,10 @@ if(id != null){
          <%} %>
       </ul>
    </div>
+   <!-- 로더 버튼 -->
+   <div class="loader">
+	<button type="button">댓글 더 보기</button>
+	</div>
 	 <!-- 원글에 댓글을 작성할 폼 -->
    <form class="comment-form insert-form" action="comment_insert.jsp" method="post">
       <!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
@@ -256,11 +266,87 @@ if(id != null){
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <script>
+
+	//클라이언트가 로그인 했는지 여부
+	let isLogin=<%=isLogin%>;
+	
+	  document.querySelector(".insert-form")
+      .addEventListener("submit", function(e){
+         //만일 로그인 하지 않았으면 
+         if(!isLogin){
+            //폼 전송을 막고 
+            e.preventDefault();
+            //로그인 폼으로 이동 시킨다.
+            location.href=
+               "${pageContext.request.contextPath}/users/loginform.jsp?url=${pageContext.request.contextPath}/cafe/detail.jsp?num=<%=num%>";
+         }
+      });
+   
+
 	  addUpdateFormListener(".update-form");
 	  addUpdateListener(".update-link");
 	  addDeleteListener(".delete-link");
 	  addReplyListener(".reply-link");
-	
+	  
+	  //댓글의 현재 페이지 번호를 관리할 변수를 만들고 초기값 1 대입하기
+	   let currentPage=1;
+	   //마지막 페이지는 totalPageCount 이다.  
+	   let lastPage=<%=totalPageCount%>;
+	   
+	  
+	   //댓글의 수가 10개보다 적으면 버튼 감추기
+	   if(<%=totalRow%> < 10){
+		   document.querySelector(".loader").style.display="none";
+	   } 
+	   
+	   document.querySelector(".loader").addEventListener("click", function(){
+	     
+	      //현재 페이지가 마지막 페이지인지 여부 알아내기
+	      let isLast = currentPage == lastPage;   
+	    
+	    
+	      //현재 바닥까지 스크롤 했고 로딩중이 아니고 현재 페이지가 마지막이 아니라면
+	      if(currentPage <= lastPage){
+	        
+	         //현재 댓글 페이지를 1 증가 시키고 
+	         currentPage++;
+	         
+	         /*
+	            해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
+	            "pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다. 
+	         */
+	         ajaxPromise("ajax_comment_list.jsp","get",
+	               "pageNum="+currentPage+"&num=<%=num%>")
+	         .then(function(response){
+	            //json 이 아닌 html 문자열을 응답받았기 때문에  return response.text() 해준다.
+	            return response.text();
+	         })
+	         .then(function(data){
+	            //data 는 html 형식의 문자열이다. 
+	            console.log(data);
+	            // beforebegin | afterbegin | beforeend | afterend
+	            document.querySelector(".comments ul")
+	               .insertAdjacentHTML("beforeend", data);
+	            //로딩이 끝났다고 표시한다.
+	            isLoading=false;
+	            //새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록 하기 
+	            addUpdateListener(".page-"+currentPage+" .update-link");
+	            addDeleteListener(".page-"+currentPage+" .delete-link");
+	            addReplyListener(".page-"+currentPage+" .reply-link");
+	            //새로 추가된 댓글 li 요소 안에 있는 댓글 수정폼에 이벤트 리스너 등록하기
+	            addUpdateFormListener(".page-"+currentPage+" .update-form");
+
+	         });
+	       	//로딩바 숨기기
+			if(currentPage == lastPage){
+			  	document.querySelector(".loader").style.display="none";
+			}else{
+				document.querySelector(".loader").style.display="block";
+			}
+	      }
+	      
+	   });
+	   
 	//게시글을 삭제하는 기능
 	const deleteBtn = document.querySelector("#deleteBtn")
 
@@ -346,29 +432,31 @@ if(id != null){
    }
 	
 	//댓글 삭제 리스너
-	function addDeleteListener(sel){
-		let deleteLinks=document.querySelectorAll(sel);
-		for(let i=0; i<deleteLinks.lenght; i++){
-			deleteLinks[i].addEventListener("click", function(){
-				//click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value값을 읽어온다.
-				const num=this.getAttribute("data-num"); //댓글의 글 번호
-				const isDelete = confirm("댓글을 삭제하시겠습니까?");
-				if(isDelete){
-					//gura_util.js에 있는 함수들 이용해서 ajax 요청
-					ajaxPromise("comment_delete.jsp", "post", "num="+num)
-					.then(function(response){
-						return response.json();
-					})
-					.then(function(data){
-						if(data.isSuccess){
-							//댓글이 있는 곳에 삭제된 댓글입니다를 출력해준다.
-						document.querySelector("#reli"+num).innerText="삭제된 댓글입니다.";
-						}
-					});
-				}
-			});
-		}
-	}
+	 function addDeleteListener(sel){
+      //댓글 삭제 링크의 참조값을 배열에 담아오기 
+      let deleteLinks=document.querySelectorAll(sel);
+      for(let i=0; i<deleteLinks.length; i++){
+         deleteLinks[i].addEventListener("click", function(){
+            //click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다. 
+            const num=this.getAttribute("data-num"); //댓글의 글번호
+            const isDelete=confirm("댓글을 삭제 하시겠습니까?");
+            if(isDelete){
+               // gura_util.js 에 있는 함수들 이용해서 ajax 요청
+               ajaxPromise("comment_delete.jsp", "post", "num="+num)
+               .then(function(response){
+                  return response.json();
+               })
+               .then(function(data){
+                  //만일 삭제 성공이면 
+                  if(data.isSuccess){
+                     //댓글이 있는 곳에 삭제된 댓글입니다를 출력해 준다. 
+                     document.querySelector("#reli"+num).innerText="삭제된 댓글입니다.";
+                  }
+               });
+            }
+         });
+      }
+   }
 	
 	//인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 
 	   function addUpdateListener(sel){
