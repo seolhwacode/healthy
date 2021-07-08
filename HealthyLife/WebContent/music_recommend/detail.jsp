@@ -1,3 +1,5 @@
+<%@page import="test.users.dao.UsersDao"%>
+<%@page import="test.users.dto.UsersDto"%>
 <%@page import="java.util.List"%>
 <%@page import="music.rmd.dto.MRCDto"%>
 <%@page import="music.rmd.dao.MRCDao"%>
@@ -49,8 +51,7 @@
    }
    //특수기호를 인코딩한 키워드를 미리 준비한다. 
    String encodedK=URLEncoder.encode(keyword);
-   
-   
+ 
    //로그인된 아이디 (로그인을 하지 않았으면 null 이다)
    String id=(String)session.getAttribute("id");
    //로그인 여부
@@ -58,6 +59,19 @@
    if(id != null){
       isLogin=true;
    }
+   
+ //video url 을 유튜브 출력하기위한 url 형태로 바꾸기
+ 	//영상의 url 을 파싱
+ 	String[] splitResults;
+ 	//? 가 들어있는 경우 : youtube 창에서 맨 위의 주소창의 url 을 복사해온 경우
+ 	if(dto.getMusic().contains("?")){
+ 		splitResults = dto.getMusic().split("=");
+ 	}else{
+ 		splitResults = dto.getMusic().split("/");
+ 	}
+ 	//마지막 단어를 사용해서 유튜브 영상 출력을 위한 url 만들기
+ 	String Music = "https://www.youtube.com/embed/" + splitResults[splitResults.length - 1];	
+
    
    /*
       [ 댓글 페이징 처리에 관련된 로직 ]
@@ -88,7 +102,6 @@
    int totalRow=MRCDao.getInstance().getCount(num);
    //댓글 전체 페이지의 갯수
    int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
-   
    //글정보를 응답한다.
 %>
 <!DOCTYPE html>
@@ -223,6 +236,16 @@
          <td><%=dto.getRegdate() %></td>
       </tr>
       <tr>
+		<th>동영상</th>
+		<td>
+			<%-- https://youtu.be/R6ti4FCLom4 에서 => /R6ti4FCLom4 부분만 잘라서 새로 db 에 input 해야한다. 이거 고치지--%>
+			<iframe width="560" height="315" src="<%=Music %>" title="YouTube video player" frameborder="0" 
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+			</iframe>
+		</td>
+	  </tr>
+      <tr>
+      	<th>내용</th>
          <td colspan="2">
             <div class="content"><%=dto.getContent() %></div>
          </td>

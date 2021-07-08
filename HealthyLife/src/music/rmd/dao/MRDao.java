@@ -130,7 +130,7 @@ public class MRDao {
 				//Connection 객체의 참조값 얻어오기 
 				conn = new DbcpBean().getConn();
 				//실행할 sql 문 작성
-				String sql = "SELECT num,title,writer,content,viewCount,regdate"
+				String sql = "SELECT num,title,writer,content,viewCount,regdate,music"
 						+ " FROM board_music"
 						+ " WHERE num=?";
 				//PreparedStatement 객체의 참조값 얻어오기
@@ -150,6 +150,7 @@ public class MRDao {
 					dto2.setRegdate(rs.getString("regdate"));
 					dto2.setPrevNum(rs.getInt("prevNum"));
 					dto2.setNextNum(rs.getInt("nextNum"));
+					dto2.setMusic(rs.getString("music"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -179,7 +180,7 @@ public class MRDao {
 				//실행할 sql 문 작성
 				String sql = "SELECT *" + 
 						" FROM" + 
-						"	(SELECT num,title,writer,content,viewCount,regdate," + 
+						"	(SELECT num,title,writer,content,viewCount,regdate,music," + 
 						"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 						"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 						"	FROM board_music" + 
@@ -203,6 +204,7 @@ public class MRDao {
 					dto2.setRegdate(rs.getString("regdate"));
 					dto2.setPrevNum(rs.getInt("prevNum"));
 					dto2.setNextNum(rs.getInt("nextNum"));
+					dto2.setMusic(rs.getString("music"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -230,7 +232,7 @@ public class MRDao {
 				//실행할 sql 문 작성
 				String sql = "SELECT *" + 
 						" FROM" + 
-						"	(SELECT num,title,writer,content,viewCount,regdate," + 
+						"	(SELECT num,title,writer,content,viewCount,regdate,music," + 
 						"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 						"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 						"	FROM board_music"+ 
@@ -256,6 +258,7 @@ public class MRDao {
 					dto2.setRegdate(rs.getString("regdate"));
 					dto2.setPrevNum(rs.getInt("prevNum"));
 					dto2.setNextNum(rs.getInt("nextNum"));
+					dto2.setMusic(rs.getString("music"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -283,7 +286,7 @@ public class MRDao {
 				//실행할 sql 문 작성
 				String sql = "SELECT *" + 
 						" FROM" + 
-						"	(SELECT num,title,writer,content,viewCount,regdate," + 
+						"	(SELECT num,title,writer,content,viewCount,regdate,music," + 
 						"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 						"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 						"	FROM board_music"+ 
@@ -309,6 +312,7 @@ public class MRDao {
 					dto2.setRegdate(rs.getString("regdate"));
 					dto2.setPrevNum(rs.getInt("prevNum"));
 					dto2.setNextNum(rs.getInt("nextNum"));
+					dto2.setMusic(rs.getString("music"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -336,7 +340,7 @@ public class MRDao {
 				//실행할 sql 문 작성
 				String sql = "SELECT *" + 
 						" FROM" + 
-						"	(SELECT num,title,writer,content,viewCount,regdate," + 
+						"	(SELECT num,title,writer,content,viewCount,regdate,music," + 
 						"	LAG(num, 1, 0) OVER(ORDER BY num DESC) AS prevNum," + 
 						"	LEAD(num, 1, 0) OVER(ORDER BY num DESC) nextNum" + 
 						"	FROM board_music"+ 
@@ -363,6 +367,7 @@ public class MRDao {
 					dto2.setRegdate(rs.getString("regdate"));
 					dto2.setPrevNum(rs.getInt("prevNum"));
 					dto2.setNextNum(rs.getInt("nextNum"));
+					dto2.setMusic(rs.getString("music"));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -391,13 +396,14 @@ public class MRDao {
 				conn = new DbcpBean().getConn();
 				//실행할 insert, update, delete 문 구성
 				String sql = "INSERT INTO board_music"
-						+ " (num,writer,title,content,viewCount,regdate)"
-						+ " VALUES(board_music_seq.NEXTVAL,?,?,?,0,SYSDATE)";
+						+ " (num,writer,title,content,viewCount,regdate,music)"
+						+ " VALUES(board_music_seq.NEXTVAL,?,?,?,0,SYSDATE,?)";
 				pstmt = conn.prepareStatement(sql);
 				//? 에 바인딩할 내용이 있으면 바인딩한다.
 				pstmt.setString(1, dto.getWriter());
 				pstmt.setString(2, dto.getTitle());
 				pstmt.setString(3, dto.getContent());
+				pstmt.setString(4, dto.getMusic());
 				flag = pstmt.executeUpdate(); //sql 문 실행하고 변화된 row 갯수 리턴 받기
 			} catch (Exception e) {
 				e.printStackTrace();
