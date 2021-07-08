@@ -57,13 +57,13 @@
    	#update_form{
    		text-align: right;
    		margin-top: 20px;
-   		width : 550px;
+   		width : 430px;
    	}
    	
    	#profile_update{
 		border : thick double lightgray;
-		padding: 40px;
-		width: 600px;
+		padding: 30px;
+
    	}
    	.row{
    		padding: 0 12px;

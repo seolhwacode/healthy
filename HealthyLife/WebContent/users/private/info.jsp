@@ -37,10 +37,16 @@
    .row{
    		padding: 0 12px;
    }
+   
+   	#profile_update{
+		border : thick double lightgray;
+		padding: 30px;
+		text-align: -webkit-center;
+   	}
 </style>
 </head>
 <body>
-	<div class="container">
+	<div id="profile_update" class="container">
 		<h1 class="ps-4">가입 정보입니다.</h1>
 
 		<!-- 가입 정보 출력 -->
@@ -72,10 +78,10 @@
 			</div>
 		</div>
 
-		<div class="mt-5 ms-4">
-			<a class="btn btn-primary" href="${pageContext.request.contextPath}/users/private/profile_update_form.jsp">프로필 변경</a>
-			<a class="btn btn-primary" href="${pageContext.request.contextPath}/users/private/pwd_update_form.jsp">비밀번호 변경</a>
-			<a class="btn btn-danger" href="javascript:deleteConfirm()">탈퇴</a>
+		<div class="mt-5">
+			<a class="btn btn-light" href="${pageContext.request.contextPath}/users/private/profile_update_form.jsp">프로필 변경</a>
+			<a class="btn btn-light" href="${pageContext.request.contextPath}/users/private/pwd_update_form.jsp">비밀번호 변경</a>
+			<a class="btn btn-outline-danger" href="javascript:deleteConfirm()">탈퇴</a>
 		</div>
 	</div>
 	
