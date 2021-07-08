@@ -94,12 +94,32 @@
 	String video = "https://www.youtube.com/embed/" + splitResults[splitResults.length - 1];	
 	
 	
-//댓글 리스트 가져오기
+//댓글 리스트 가져오기 - 댓글 pagination 처리(더보기 누르면 댓글 추가)
+	//한 페이지에 몇개씩 표시할 것인지
+	final int PAGE_ROW_COUNT=10;
+
+	//deatil.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. -> 더보기로 ajax 요청할 것
+	int pageNum = 1;
+	
+	//보여줄 페이지의 시작 ROWNUM
+	int startRowNum = 1 + (pageNum - 1) * PAGE_ROW_COUNT;
+	//보여줄 페이지의 끝 ROWNUM
+	int endRowNum = pageNum * PAGE_ROW_COUNT;	
+
 	//원글의 글번호를 이용해서 해당 글에 달린 댓글 목록을 얻어온다.
 	VideosCommentDto commentDto = new VideosCommentDto();
 	commentDto.setRef_group(num);
+	//1페이지에 해당하는 startRowNum 과 endRowNum 을 dto 에 담아서 불러온다.
+	commentDto.setStartRowNum(startRowNum);
+	commentDto.setEndRowNum(endRowNum);
+	
 	//VideosCommentDao 의 getList() 메소드를 사용하여 게시글의 댓글 읽어오기
 	List<VideosCommentDto> commentList = VideosCommentDao.getInstance().getList(commentDto);
+	
+	//게시글에 달린 댓글의 개수를 읽어옴
+	int totalRow = VideosCommentDao.getInstance().getCommentCount(num);
+	//전체 페이지의 개수 : (전체 row 의 개수 / 보여지는 리스트 개수) 올림
+	int totalPageCount = (int)Math.ceil(totalRow / (double)PAGE_ROW_COUNT);
 %>
 <!DOCTYPE html>
 <html>
@@ -282,6 +302,10 @@
 				</li>
 			<%} %>
 			</ul>
+			<div id="view_more" >
+				<%-- ajax 로 전송할 것 --%>
+				<a href="javascript:">[더보기]</a>
+			</div>
 		</div>
 
 <%-- 원글에 댓글을 작성할 폼 --%>
@@ -333,7 +357,50 @@
 			}
 		});
 		
+//댓글의 페이지네이션
+		//댓글의 현재 페이지 번호를 관리할 변수를 만들고, 초기값 1 대입하기
+		let currentPage = 1;
 		
+		//마지막 페이지는 totalPageCount 이다.
+		let lastPage = <%=totalPageCount %>;
+		
+		if(<%=totalRow %> <= 10){
+			document.querySelector("#view_more").style.display = "none";
+		}
+		
+		document.querySelector("#view_more").addEventListener("click", function(){
+			//현재 댓글 페이지를 1 증가시키고
+			currentPage++;			
+			
+			//현재 페이지가 마지막 페이지보다 작거나 같을 때 -> 댓글 페이지 출력하기
+			if(currentPage <= lastPage){				
+				/*
+					해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
+					"pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다.
+				*/
+				ajaxPromise("${pageContext.request.contextPath}/videos/ajax_comment_list.jsp", "post", "pageNum="+currentPage+"&num="+<%=num %>)
+				.then(function(response){
+					return response.text();
+				})
+				.then(function(data){
+					//data 에는 html text 가 들어있다.
+					document.querySelector(".comment_list").insertAdjacentHTML("beforeend", data);
+					
+					//새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록하기
+					addDeleteListener(".page-" + currentPage + " .delete_link");
+					addReplyListener(".page-" + currentPage + " .reply_link");
+				});
+			}
+			
+			if(currentPage == lastPage){
+				document.querySelector("#view_more").style.display = "none";
+			}else{
+				document.querySelector("#view_more").steyl.display = "block";
+			}
+		});
+		
+		
+
 		
 		//댓글에 댓글 달기 : 인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
 		//sel = ".reply_link" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
@@ -344,13 +411,14 @@
 			//반복문 돌면서 모든 링크에 이벤트 리스터 함수 등록하기
 			for(let i = 0; i < replyLinks.length; i++){
 				replyLinks[i].addEventListener("click", function(){
-					
+
 					//댓글을 달려면 로그인을 꼭 해야한다! -> 로그인 페이지로 이동
 					if(!isLogin){
 						const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
 						if(isMove){
 							location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
 						}
+						return;
 					}
 					
 					

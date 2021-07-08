@@ -116,16 +116,23 @@ public class VideosCommentDao {
 			//Connection 객체의 참조값 얻어오기
 			conn = new DbcpBean().getConn();
 			//실행할 sql 문 작성
-			String sql = "SELECT num, writer, content, target_id, ref_group, comment_group, deleted, video_board_comment.regdate, profile"
-					+ " FROM video_board_comment"
-					+ " INNER JOIN users"
-					+ " ON video_board_comment.writer = users.id"
-					+ " WHERE ref_group = ?"
-					+ " ORDER BY comment_group ASC, num ASC";
+			String sql = "SELECT *" + 
+					" FROM" + 
+					"	(SELECT result1.*, ROWNUM AS rnum" + 
+					"	FROM " + 
+					"		(SELECT num, writer, content, target_id, ref_group, comment_group, deleted, video_board_comment.regdate, profile " + 
+					"		FROM video_board_comment " + 
+					"		INNER JOIN users " + 
+					"		ON video_board_comment.writer = users.id " + 
+					"		WHERE ref_group = ? " + 
+					"		ORDER BY comment_group ASC, num ASC) result1) " + 
+					" WHERE rnum >= ? AND rnum <= ?";
 			//PreparedStatement 객체의 참조값 얻어오기
 			pstmt = conn.prepareStatement(sql);
 			//? 에 바인딩 할 내용이 있으면 여기서 바인딩
 			pstmt.setInt(1, dto.getRef_group());
+			pstmt.setInt(2, dto.getStartRowNum());
+			pstmt.setInt(3, dto.getEndRowNum());
 
 			//select 문 수행하고, 결과를 ResultSet 으로 받아오기
 			rs = pstmt.executeQuery();
@@ -193,5 +200,48 @@ public class VideosCommentDao {
 		} else {//0 이하면 false
 			return false;
 		}
+	}
+	
+	//모든 댓글 개수
+	public int getCommentCount(int num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		//return 할 댓글의 개수
+		int count = 0;
+
+		try {
+			//Connection 객체의 참조값 얻어오기
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 작성
+			String sql = "SELECT COUNT(1) AS count"
+					+ " FROM video_board_comment"
+					+ " WHERE ref_group = ?";
+			//PreparedStatement 객체의 참조값 얻어오기
+			pstmt = conn.prepareStatement(sql);
+			//? 에 바인딩 할 내용이 있으면 여기서 바인딩
+			pstmt.setInt(1, num);
+
+			//select 문 수행하고, 결과를 ResultSet 으로 받아오기
+			rs = pstmt.executeQuery();
+			//ResultSet 객체에 있는 내용을 추출해서 원하는 Data type 으로 포장하기
+			if (rs.next()) {
+				count = rs.getInt("count");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return count;
 	}
 }
