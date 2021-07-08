@@ -101,6 +101,14 @@
                		<textarea name="content"></textarea>
                		<button type="submit">등록</button>
 		</form>
+		<%-- 댓글 수정 form --%>
+		<%if(tmp.getWriter().equals(id)){ %>
+		<form id="update_form_<%=tmp.getNum() %>" class="comment_form update_form" action="${pageContext.request.contextPath}/videos/private/comment_update.jsp" method="post">
+			<input type="hidden" name="num" value="<%=tmp.getNum() %>" />
+			<textarea name="content" cols="30" rows="10"><%=tmp.getContent() %></textarea>
+			<button type="submit">수정</button>
+		</form>
+		<%} %>
 	</li>
 <%} %>
 

@@ -147,9 +147,9 @@
 		display: none;
 	}
 	/*댓글 수정하는 form 은 처음에는 숨겨져있다.*/
-/* 	.update_form{
+ 	.update_form{
 		display: none;
-	} */
+	}
 	    
 </style>
 </head>
@@ -346,6 +346,7 @@
 		addReplyListener(".reply_link");
 		addDeleteListener(".delete_link");
 		addUpdateFormListener(".update_form");
+		addUpdateListener(".update_link")
 	
 		//게시글 삭제 confirm 함수
 		function deleteConfirm(){
@@ -405,6 +406,7 @@
 					addDeleteListener(".page-" + currentPage + " .delete_link");
 					addReplyListener(".page-" + currentPage + " .reply_link");
 					addUpdateFormListener(".page-" + currentPage + " .update_form");
+					addUpdateListener(".page-" + currentPage + " .update_link");
 				});
 			}
 			
@@ -556,7 +558,7 @@
 		   		updateLinks[i].addEventListener("click", function(){
 		   			//click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다. 
 		   			const num = this.getAttribute("data-num");
-		   			document.querySelector("#updateForm"+num).style.display="block";
+		   			document.querySelector("#update_form_"+num).style.display="block";
 		   		});
 		   	}
 		}
