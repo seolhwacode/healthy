@@ -11,6 +11,7 @@
 </head>
 <body>
 <jsp:include page="/include/navbar.jsp"></jsp:include>
+<a href="private/bookingList.jsp">예약 목록 확인</a>
 <div class="container-fluid">
 <div class="row" id="classes">
   <div class="col col-sm-6">
