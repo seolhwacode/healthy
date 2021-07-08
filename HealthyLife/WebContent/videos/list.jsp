@@ -41,9 +41,15 @@
 		keyword = "";
 		condition = "";
 	}
+	//type 이 있으면 -> display:block / 없으면 -> display:none, keyword:block
+	boolean isTypeExist = false;
+	
 	//type 없을 때 or "not-selected" 일 때 => ""
 	if("not-selected".equals(type) || type == null){
 		type = "";
+	}else{
+		//type 이 있으면 -> display:block
+		isTypeExist = true;
 	}
 	
 	//특수기호를 인코딩한 키워드를 미리 준비한다.
@@ -200,7 +206,7 @@
 		
 		<!-- 검색 -->
 		<div style="clear: both">
-			<form action="list.jsp" method="get">
+			<form action="list.jsp" method="get" id="search_form">
 				<label for="condition">검색 조건</label>
 				<%-- selected 안붙이고 select 에 value 로 붙여서 사용 안됨 -> javascript 로는 바꾸면 가능! --%>
 				<select name="condition" id="condition">
@@ -212,10 +218,10 @@
 				<input type="text" name="keyword" id="keyword" placeholder="검색어..." value="<%=keyword %>" />
 				<select name="type" id="type">
 		        	<option value="not-selected">카테고리를 선택해주세요.</option>
-		            <option value="yoga">요가</option>
-		            <option value="stretching">스트레칭</option>
-		            <option value="diet">다이어트</option>
-		            <option value="rehabili">재활 및 교정</option>
+		            <option value="yoga" <%="yoga".equals(type)?"selected":"" %>>요가</option>
+		            <option value="stretching" <%="stretching".equals(type)?"selected":"" %>>스트레칭</option>
+		            <option value="diet" <%="diet".equals(type)?"selected":"" %>>다이어트</option>
+		            <option value="rehabili" <%="rehabili".equals(type)?"selected":"" %>>재활 및 교정</option>
 		        </select>
 				<button type="submit">검색</button>
 			</form>
@@ -233,17 +239,38 @@
 				if(this.value === "type"){
 					// -> 아래의 type 의 select html 을 display inline 한다.
 					document.querySelector("#type").style.display = "inline";
+					
+					//내용 또한 삭제
+					document.querySelector("#keyword").value = "";
 					// -> input#keyword 를 안보이게한다.
 					document.querySelector("#keyword").style.display = "none";
 				}else{
 					//type 이외의 option 선택 
+					//내용 또한 삭제
+					document.querySelector("#type").value = "not-selected";
 					//-> 아래의 type 의 select html 을 display none 한다.
 					document.querySelector("#type").style.display = "none";
+					
 					//-> input#keyword 를 보이게한다.
 					document.querySelector("#keyword").style.display = "inline";
 				}
 				
 			});
+			
+			//type 이 있으면 -> display:block / 없으면 -> display:none, keyword:block
+			if(<%=isTypeExist %>){
+				//type 검색 
+				//keyword -> display:"none"
+				document.querySelector("#keyword").style.display = "none";
+				//type -> display:"inline"
+				document.querySelector("#type").style.display = "inline";
+			}else{
+				//type 검색 X
+				//keyword -> display:"inline"
+				document.querySelector("#keyword").style.display = "inline";
+				//type -> display:"none"
+				document.querySelector("#type").style.display = "none";
+			}
 		</script>
 	</div>
 </body>
