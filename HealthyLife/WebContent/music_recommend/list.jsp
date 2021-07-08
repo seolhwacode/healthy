@@ -98,6 +98,7 @@
 <head>
 <meta charset="UTF-8">
 <title>/music_recommend/list.jsp</title>
+<jsp:include page="/include/resource.jsp"></jsp:include>
 <style>
    .page-ui a{
       text-decoration: none;
@@ -125,17 +126,19 @@
 </style>
 </head>
 <body>
+<jsp:include page="/include/navbar.jsp"></jsp:include>
 <div class="container">
-   <a href="private/insertform.jsp">새글 작성</a>
-   <h1>글 목록 입니다.</h1>
-   <table>
+   <h1>추천 음악 페이지</h1>
+   <a class="btn btn-primary" href="private/insertform.jsp" role="button">새글 작성</a>
+   <table class="table table-hover">
+   
       <thead>
-         <tr>
-            <th>글번호</th>
-            <th>작성자</th>
-            <th>제목</th>
-            <th>조회수</th>
-            <th>등록일</th>
+         <tr class="table-primary">
+            <th scope="col">글번호</th>
+            <th scope="col">작성자</th>
+            <th scope="col">제목</th>
+            <th scope="col">조회수</th>
+            <th scope="col">등록일</th>
          </tr>
       </thead>
       <tbody>
