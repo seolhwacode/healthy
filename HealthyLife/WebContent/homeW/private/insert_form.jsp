@@ -12,30 +12,50 @@
       height: 500px;
    }
    h1{
-   	 	margin-top:30px !important;
+   		margin-top:30px !important;
    		margin-bottom:30px !important;
-   		text-align:center;
-   }
-   .container{
+   		background-color:#2252e3;
+   		color:white;
    		
+   }
+   
+   #insertForm{
+   		width:700px;
+   		height:500px;
+   		margin:auto; 		
+   }
+   
+   .container{
+   		width:700px;
+   }
+   #dumImg1{
+   		position:relative; left:100px
+   }
+   
+   #dumImg2{
+   		
+   		position:relative; left:1000px;
    }
 </style>
 </head>
 <body>
 <div class="container">
-   <h1>홈트 정보공유 게시판 입니다</h1>
+   <h1 style="text-align:center;">홈트 정보공유 게시판 입니다</h1>
    <form action="insert.jsp" method="post" id="insertForm">
-      <div class="mb-3">
-         <label class="form-label" for="title">제목</label>
+      <div class="md-4">
+         <label class="form-label" for="title"><strong>제목</strong></label>
          <input class="form-control" type="text" name="title" id="title"/>
       </div>
-      <div class="mb-3">
-         <label class="form-label" for="content">내용</label>
+      <div class="md-4">
+         <label class="form-label" for="content"><strong>내용</strong></label>
          <textarea class="form-control"  name="content" id="content"></textarea>
       </div>
       <button class="btn btn-primary" type="submit">저장</button>
    </form>
 </div>
+<img id="dumImg1" src="../../ht_images/dumbbell.jpg"/>
+<img id="dumImg2" src="../../ht_images/dumbbell.jpg"/>
+
 <%--
    [ SmartEditor 를 사용하기 위한 설정 ]
    

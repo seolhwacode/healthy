@@ -373,27 +373,27 @@
 	 addReplyListener(".reply-link");
 	 
 	 
-	 //댓글의 현재 페이지 번호를 관리할 변수를 만들고 초기값 1 대입하기
-	   let currentPage=1;
-	   //마지막 페이지는 totalPageCount 이다.  
-	   let lastPage=<%=totalPageCount%>;
-	   
-	   //추가로 댓글을 요청하고 그 작업이 끝났는지 여부를 관리할 변수 
-	   let isLoading=false; //현재 로딩중인지 여부 
-	
-	   
-	   document.querySelector(".loader").addEventListener("click", function(){
-		      
+	 
+		   //댓글의 현재 페이지 번호를 관리할 변수를 만들고 초기값 1 대입하기
+		   let currentPage=1;
+		   //마지막 페이지는 totalPageCount 이다.  
+		   let lastPage=<%=totalPageCount%>;
+		   
+		  
+		   //댓글의 수가 10개보다 적으면 버튼 감추기
+		   if(<%=totalRow%> < 10){
+			   document.querySelector(".loader").style.display="none";
+		   } 
+		   
+		   document.querySelector(".loader").addEventListener("click", function(){
+		     
 		      //현재 페이지가 마지막 페이지인지 여부 알아내기
 		      let isLast = currentPage == lastPage;   
+		    
+		    
 		      //현재 바닥까지 스크롤 했고 로딩중이 아니고 현재 페이지가 마지막이 아니라면
-		      if( !isLoading && !isLast){
-		         //로딩바 띄우기
-		         document.querySelector(".loader").style.display="block";    	  
-		    	  
-		    	  //로딩 작업중이라고 표시
-		         isLoading=true;
-		         
+		      if(currentPage <= lastPage){
+		        
 		         //현재 댓글 페이지를 1 증가 시키고 
 		         currentPage++;
 		         
@@ -421,11 +421,16 @@
 		            addReplyListener(".page-"+currentPage+" .reply-link");
 		            //새로 추가된 댓글 li 요소 안에 있는 댓글 수정폼에 이벤트 리스너 등록하기
 		            addUpdateFormListener(".page-"+currentPage+" .update-form");
-		            
-		            //로딩바 숨기기
-		            document.querySelector(".loader").style.display="none"; 
 		         });
+		       	//로딩바 숨기기
+				if(currentPage == lastPage){
+				  	document.querySelector(".loader").style.display="none";
+				}else{
+					document.querySelector(".loader").style.display="block";
+				}
 		      }
+		      
+		      
 		   });
 		   
 		   //인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 
