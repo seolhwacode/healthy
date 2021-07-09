@@ -142,7 +142,15 @@
    .btn{
    		position:relative,top:60px, bottom:0px, right:0px;
    }
-   
+   th{
+   		color:#2252e3;
+   		font-size:large;
+   		font-weight:bold;
+   		
+   }
+   table{
+   	  text-align:center;
+   }
 </style>
 </head>
 <body>
@@ -154,12 +162,12 @@
 	<h1>🦾홈트 정보 공유 게시판🦾</h1>
 	<table class="table">
 		<thead>
-			<tr class="table-primary">
-				<td>번호</td>
-				<td>작성자</td>
-				<td>제목</td>
-				<td>조회수</td>
-				<td>등록일</td>
+			<tr class="table">
+				<th scope="col">번호</th>
+				<th scope="col">작성자</th>
+				<th scope="col">제목</th>
+				<th scope="col">조회수</th>
+				<th scope="col">등록일</th>
 			</tr>
 		</thead>
 		<tbody>
