@@ -55,7 +55,7 @@ body {
     display: block;
     margin-bottom: 30px;
     border: 3px solid white;
-    font-family: 'Noto Serif KR', serif;
+    font-family: 'Noto Sans KR', sans-serif;
     box-shadow: 3px 3px 7px grey;
 }
 
@@ -63,15 +63,15 @@ a { text-decoration: none; }
 
 p{
 	color: white;
-    font-family: 'Noto Serif KR', serif;
+    font-family: 'Noto Sans KR', sans-serif;
     text-shadow: 3px 3px 7px grey;
     font-size: 40px;
-    margin:0px 0px 20px 0px;
+   
 }
 
 #reply { 
 	color: white;
-    font-family: 'Noto Serif KR', serif;
+  	font-family: 'Noto Sans KR', sans-serif;
     text-shadow: 3px 3px 7px grey;
     font-size: 20px;
     margin:0px 0px 30px 0px;
@@ -82,9 +82,10 @@ p{
 </style>
 </head>
 <body>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 
 	<%if(isValid){ %>
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
