@@ -38,23 +38,88 @@
 <head>
 <meta charset="UTF-8">
 <title>/users/login.jsp</title>
+<jsp:include page="../include/resource.jsp"></jsp:include>
+<style>
+
+body {
+	background-image: url(../image/running.jpg);
+	background-position: center ;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+}
+
+.container {
+	margin: 200px 100px 0px 200px;
+}
+.btn {
+    display: block;
+    margin-bottom: 30px;
+    border: 3px solid white;
+    font-family: 'Noto Serif KR', serif;
+    box-shadow: 3px 3px 7px grey;
+}
+
+a { text-decoration: none; }
+
+p{
+	color: white;
+    font-family: 'Noto Serif KR', serif;
+    text-shadow: 3px 3px 7px grey;
+    font-size: 40px;
+    margin:0px 0px 20px 0px;
+}
+
+#reply { 
+	color: white;
+    font-family: 'Noto Serif KR', serif;
+    text-shadow: 3px 3px 7px grey;
+    font-size: 20px;
+    margin:0px 0px 30px 0px;
+
+}
+
+
+</style>
 </head>
 <body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+
 	<%if(isValid){ %>
-		<div>
-			<strong><%=id %></strong> 님이 로그인되었습니다.
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+			<script>
+			swal({
+		    	  title: "로그인 완료!",
+		    	  icon: "success",
+		    	  button: "oh~ yes!",
+		    	  
+		    	});
+
+			</script>
+		<div class="container">
+			<p><strong><%=id %></strong>님 반갑습니다! </p>
 			<br />
 			<%-- 그냥 확인을 누르면 login_form.jsp 를 호출했던 page 로 이동한다. --%>
-			<a href="<%=url %>">확인</a>
-			<br />
-			<a href="${pageContext.request.contextPath}/index.jsp">메인으로 돌아가기</a>
+			<button type="button" class="btn btn-secondary btn-lg"> <a class="link-light" href="<%=url %>"> 원래 있던 페이지로 돌아가기 </a></button>
+			
+			<button type="button" class="btn btn-secondary btn-lg"><a class="link-light" href="${pageContext.request.contextPath}/index.jsp"> 메인화면으로 가기 </a></button>
 		</div>
 	<%}else{ %>
-		<div>
-			아이디 혹은 비밀번호가 틀렸습니다.
-			<br />
-			<a href="${pageContext.request.contextPath}/index.jsp">메인으로 돌아가기</a>
-			<a href="${pageContext.request.contextPath}/users/login_form.jsp?url=<%=encodedUrl %>">다시 시도</a>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+			
+			<script>
+			swal({
+		    	  title: "로그인 실패..ㅠㅠ",
+		    	  button: "oh~ No!",
+		    	  
+		    	});
+			</script>
+			
+		<div class="container">
+			<p id="reply">입력한 내용을 다시 확인해주세요.</p>
+			<button type="button" class="btn btn-secondary btn-lg"><a class="link-light" href="${pageContext.request.contextPath}/index.jsp">메인으로 돌아가기</a></button>
+			<button type="button" class="btn btn-secondary btn-lg"><a class="link-light" href="${pageContext.request.contextPath}/users/login_form.jsp?url=<%=encodedUrl %>">다시 시도</a></button>
 		</div>
 	<%} %>
 </body>
