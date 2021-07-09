@@ -7,7 +7,7 @@
 <%
 	//여러 페이지에 나눠서 출력하기 - 여기서는 한 페이지에 10개!
 	//한 페이지에 몇개씩 표시할 것인지
-	final int PAGE_ROW_COUNT=5;
+	final int PAGE_ROW_COUNT=3;
 	//하단 페이지를 몇개씩 표시할 것인지
 	final int PAGE_DISPLAY_COUNT=5;
 	
@@ -45,7 +45,7 @@
 	boolean isTypeExist = false;
 	
 	//type 없을 때 or "not-selected" 일 때 => ""
-	if("not-selected".equals(type) || type == null){
+	if("not-selected".equals(type) || type == null || "".equals(type)){
 		type = "";
 	}else{
 		//type 이 있으면 -> display:block
@@ -118,48 +118,108 @@
 <title>/videos/list.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <style>
-	.page-ui a{
-      text-decoration: none;
-      color: #000;
-   }
-   
-   .page-ui a:hover{
-      text-decoration: underline;
-   }
-   
-   .page-ui a.active{
-      color: red;
-      font-weight: bold;
-      text-decoration: underline;
-   }
-   .page-ui ul{
-      list-style-type: none;
-      padding: 0;
-   }
-   
-   .page-ui ul > li{
-      float: left;
-      padding: 5px;
-   }
-   
+	/*가운데 정렬*/
+	.container {
+		text-align: center;
+		margin-top: 40px;
+		padding-bottom: 80px;
+	}
+	
+	#insert{
+		text-align: right;
+		margin-top: 10px;
+	}
+	
+	#table{
+		margin-top: 10px;
+	}
+	thead{
+		background:white;
+		color : #2252e3;
+		font-size :20px;
+	}
+	
+	
+	.pagination {
+	  display: inline-block;
+	  margin-top: 10px;
+	  margin-bottm: 10px;
+	}
+	
+	.pagination a {
+	  color: black;
+	  float: left;
+	  padding: 5px 13px;
+	  text-decoration: none;
+	  margin: 5px;
+	  vertical-align:middle;
+	  font-size:16px;
+	}
+	
+	.pagination>#pageNum {
+		border : 2px solid #2252e3;
+	  	border-radius: 50%;
+	}
+	
+	.pagination a.active {
+	  background-color: #2252e3;
+	  color: white;
+	  border-radius: 50%;
+	  font-weight:bold;
+	}
+	
+	.pagination #pageNum:hover:not(.active) {
+	  background-color: lightgray;
+	  border-radius:  50%;
+	}
+	
+	/* 검색창 */
+	.seartch_wrapper{
+		margin-top: 15px;
+	}
+	input:focus { 
+		outline: none !important;
+    	border-color: #2252e3;
+    	box-shadow: 0 0 3px #2252e3;
+	}
+	.seartch_wrapper{
+		display: flex;
+	    align-items: center;
+	    padding: .375rem .75rem;
+	    justify-content: center;
+	}
+	.input-group-text{
+		border: none;
+		background-color: white;
+	}
+	.search_submit{
+	    background-color: #2252e3;
+	    color: white;
+	    border-radius: .25rem;
+	    border: none;
+        padding: 1px 12px;
+	}
    	#type{
    		display: none;
    	}
 </style>
 </head>
 <body>
+	<jsp:include page="../include/navbar.jsp"></jsp:include>
 	<div class="container">
-		<a href="${pageContext.request.contextPath}/videos/private/insert_form.jsp">새 글 작성</a>
-		<h1>글 목록입니다.</h1>
-		<table>
+		<h1>영상 자료실</h1>
+		<div id="insert">
+			<a class="btn btn-secondary" href="${pageContext.request.contextPath}/videos/private/insert_form.jsp">새 글 작성</a>
+		</div>
+		<table class="table">
 			<thead>
 				<tr>
-					<th>글번호</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>등록일</th>
-					<th>조회수</th>
-					<th>좋아요</th>
+					<th scope="col">번호</th>
+					<th scope="col">제목</th>
+					<th scope="col">작성자</th>
+					<th scope="col">등록일</th>
+					<th scope="col">조회수</th>
+					<th scope="col">좋아요</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -182,32 +242,33 @@
 		</table>
 		
 		<!-- 페이지 표기 -->
-		<div class="page-ui clearfix">
-			<ul>
-				<%-- startPageNum 가 1이면 이전으로 가는  페이지는 없어야한다.--%>
-				<% if(startPageNum != 1) {%>
-					<li>
-						<a href="<%= request.getRequestURI() %>?pageNum=<%= startPageNum - 1%>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>">Prev</a>
-					</li>
-				<%} %>
-				<%for(int i = startPageNum; i <= endPageNum; i++){ %>
-					<li>
-						<a href="<%= request.getRequestURI() %>?pageNum=<%= i%>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>" <%= pageNum==i ? "class=\"active\"" : "" %>><%= i %></a>
-					</li>
-				<%} %>
-				<%-- 아래 보여주는 페이지 번호의 끝이 전체 row 보다 작을 때만 next 출력 --%>
-				<%if(endPageNum < totalPageCount){ %>
-					<li>
-						<a href="<%= request.getRequestURI() %>?pageNum=<%= endPageNum + 1%>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>"><span >Next</span></a>
-					</li>
-				<%} %>
-			</ul>
+		<div class="pagination">
+		<%-- startPageNum 가 1이면 이전으로 가는  페이지는 없어야한다.--%>
+		<% if(startPageNum != 1) {%>
+			<a href="<%= request.getRequestURI() %>?pageNum=<%= startPageNum - 1%>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2252e3" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+				  <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+				</svg>
+			</a>
+		<%} %>
+		<%for(int i = startPageNum; i <= endPageNum; i++){ %>
+			<a id="pageNum" href="<%= request.getRequestURI() %>?pageNum=<%= i%>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>" <%= pageNum==i ? "class=\"active\"" : "" %>><%= i %></a>
+		<%} %>
+		<%-- 아래 보여주는 페이지 번호의 끝이 전체 row 보다 작을 때만 next 출력 --%>
+		<%if(endPageNum < totalPageCount){ %>
+			<a href="<%= request.getRequestURI() %>?pageNum=<%= endPageNum + 1%>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2252e3" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+				  <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+				</svg>
+			</a>
+		<%} %>
 		</div>
 		
 		<!-- 검색 -->
-		<div style="clear: both">
-			<form action="list.jsp" method="get" id="search_form">
-				<label for="condition">검색 조건</label>
+		<div class="seartch_wrapper" style="clear:both;">
+			<form class="input-group-text" action="list.jsp" method="get" id="search_form">
 				<%-- selected 안붙이고 select 에 value 로 붙여서 사용 안됨 -> javascript 로는 바꾸면 가능! --%>
 				<select name="condition" id="condition">
 					<option value="title_content" <%="title_content".equals(condition)?"selected":"" %>>제목+내용</option>
@@ -215,23 +276,28 @@
 					<option value="writer" <%="writer".equals(condition)?"selected":"" %> >작성자</option>
 					<option value="type" <%="type".equals(condition)?"selected":"" %> >카테고리</option>
 				</select>
-				<input type="text" name="keyword" id="keyword" placeholder="검색어..." value="<%=keyword %>" />
-				<select name="type" id="type">
-		        	<option value="not-selected">카테고리를 선택해주세요.</option>
-		            <option value="yoga" <%="yoga".equals(type)?"selected":"" %>>요가</option>
-		            <option value="stretching" <%="stretching".equals(type)?"selected":"" %>>스트레칭</option>
-		            <option value="diet" <%="diet".equals(type)?"selected":"" %>>다이어트</option>
-		            <option value="rehabili" <%="rehabili".equals(type)?"selected":"" %>>재활 및 교정</option>
-		        </select>
-				<button type="submit">검색</button>
+				<div class="input-group-text">
+					<input class="border border-secondary" type="text" name="keyword" id="keyword" placeholder="검색어..." value="<%=keyword %>" />
+					<select name="type" id="type">
+			        	<option value="not-selected">카테고리를 선택해주세요.</option>
+			            <option value="yoga" <%="yoga".equals(type)?"selected":"" %>>요가</option>
+			            <option value="stretching" <%="stretching".equals(type)?"selected":"" %>>스트레칭</option>
+			            <option value="diet" <%="diet".equals(type)?"selected":"" %>>다이어트</option>
+			            <option value="rehabili" <%="rehabili".equals(type)?"selected":"" %>>재활 및 교정</option>
+			        </select>
+					<button class="search_submit" type="submit">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+			  				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+						</svg>
+					</button>
+				</div>
 			</form>
-			
-		<%if(!"".equals(condition)){ %>
-			<p>
-				<strong><%=totalRow %></strong> 개의 글이 검색되었습니다.
-			</p>
-		<%} %>
 		</div>
+	<%if(!"".equals(condition) && (!"".equals(keyword) || !("".equals(type) || "not-selected".equals(type)))){ %>
+		<div>
+			<strong><%=totalRow %></strong> 개의 글이 검색되었습니다.
+		</div>
+	<%} %>
 			
 		<script>
 			document.querySelector("#condition").addEventListener("change", function(){
