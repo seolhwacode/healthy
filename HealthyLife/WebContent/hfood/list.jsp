@@ -7,7 +7,7 @@
     pageEncoding="UTF-8"%>
 <%
 	//한 페이지에 몇개씩 표시할 것인지
-	final int PAGE_ROW_COUNT=10;
+	final int PAGE_ROW_COUNT=3;
 	//하단 페이지를 몇개씩 표시할 것인지
 	final int PAGE_DISPLAY_COUNT=5;
 	
@@ -120,64 +120,73 @@
 		text-align: center;
 	}
 	
-	#pageNum{
-		  display: table;
-		  margin-left: auto;
-		  margin-right: auto;
-		  padding : 20px;
-	}
-	.page-ui a{
-      text-decoration: none;
-      color: #000;
-      
-   }
-   
-   .page-ui a:hover{
-      text-decoration: underline;
-   }
-   
-   .page-ui a.active{
-      color: #2252e3;
-      font-weight: bold;
-   }
-   .page-ui ul{
-      list-style-type: none;
-      padding: 0;
-   }
-   
-   .page-ui ul > li{
-      float: left;
-      padding: 5px;
-   }
-   
-   #search {
-	 	line-height: 23px;
-		
-   }
-   
    
 	input:focus { 
     outline: none !important;
     border-color: #2252e3;
     box-shadow: 0 0 3px #2252e3;
 	}
+	
+	 /* 가운데 하단 검색창 */
+   #search {
+	 	line-height: 23px;
+		margin:auto;
+   	}
+	
+  	.input-group-text {
+  	background-color: white;
+  	border: none;
+  	}
+
+	.pagination {
+	  display: inline-block;
+	}
+	
+	.pagination a {
+	  color: black;
+	  float: left;
+	  padding: 5px 13px;
+	  text-decoration: none;
+	  margin:10px -3px 10px -3px;
+	  line-height:23px;
+	  vertical-align:middle;
+	  font-size:16px;
+	}
+	
+	.pagination>#pageNum {
+		border : 2px solid #2252e3;
+	  	border-radius: 50%;
+	}
+	
+	.pagination a.active {
+	  background-color: #2252e3;
+	  color: white;
+	  border-radius: 50%;
+	  font-weight:bold;
+	}
+	
+	.pagination #pageNum:hover:not(.active) {
+	  background-color: lightgray;
+	  border-radius:  50%;
+	}
+	
 </style>
 </head>
 <body>
 <jsp:include page="/include/navbar.jsp"></jsp:include>
 <div class="container">
 	<div id="insert">
-	<button class="btn btn-primary me-md-2" style="background:white;" type="button"><a href="private/insertform.jsp">새글 작성</a></button>
+	<button class="btn btn-secondary" type="button"><a href="private/insertform.jsp" class="link-light">새글 작성</a></button>
 	</div>
 	<h1>건강 레시피</h1>
 	<table class="table" >
 		<thead>
 			<tr id="thead">
-				<th scope="col">num</th>
-				<th scope="col">title</th>
-				<th scope="col">writer</th>
-				<th scope="col">registration date</th>
-				<th scope="col">hits</th>
+				<th scope="col">번호</th>
+				<th scope="col">제목</th>
+				<th scope="col">작성자</th>
+				<th scope="col">등록일</th>
+				<th scope="col">조회수</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -194,40 +203,40 @@
       <%} %>
       </tbody>
 	</table>
-	<div  class="page-ui clearfix">
-      <ul id="pageNum">
+	<div  class="pagination ">
+      
          <%if(startPageNum != 1){ %>
-            <li>
+            <a>
                	<a href="list.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">
                	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2252e3" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
 				  <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
 				  <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
 				</svg>
                	</a>
-            </li>   
+            </a>   
          <% } %>
          
          <%for(int i=startPageNum; i<=endPageNum ; i++){ %>
-            <li>
+            <a >
                <%if(pageNum == i){ %>
-                  <a class="active" href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+                  <a id=pageNum class="active" href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
                <%}else{ %>
-                  <a href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+                  <a id=pageNum href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
                <%} %>
-            </li>   
+            </a>   
          <%} %>
          <%if(endPageNum < totalPageCount){ %>
-            <li>
+            <a>
                	<a href="list.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">
                	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2252e3" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
 				  <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
 				  <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
 				</svg>
 				</a>
-            </li>
+            </a>
          <%} %>
         
-      </ul>
+      
    </div>
 	<div style="clear:both;"></div> <!-- 부트스트랩에서 clearfix를 포함하고 있어 현재 jsp에서는 생략 가능  -->
    		
