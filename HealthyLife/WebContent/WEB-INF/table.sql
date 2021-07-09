@@ -50,4 +50,10 @@ CREATE TABLE video_board_comment(
 -- 비디오 자료실 댓글의 seq
 CREATE SEQUENCE video_board_comment_seq;
 
+-- 사용자가 좋아요한 게시글 저장
+CREATE TABLE users_good_list(
+	id VARCHAR2(100) NOT NULL,
+	video_board_num NUMBER NOT NULL,
+	PRIMARY KEY(id, video_board_num)
+);
 

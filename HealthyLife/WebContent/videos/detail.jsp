@@ -1,3 +1,5 @@
+<%@page import="users.good.dao.UsersGoodDao"%>
+<%@page import="users.good.dto.UsersGoodDto"%>
 <%@page import="videos.board.dao.VideosCommentDao"%>
 <%@page import="java.util.List"%>
 <%@page import="videos.board.dto.VideosCommentDto"%>
@@ -120,6 +122,18 @@
 	int totalRow = VideosCommentDao.getInstance().getCommentCount(num);
 	//전체 페이지의 개수 : (전체 row 의 개수 / 보여지는 리스트 개수) 올림
 	int totalPageCount = (int)Math.ceil(totalRow / (double)PAGE_ROW_COUNT);
+	
+	
+//좋아요 기능 추가
+	//좋아요 유무 
+	boolean isGood = false;
+	//-> 로그인 했을 때만 db 에서 가져옴
+	if(isLogin){
+		//검색할 UsersGoodDto 만듬 - id : 로그인된 id / num : 글 번호
+		UsersGoodDto goodDto = new UsersGoodDto(id, num);
+		isGood = UsersGoodDao.getInstance().isExist(goodDto);
+	}
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -150,6 +164,36 @@
  	.update_form{
 		display: none;
 	}
+	
+	
+	/*좋아요, 댓글개수 박스 -> link 는 색 변화 X*/
+	.reply_box a{
+		color: inherit;
+	}
+	/*좋아요, 댓글 개수 박스 -> 글씨, 아이콘 라인 맞추기*/
+	.reply_box em, strong, .good_icon, .reply_icon{
+		vertical-align: text-bottom;
+	}
+	/*inline-block 으로 해야 배경이 나온다.*/
+	.good_button, .good_icon{
+		display: inline-block;
+	}
+	
+	/*좋아요 버튼 - 안눌렸을 때 - 빈 하트 배경의 그림*/
+	.good_button.btn_off .good_icon{
+		width: 20px;
+		height: 20px;
+		background-image: url('https://ca-fe.pstatic.net/web-pc/static/img/ico-post-like-f-53535.svg?a37a11006a542ce9949c0dd6779345b8=');
+		background-repeat: no-repeat;
+	}
+	/*좋아요 버튼 - 눌렸을 때*/
+	.good_button.btn_on .good_icon{
+		width: 20px;
+		height: 20px;
+		background-image: url('https://ca-fe.pstatic.net/web-pc/static/img/ico-post-like-on-f-53535.svg?7eb6be9a4989d32af686acf09a07747d=');
+		background-repeat: no-repeat;
+	}
+	
 	    
 </style>
 </head>
@@ -183,10 +227,6 @@
 						<span>[<%=resultDto.getType() %>]</span>
 						<%=resultDto.getTitle() %>
 					</td>
-				</tr>
-				<tr>
-					<th>좋아요</th>
-					<td><%=resultDto.getGood_count() %></td>
 				</tr>
 				<tr>
 					<th>프로필</th>
@@ -233,6 +273,27 @@
 					</td>
 				</tr>
 			</table>
+		</div>
+		
+<%-- 좋아요 개수 & 좋아요 버튼 / 댓글의 개수 출력 --%>
+		<div class="reply_box">
+			<div class="good_wrapper">
+				<a href="javascript:" class="good_button">
+					<span class="good_icon"></span>
+				</a>
+				<em class="good_text">좋아요</em>
+				<strong class="good_count"><%=resultDto.getGood_count() %></strong>
+			</div>
+			<div class="reply_count_wrapper">
+				<span class="reply_icon">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-square-dots" viewBox="0 0 16 16">
+  						<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+  						<path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+					</svg>
+				</span>
+				<em class="reply_text">댓글</em>
+				<strong class="reply_count"><%=totalRow %></strong>
+			</div>
 		</div>
 		
 <%-- 댓글 리스트 출력 --%>
@@ -562,6 +623,79 @@
 		   		});
 		   	}
 		}
+		
+//좋아요 버튼 기능 추가
+		//good 했는지 알아오기
+		let isGood = <%=isGood %>;
+		
+		//좋아요 버튼 페이지 로딩시에 초기화
+		if(isLogin && isGood){
+			//사용자가 좋아요를 누름 and 로그인 함 -> on
+			const goodBtn = document.querySelector(".good_button")
+			//off 빼기
+			goodBtn.classList.remove("btn_off");
+			//on 넣기
+			goodBtn.classList.add("btn_on");
+		}else{
+			//사용자가 좋아요를 안누름 or 로그인 안함 -> off
+			const goodBtn = document.querySelector(".good_button")
+			//on 빼기
+			goodBtn.classList.remove("btn_on");
+			//off 넣기
+			goodBtn.classList.add("btn_off");
+		}
+		
+		//좋아요 링크 누르면 -> ajax 로 좋아요 db 에 추가 후, 배경사진 변경(class 변경)
+		document.querySelector(".good_button").addEventListener("click", function(){			
+			//로그인 안된 상태 -> 로그인 하시겠습니까?
+			if(!isLogin){
+				//로그인 폼으로 이동
+				const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+				if(isMove){
+					location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
+				}else{
+					//종료
+					return;
+				}
+			}
+			
+			//로그인 ok
+			//현재 a 링크
+			const good_button = this;
+			
+			//ajax 로 db 에 변경사항 저장 후, icon 출력 변경(class on/off 변경)
+			//num : 게시글 번호
+			ajaxPromise("${pageContext.request.contextPath}/videos/private/ajax_good_update.jsp", "post", "num=<%=num%>")
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				//data : { isGood : true/false, goodCount : n }
+				//-> true:좋아요 on / false : 좋아요 off
+				//-> goodCount : 좋아요 개수
+				if(data.isGood){
+					//좋아요 on
+					isGood = true;
+					//off 빼기
+					good_button.classList.remove("btn_off");
+					//on 넣기
+					good_button.classList.add("btn_on");
+				}else{
+					//좋아요 off
+					isGood = false;
+					//on 빼기
+					good_button.classList.remove("btn_on");
+					//off 넣기
+					good_button.classList.add("btn_off");
+				}
+				//data 에서  goodCount 읽어서 class="good_count" 에 숫자 변경
+				document.querySelector(".good_count").innerText = data.goodCount;
+			});
+			
+			
+		});
+		
+		
 	</script>
 </body>
 </html>
