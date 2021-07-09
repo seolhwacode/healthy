@@ -301,11 +301,8 @@ if(id != null){
 	   
 	   document.querySelector(".loader").addEventListener("click", function(){
 	     
-	      //현재 페이지가 마지막 페이지인지 여부 알아내기
-	      let isLast = currentPage == lastPage;   
 	    
-	    
-	      //현재 바닥까지 스크롤 했고 로딩중이 아니고 현재 페이지가 마지막이 아니라면
+	      //현재 페이지가 마지막 페이지보다 같거나 작으면 페이지 로딩
 	      if(currentPage <= lastPage){
 	        
 	         //현재 댓글 페이지를 1 증가 시키고 
@@ -337,9 +334,10 @@ if(id != null){
 	            addUpdateFormListener(".page-"+currentPage+" .update-form");
 
 	         });
-	       	//로딩바 숨기기
+	       	//현재 페이지가 마지막 페이지면 로딩바 숨기기
 			if(currentPage == lastPage){
 			  	document.querySelector(".loader").style.display="none";
+			//현재 페이지가 마지막 페이지가 아니면 로딩바 보이기
 			}else{
 				document.querySelector(".loader").style.display="block";
 			}
