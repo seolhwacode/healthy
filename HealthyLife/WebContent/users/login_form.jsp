@@ -27,7 +27,12 @@
 		margin: 100px auto;
 	}
 	.btn{
-		width: 100%;
+		width: 50%;
+    	margin: 40px 100px;
+	}
+	
+	#logo {
+		margin: auto 161px;
 	}
 </style>
 </head>
@@ -35,19 +40,19 @@
 	<div class="container">
 		
 		<div class="form-container">
-			<h1>로그인</h1>
+			<img id="logo" src="../image/health.png" alt="" width="80px"/>
 			<form class="mt-4" action="${pageContext.request.contextPath}/users/login.jsp" method="post">
 			<%-- 로그인 후에 이동할 목적지 정보 hidden 으로 보내기 --%>
 			<input type="hidden" name="url" value="<%=url %>" />
 			<div>
-				<label class="form-label" for="id">아이디</label>
-				<input class="form-control" type="text" id="id" name="id" placeholder="아이디를 입력하세요..."/>
+				<label class="form-label" for="id"></label>
+				<input class="form-control" type="text" id="id" name="id" placeholder="아이디"/>
 			</div>
 			<div>
-				<label class="form-label" for="pwd">비밀번호</label>
-				<input class="form-control" type="password" id="pwd" name="pwd" placeholder="비밀번호를 입력하세요..."/>
+				<label class="form-label" for="pwd"></label>
+				<input class="form-control" type="password" id="pwd" name="pwd" placeholder="비밀번호"/>
 			</div>
-			<button class="btn btn-primary mt-3" type="submit">로그인</button>
+			<button type="submit" class="btn btn-outline-secondary">로그인</button>
 		</form>
 		</div>
 	</div>
