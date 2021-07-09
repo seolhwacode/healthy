@@ -257,12 +257,12 @@
 		<%} %>
 		<%-- 아래 보여주는 페이지 번호의 끝이 전체 row 보다 작을 때만 next 출력 --%>
 		<%if(endPageNum < totalPageCount){ %>
-			<a href="<%= request.getRequestURI() %>?pageNum=<%= endPageNum + 1%>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>"><span >
+			<a href="<%= request.getRequestURI() %>?pageNum=<%= endPageNum + 1%>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>">
 				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2252e3" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
 				  <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
 				  <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
 				</svg>
-			</span></a>
+			</a>
 		<%} %>
 		</div>
 		
