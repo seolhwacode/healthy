@@ -6,7 +6,7 @@
     pageEncoding="UTF-8"%>
 <%
 //한 페이지에 몇개씩 표시할 것인지
-final int PAGE_ROW_COUNT=5;
+final int PAGE_ROW_COUNT=10;
 //하단 페이지를 몇개씩 표시할 것인지
 final int PAGE_DISPLAY_COUNT=5;
 
@@ -97,32 +97,42 @@ if(endPageNum > totalPageCount){
 <meta charset="UTF-8">
 <title>bookingList.jsp</title>
 <jsp:include page="/include/resource.jsp"></jsp:include>
+<style>
+	#thead{
+		background:white;
+		color : #2252e3;
+		font-size :20px;
+	}
+	.container {
+		text-align: center;
+	}
+</style>
 </head>
 <body>
 <jsp:include page="/include/navbar.jsp"></jsp:include>
 <div class="container">
 	<h1>예약 목록</h1>
-	<table>
+	<table class="table">
 		<thead>
-			<tr>
-				<th>글번호</th>
-				<th>조회수</th>
-				<th>작성자</th>
-				<th>예약자이름</th>
-				<th>클래스명</th>
-				<th>클래스날짜</th>
+			<tr id="thead">
+				<th scope="col">글번호</th>
+				<th scope="col">조회수</th>
+				<th scope="col">작성자</th>
+				<th scope="col">예약자이름</th>
+				<th scope="col">클래스명</th>
+				<th scope="col">클래스날짜</th>
 			</tr>
 		</thead>
 		<tbody>
 		<%for(BookingDto tmp:list){ %>
 			<tr>
 			
-				<td><%=tmp.getNum() %></td>
-				<td><%=tmp.getViewCount() %></td>
-				<td><%=tmp.getWriter() %></td>
-				<td><%=tmp.getName() %></td>
-				<td><a href="detail.jsp?num=<%=tmp.getNum()%>&keyword=<%=encodedK%>&condition=<%=condition%>"><%=tmp.getClassName()%></a></td>
-				<td><%=tmp.getClassDate() %></td>
+				<td scope="row"><%=tmp.getNum() %></td>
+				<td scope="row"><%=tmp.getViewCount() %></td>
+				<td scope="row"><%=tmp.getWriter() %></td>
+				<td scope="row"><%=tmp.getName() %></td>
+				<td scope="row"><a href="detail.jsp?num=<%=tmp.getNum()%>&keyword=<%=encodedK%>&condition=<%=condition%>"><%=tmp.getClassName()%></a></td>
+				<td scope="row"><%=tmp.getClassDate() %></td>
 				
 			</tr>
 		<%} %>
