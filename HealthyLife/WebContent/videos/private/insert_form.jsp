@@ -9,43 +9,90 @@
 <style>
 	#content{
 		height: 300px;
-		width: 700px;
+		width: 670px;
 	}
 	.content_container{
 		margin-top: 20px;
 	}
+		
+	/*가운데 정렬*/
+	.container {
+		margin-top: 40px;
+		padding-bottom: 80px;
+		width: 700px;
+	}
+	/* 맨 위의 제목 & 게시글 작성 버튼 */
+	.WritingHeader{
+		display: flex;
+		justify-content: space-between;
+	    align-items: center;
+        border-bottom: solid 2px #1c3992;
+	}
+	
+	/* form 을 둘러싸는 div */
+	.form_wrapper div{
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	/* 게시글 등록 버튼 */
+	.WritingHeader .btn{
+		background-color: #1c3992;
+	    border-color: #1c3992;
+	    color: white;
+	}
+
+	/* form select -> 색 변경 & 커서 올리면 사람 손 선택 모양 */
+	#type{
+		border-color: #b4c0e4;
+	    cursor: pointer;
+	}
+	/* form-control -> 색 변경 */
+	.form-control{
+		border-color: #b4c0e4;
+	}
+	
+	/* form 의 버튼 안보이게하기 */
+	.form_wrapper button{
+		display: none;
+	}
 </style>
 </head>
 <body>
+	<jsp:include page="../../include/navbar.jsp"></jsp:include>
 	<div class="container">
-		<h1>게시글 작성하기</h1>
-		<form action="${pageContext.request.contextPath}/videos/private/insert.jsp" method="post" id="insertForm">
+		<div class="WritingHeader">
 			<div>
-				<label class="form-label" for="type">게시판 선택</label>
-		        <select class="form-select" name="type" id="type">
-		        	<option value="not-selected">카테고리를 선택해주세요.</option>
-		            <option value="yoga">요가</option>
-		            <option value="stretching">스트레칭</option>
-		            <option value="diet">다이어트</option>
-		            <option value="rehabili">재활 및 교정</option>
-		        </select>
+				<h1 class="title">게시글 작성하기</h1>
 			</div>
 			<div>
-				<label class="form-label" for="title">제목</label>
-				<input class="form-control" type="text" id="title" name="title" />
+				<a class="btn" id="submit_button">등록</a>
 			</div>
-			<div>
-				<label class="form-label" for="video">동영상 URL</label>
-				<small class="form-text text-muted"> : youtube 공유 주소 또는 상단의 주소 입력</small>
-				<input class="form-control" type="url" id="video" name="video" />
-			</div>
-			<div class="content_container">
-				<%-- content 는 없을 수도 있다. --%>
-				<textarea name="content" id="content"></textarea>
-			</div>
-			<button class="btn btn-primary" type="submit">등록</button>
-		</form>
+		</div>
 		
+		<div class="form_wrapper">
+			<form action="${pageContext.request.contextPath}/videos/private/insert.jsp" method="post" id="insertForm">
+				<div>
+			        <select class="form-select" name="type" id="type">
+			        	<option value="not-selected">카테고리를 선택해주세요.</option>
+			            <option value="yoga">요가</option>
+			            <option value="stretching">스트레칭</option>
+			            <option value="diet">다이어트</option>
+			            <option value="rehabili">재활 및 교정</option>
+			        </select>
+				</div>
+				<div>
+					<input class="form-control" type="text" id="title" name="title" placeholder="제목을 입력해 주세요." />
+				</div>
+				<div>
+					<input class="form-control" type="url" id="video" name="video" placeholder="url : youtube 공유 주소 또는 상단의 주소 입력"/>
+				</div>
+				<div class="content_container">
+					<%-- content 는 없을 수도 있다. --%>
+					<textarea class="form-control" name="content" id="content"></textarea>
+				</div>
+				<button type="submit"></button>
+			</form>
+		</div>
 	</div>
 	
 	<!-- SmartEditor 에서 필요한 javascript 로딩  -->
@@ -119,6 +166,12 @@
 			<%-- url 검사는 input 에서 자동으로 해줌 -> 필요없어짐(삭제) --%>
 			<%-- content 는 없을 수도 있다. --%>
 		});
+		
+		//등록 버튼 -> form 의 submit 버튼 click 되게 하기
+		document.querySelector("#submit_button").addEventListener("click", function(){
+			document.querySelector("#insertForm button").click();
+		});
+		
 	</script>
 	
 </body>
