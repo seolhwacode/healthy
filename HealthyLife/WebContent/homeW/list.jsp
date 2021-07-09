@@ -99,9 +99,11 @@
 <title>/homeW/list.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <style>
+	
    .page-ui a{
       text-decoration: none;
       color: #000;
+      
    }
    
    .page-ui a:hover{
@@ -116,16 +118,27 @@
    .page-ui ul{
       list-style-type: none;
       padding: 0;
+     
    }
    
    .page-ui ul > li{
       float: left;
       padding: 5px;
    }
+   
+   #pageUl{
+   		  display: inline-block;
+   }
+   .page-ui{
+   		
+   		text-align:center;
+   }			  
+    
+   
    h1{
    		margin-top:30px !important;
    		margin-bottom:30px !important;
-   		text-align:center;
+   		
    		
    }
    #saveId{
@@ -151,12 +164,19 @@
    table{
    	  text-align:center;
    }
+   #searchBtn{
+   	margin-left: -8px;
+   	width:40px;
+   	background-color:#2252e3;
+   	border-radius: 3.5px;
+   	
+   }
 </style>
 </head>
 <body>
 <jsp:include page="../include/navbar.jsp"></jsp:include>
 <div class="container">
-	<button class="btn btn-dark" style="float:right" type="submit">
+	<button class="btn btn-secondary" style="float:right" type="submit">
 		<a id="saveId" href="${pageContext.request.contextPath}/homeW/private/insert_form.jsp">작성하기</a>
 	</button>
 	<h1>🦾홈트 정보 공유 게시판🦾</h1>
@@ -185,7 +205,7 @@
 		</tbody>
 	</table>
 	<div class="page-ui clearfix">
-      <ul>
+      <ul id="pageUl">
          <%if(startPageNum != 1){ %>
             <li>
                <a href="list.jsp?pageNum=<%=startPageNum-1 %>">Prev</a>
@@ -218,7 +238,11 @@
          <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
       </select>
       <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요 " value="<%=keyword%>"/>
-      <button type="submit">검색</button>
+      <button id="searchBtn" type="submit">
+      	<svg style="color:white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  			<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+		</svg>
+      </button>
    </form>   
    
    <%if(!condition.equals("")){ %>
