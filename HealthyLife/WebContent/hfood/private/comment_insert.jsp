@@ -25,7 +25,7 @@
 		dto.setComment_group(Integer.parseInt(comment_group));
 	}
 	
-	Hfood_comment_dao.getInstance().insert(dto);
+	boolean isSuccess = Hfood_comment_dao.getInstance().insert(dto);
 	
 	String cPath=request.getContextPath();
 	response.sendRedirect(cPath+"/hfood/detail.jsp?num="+ref_group);

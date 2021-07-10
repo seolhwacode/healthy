@@ -90,17 +90,18 @@
 		width:75%;
 	}
 	#content {
-		border : 1px black solid;
+		 margin-top:20px;
 	}
 	
 	#private {
-		text-align : right;
+		margin: 5px;
+		padding: 0px;
+		display: flex;
+		justify-content: flex-end;
 	}
 	
-	#private>#user{
-		float: left;
-		margin-right:10px;
-		text-align : right;
+	#private> li{
+		margin-left:15px;
 	}
 	
 	ul {
@@ -108,15 +109,12 @@
 
 	}
 	
-	<style>
-   .content{
-      border: 1px dotted gray;
-   }
+
    
    /* 댓글 프로필 이미지를 작은 원형으로 만든다. */
    .profile-image{
-      width: 50px;
-      height: 50px;
+      width: 35px;
+      height: 35px;
       border: 1px solid #cecece;
       border-radius: 50%;
    }
@@ -130,7 +128,7 @@
       margin-top: 5px;
    }
    .comments dd{
-      margin-left: 50px;
+      margin: 0px 25px 0px;
    }
    .comment-form textarea, .comment-form button{
       float: left;
@@ -138,9 +136,7 @@
    .comments li{
       clear: left;
    }
-   .comments ul li{
-      border-top: 1px solid #888;
-   }
+   
    .comment-form textarea{
       width: 84%;
       height: 100px;
@@ -150,21 +146,34 @@
       height: 100px;
    }
    /* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다. */
-   .comments .comment-form{
+   .comments .comment-form {
       display: none;
    }
+   
+   .re-insert-form{
+           display: none;
+   }
+   
+   /* 댓글 더보러가기 CSS */
+   #view_more {
+   	    border: 2px solid #bfbebe;
+    	background-color: #e8e8e8;
+   	 	margin: 0px auto 10px;
+    	width: 75%;
+   		text-align: center;   
+ 	}
    /* .reply_icon 을 li 요소를 기준으로 배치 하기 */
    .comments li{
       position: relative;
    }
-   .comments .reply-icon{
+   .comments .reply-icon {
       position: absolute;
       top: 1em;
       left: 1em;
       color: red;
    }
+   
    pre {
-     display: block;
      padding: 9.5px;
      margin: 0 0 10px;
      font-size: 13px;
@@ -175,7 +184,12 @@
      background-color: #f5f5f5;
      border: 1px solid #ccc;
      border-radius: 4px;
-   }   
+   } 
+   
+   #reply_info { 
+   	font-size: 13px;
+    margin-left: 65px;
+   }  
    
    .loader{
       /* 로딩 이미지를 가운데 정렬하기 위해 */
@@ -187,6 +201,7 @@
    .loader svg{
       animation: rotateAni 1s ease-out infinite;
    }
+  
    
    @keyframes rotateAni{
       0%{
@@ -197,29 +212,39 @@
       }
    }
 </style>
-</style>
+
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
 <jsp:include page="/include/navbar.jsp"></jsp:include>
-	<div class="container"> 
-		<ul class="list-group list-group-flush">
-			  <li class="list-group-item">글 번호<%=dto.getNum() %></li>
-			  <li class="list-group-item">작성자 <%=dto.getWriter() %></li>
-			  <li class="list-group-item">제목 <%=dto.getTitle() %></li>
-			  <li class="list-group-item">조회수 <%=dto.getViewCount() %></li>
-			  <li class="list-group-item">등록일 <%=dto.getRegdate() %></li>
-		</ul>
-		<div id="content">
-		<%=dto.getContent() %>
-		</div>
+<div class="container">
+	
+	  <div class="row">
+	    <div class="col-sm"><a href="list.jsp">건강레시피</a></div>
+	  </div>
+	  <div class="row">
+	    <div class="col-sm-10" style="font-size:20px; font-weight:bold;"><%=dto.getTitle() %></div>
+	    <div class="col-sm-2">조회수 <%=dto.getViewCount() %></div>
+	  </div>	
+	  <div class="row">
+	    <div class="col-sm"><%=dto.getWriter() %></div>
+	  </div>
+	  <div class="row">
+	    <div class="col-sm" id="content"><%=dto.getContent() %></div>
+	  </div>
+	  <div class="row">
+	    <div class="col-sm" style="font-size:13px;"><%=dto.getRegdate() %></div>
+	  </div>
 		<ul id="private">
 	      <%if(dto.getWriter().equals(id)){ %>
-	         <li id="user"><a href="private/updateform.jsp?num=<%=dto.getNum()%>">수정</a></li>
-	         <li id="user"><a href="private/delete.jsp?num=<%=dto.getNum()%>">삭제</a></li>
+	         <li><a href="private/updateform.jsp?num=<%=dto.getNum()%>">수정</a></li>
+	         <li><a href="private/delete.jsp?num=<%=dto.getNum()%>">삭제</a></li>
 	      <%} %>
-	       <li><a href="list.jsp">목록보기</a></li>
 	   	</ul>
+
+
+
+		
 	   	<!-- 댓글  -->
 	 <div class="comments">
       <ul>
@@ -235,13 +260,11 @@
             <%if(tmp.getNum() == tmp.getComment_group()){ %>
             <li id="reli<%=tmp.getNum()%>">
             <%}else{ %>
-            <li id="reli<%=tmp.getNum()%>" style="padding-left:50px;">
-               <svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
-               </svg>
+            <li id="reli<%=tmp.getNum()%>" style="padding: 1px; background-color:#f4f5f7; margin-left:40px; border-radius: 20px;">
+               
             <%} %>
-               <dl>
-                  <dt>
+               <dl style="margin:3px;">
+                  <dd>
                   <%if(tmp.getProfile() == null){ %>
                      <svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                           <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -251,23 +274,25 @@
                      <img class="profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile()%>"/>
                   <%} %>
                   
-                     <span><%=tmp.getWriter() %></span>
+                     <span><strong><%=tmp.getWriter() %></span></strong>
                      
                   <%if(tmp.getNum() != tmp.getComment_group()){ %>
-                     @<i><%=tmp.getTarget_id() %></i>
+                     <span style="color:#2252e3;">@<i><%=tmp.getTarget_id() %></i></span>
                   <%} %>
-                  
-                     <span><%=tmp.getRegdate() %></span>
+                  		
+                  	<a id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></a>
+                            
+                  </dd>
+                  <dd id="reply_info">
+                     <span><%=tmp.getRegdate() %></span>     
                      
-                     <a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply-link">답글</a>
+                    <a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply-link">답글</a>
                      
                   <%if(id != null && tmp.getWriter().equals(id)){ %>
                      <a data-num="<%=tmp.getNum() %>" class="update-link" href="javascript:">수정</a>
                      <a data-num="<%=tmp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
-                  <%} %>            
-                  </dt>
-                  <dd>
-                     <pre id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></pre>                  
+                  <%} %>  
+                          
                   </dd>
                </dl>   
                <form id="reForm<%=tmp.getNum() %>" class="re-insert-form" 
@@ -279,7 +304,7 @@
                   <input type="hidden" name="comment_group"
                      value="<%=tmp.getComment_group()%>"/>
                   <textarea name="content"></textarea>
-                  <button type="submit">등록</button>
+                  <button class="btn btn-primary" type="submit">등록</button>
                </form>   
                <%if(tmp.getWriter().equals(id)){ %>   
                <form id="updateForm<%=tmp.getNum() %>" class="comment-form update-form" 
@@ -292,6 +317,10 @@
             </li>
          <%} %>
       </ul>
+      	<div id="view_more" >
+			<%-- ajax 로 전송할 것 --%>
+			<a href="javascript:" class="link-secondary">댓글 더 보러 가기(ง ᵕᴗᵕ)ว</a>
+		</div>
    </div>
    
     <div class="loader">
@@ -309,7 +338,7 @@
       <input type="hidden" name="target_id" value="<%=dto.getWriter()%>"/>
       
       <textarea name="content"><%if(!isLogin){%>댓글 작성을 위해 로그인이 필요 합니다.<%}%></textarea>
-      <button type="submit">등록</button>
+      <button class="btn btn-primary" type="submit">등록</button>
    </form>
 </div>
 
@@ -327,7 +356,7 @@
             e.preventDefault();
             //로그인 폼으로 이동 시킨다.
             location.href=
-               "${pageContext.request.contextPath}/users/loginform.jsp?url=${pageContext.request.contextPath}/hfood/detail.jsp?num=<%=num%>";
+               "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/hfood/detail.jsp?num=<%=num%>";
          }
       });
    
@@ -346,61 +375,42 @@
    //마지막 페이지는 totalPageCount 이다.  
    let lastPage=<%=totalPageCount%>;
    
-   //추가로 댓글을 요청하고 그 작업이 끝났는지 여부를 관리할 변수 
-   let isLoading=false; //현재 로딩중인지 여부 
+   if(<%=totalRow %> <= 10){
+		document.querySelector("#view_more").style.display = "none";
+	}
+   document.querySelector("#view_more").addEventListener("click", function(){
+		//현재 댓글 페이지를 1 증가시키고
+		currentPage++;			
+		
+		//현재 페이지가 마지막 페이지보다 작거나 같을 때 -> 댓글 페이지 출력하기
+		if(currentPage <= lastPage){				
+			/*
+				해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
+				"pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다.
+			*/
+			ajaxPromise("${pageContext.request.contextPath}/videos/ajax_comment_list.jsp", "post", "pageNum="+currentPage+"&num="+<%=num %>)
+			.then(function(response){
+				return response.text();
+			})
+			.then(function(data){
+				//data 에는 html text 가 들어있다.
+				document.querySelector(".comment_list").insertAdjacentHTML("beforeend", data);
+				
+				//새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록하기
+				addDeleteListener(".page-" + currentPage + " .delete_link");
+				addReplyListener(".page-" + currentPage + " .reply_link");
+				addUpdateFormListener(".page-" + currentPage + " .update_form");
+				addUpdateListener(".page-" + currentPage + " .update_link");
+			});
+		}
+		
+		if(currentPage == lastPage){
+			document.querySelector("#view_more").style.display = "none";
+		}else{
+			document.querySelector("#view_more").steyl.display = "block";
+		}
+	});
    
-   /*
-      window.scrollY => 위쪽으로 스크롤된 길이
-      window.innerHeight => 웹브라우저의 창의 높이
-      document.body.offsetHeight => body 의 높이 (문서객체가 차지하는 높이)
-   */
-   window.addEventListener("scroll", function(){
-      //바닥 까지 스크롤 했는지 여부 
-      const isBottom = 
-         window.innerHeight + window.scrollY  >= document.body.offsetHeight;
-      //현재 페이지가 마지막 페이지인지 여부 알아내기
-      let isLast = currentPage == lastPage;   
-      //현재 바닥까지 스크롤 했고 로딩중이 아니고 현재 페이지가 마지막이 아니라면
-      if(isBottom && !isLoading && !isLast){
-         //로딩바 띄우기
-         document.querySelector(".loader").style.display="block";
-         
-         //로딩 작업중이라고 표시
-         isLoading=true;
-         
-         //현재 댓글 페이지를 1 증가 시키고 
-         currentPage++;
-         
-         /*
-            해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
-            "pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다. 
-         */
-         ajaxPromise("ajax_comment_list.jsp","get",
-               "pageNum="+currentPage+"&num=<%=num%>")
-         .then(function(response){
-            //json 이 아닌 html 문자열을 응답받았기 때문에  return response.text() 해준다.
-            return response.text();
-         })
-         .then(function(data){
-            //data 는 html 형식의 문자열이다. 
-            console.log(data);
-            // beforebegin | afterbegin | beforeend | afterend
-            document.querySelector(".comments ul")
-               .insertAdjacentHTML("beforeend", data);
-            //로딩이 끝났다고 표시한다.
-            isLoading=false;
-            //새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록 하기 
-            addUpdateListener(".page-"+currentPage+" .update-link");
-            addDeleteListener(".page-"+currentPage+" .delete-link");
-            addReplyListener(".page-"+currentPage+" .reply-link");
-            //새로 추가된 댓글 li 요소 안에 있는 댓글 수정폼에 이벤트 리스너 등록하기
-            addUpdateFormListener(".page-"+currentPage+" .update-form");
-            
-            //로딩바 숨기기
-            document.querySelector(".loader").style.display="none";
-         });
-      }
-   });
       
     //인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 
       function addUpdateListener(sel){
@@ -455,7 +465,7 @@
                    const isMove=confirm("로그인이 필요 합니다. 로그인 페이지로 이동 하시겠습니까?");
                    if(isMove){
                       location.href=
-                         "${pageContext.request.contextPath}/users/loginform.jsp?url=${pageContext.request.contextPath}/hfood/detail.jsp?num=<%=num%>";
+                         "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/hfood/detail.jsp?num=<%=num%>";
                    }
                    return;
                 }
@@ -468,21 +478,18 @@
                 //현재 문자열을 읽어온다 ( "답글" or "취소" )
                 let current = this.innerText;
                 
+                form.style.display="none";
+                
                 if(current == "답글"){
                    //번호를 이용해서 댓글의 댓글폼을 선택해서 보이게 한다. 
                    form.style.display="block";
-                   form.classList.add("animate__flash");
                    this.innerText="취소";   
-                   form.addEventListener("animationend", function(){
-                      form.classList.remove("animate__flash");
-                   }, {once:true});
+
                 }else if(current == "취소"){
-                   form.classList.add("animate__fadeOut");
+                  
                    this.innerText="답글";
-                   form.addEventListener("animationend", function(){
-                      form.classList.remove("animate__fadeOut");
-                      form.style.display="none";
-                   },{once:true});
+                   form.style.display="none";
+                   
                 }
              });
           }
