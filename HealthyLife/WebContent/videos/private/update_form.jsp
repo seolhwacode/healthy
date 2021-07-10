@@ -21,39 +21,161 @@
 <style>
 	#content{
 		height: 300px;
-		width: 700px;
+		width: 670px;
 	}
 	.content_container{
 		margin-top: 20px;
 	}
+		
+	/*가운데 정렬*/
+	.container {
+		margin-top: 40px;
+		padding-bottom: 80px;
+		width: 700px;
+	}
+	/* 맨 위의 제목 & 게시글 작성 버튼 */
+	.WritingHeader{
+		display: flex;
+		justify-content: space-between;
+	    align-items: center;
+        border-bottom: solid 2px #1c3992;
+	}
+	
+	/* form 을 둘러싸는 div */
+	.form_wrapper div{
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	/* 게시글 등록 버튼 */
+	.WritingHeader #submit_button{
+		background-color: #1c3992;
+	    border-color: #1c3992;
+	    color: white;
+	}
+	.WritingHeader #go_back_button{
+		background-color: #777777;
+    	border-color: #777777;
+    	color: white;
+	}
+
+	/* form select -> 색 변경 & 커서 올리면 사람 손 선택 모양 */
+	#type{
+		border-color: #b4c0e4;
+	    cursor: pointer;
+	}
+	/* form-control -> 색 변경 */
+	.form-control{
+		border-color: #b4c0e4;
+	}
+	
+	/* form 의 버튼 안보이게하기 */
+	.form_wrapper button{
+		display: none;
+	}
+	
+	/* type 입력 : label 과 input 나란히 놓기 */
+	.type_wrapper{
+		display: flex;
+		align-items: center;
+	}
+	.type_label_div label{
+		margin: auto 0;
+	    margin-right: 10px;
+	    width: 80px;
+	}
+	.type_input_div{
+		flex-grow: 19;
+	}
+	
+	/* title 입력 : label 과 input 나란히 놓기 */
+	.title_wrapper{
+		display: flex;
+		align-items: center;
+	}
+	.title_label_div label{
+		margin: auto 0;
+	    margin-right: 10px;
+	    width: 80px;
+	}
+	.title_input_div{
+		flex-grow: 19;
+	}
+	
+	/* title 입력 : label 과 input 나란히 놓기 */
+	.video_wrapper{
+		display: flex;
+		align-items: center;
+	}
+	.video_label_div label{
+		margin: auto 0;
+	    margin-right: 10px;
+	    width: 80px;
+	}
+	.video_input_div{
+		flex-grow: 19;
+	}
+	
+	
 </style>
 </head>
 <body>
+	<jsp:include page="../../include/navbar.jsp"></jsp:include>
 	<div class="container">
-		<h1>게시글 수정</h1>
-		<form action="${pageContext.request.contextPath}/videos/private/update.jsp" method="post" id="updateForm">
-			<input type="hidden" name="num" value="<%=num %>" />
+		<div class="WritingHeader">
 			<div>
-				<label class="form-label" for="title">제목</label>
-				<input class="form-control" type="text" id="title" name="title" value="<%=dto.getTitle() %>" />
+				<h1>게시글 수정</h1>
 			</div>
 			<div>
-				<label class="form-label" for="video">동영상</label>
-				<input class="form-control" type="url" id="video" name="video" value="<%=dto.getVideo()%>"/>
+				<a class="btn" id="submit_button">수정</a>
+				<a class="btn" id="go_back_button">취소</a>
 			</div>
-			<div>
-				<label class="form-label" for="content">내용</label>
-				<textarea name="content" id="content"><%=dto.getContent() %></textarea>
-			</div>
-			<button class="btn btn-primary" type="submit">수정</button>
-			<button class="btn btn-danger" id="goBackBtn">취소</button>
-		</form>
+		</div>
+		
+		<div class="form_wrapper">
+			<form action="${pageContext.request.contextPath}/videos/private/update.jsp" method="post" id="updateForm">
+				<input type="hidden" name="num" value="<%=num %>" />
+				<div class="type_wrapper">
+					<div class="type_label_div">
+						<label class="form-label" for="type">카테고리</label>
+					</div>
+					<div class="type_input_div">
+						<select class="form-select" name="type" id="type">
+				        	<option value="not-selected">카테고리를 선택해주세요.</option>
+				            <option value="yoga" <%="yoga".equals(dto.getType())?"selected":"" %>>요가</option>
+				            <option value="stretching" <%="stretching".equals(dto.getType())?"selected":"" %>>스트레칭</option>
+				            <option value="diet" <%="diet".equals(dto.getType())?"selected":"" %>>다이어트</option>
+				            <option value="rehabili" <%="rehabili".equals(dto.getType())?"selected":"" %>>재활 및 교정</option>
+				        </select>
+					</div>
+				</div>
+				<div class="title_wrapper">
+					<div class="title_label_div">
+						<label class="form-label" for="title">제목</label>
+					</div>
+					<div class="title_input_div">
+						<input class="form-control" type="text" id="title" name="title" value="<%=dto.getTitle() %>" />
+					</div>
+				</div>
+				<div class="video_wrapper">
+					<div class="video_label_div">
+						<label class="form-label" for="video">동영상</label>
+					</div>
+					<div class="video_input_div">
+						<input class="form-control" type="url" id="video" name="video" value="<%=dto.getVideo()%>"/>
+					</div>
+				</div>
+				<div>
+					<textarea name="content" id="content"><%=dto.getContent() %></textarea>
+				</div>
+				<button type="submit">수정</button>
+			</form>
+		</div>
 	</div>
 	
 	<!-- SmartEditor 에서 필요한 javascript 로딩  -->
 	<script src="${pageContext.request.contextPath }/SmartEditor/js/HuskyEZCreator.js"></script>
 	<script>
-		document.querySelector("#goBackBtn").addEventListener("click", function(e){
+		document.querySelector("#go_back_button").addEventListener("click", function(e){
 			//혹시 모를 폼 제출 막기
 			e.preventDefault();
 			location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num %>";
@@ -120,6 +242,12 @@
 			
 			<%-- url 검사는 input 에서 자동으로 해줌 -> 필요없어짐(삭제) --%>
 			<%-- content 는 없을 수도 있다. --%>
+		});
+		
+		//등록 버튼 -> form 내부의 submit 버튼 눌러지게 하기
+		document.querySelector("#submit_button").addEventListener("click", function(){
+			//form 의 submit 버튼 눌러지게 하기
+			document.querySelector("#updateForm button").click();
 		});
 	</script>
 </body>

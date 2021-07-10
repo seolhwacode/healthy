@@ -138,6 +138,9 @@
 		color : #2252e3;
 		font-size :20px;
 	}
+	.content_align_left{
+		text-align: left;
+	}
 	
 	
 	.pagination {
@@ -226,7 +229,7 @@
 			<%for(VideosDto tmp:list){ %>
 				<tr>
 					<td><%=tmp.getNum() %></td>
-					<td>
+					<td class="content_align_left" style="padding-left: 30px;padding-right: 30px;">
 						<a href="${pageContext.request.contextPath}/videos/detail.jsp?num=<%=tmp.getNum() %>&condition=<%=condition%>&keyword=<%=keyword%>&type=<%=type %>">
 							<span>[<%=tmp.getType() %>]</span>
 							<%=tmp.getTitle() %>
