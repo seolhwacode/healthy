@@ -9,6 +9,8 @@
 <%
 	int num=Integer.parseInt(request.getParameter("num"));
 	
+	HfoodDao.getInstance().addViewCount(num);
+
 	String keyword=request.getParameter("keyword");
 	String condition=request.getParameter("condition");
 	//만일 키워드가 넘어오지 않는다면 
