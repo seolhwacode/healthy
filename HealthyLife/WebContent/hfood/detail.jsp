@@ -132,6 +132,7 @@
    }
    .comment-form textarea, .comment-form button{
       float: left;
+      margin-bottom : 20px;
    }
    .comments li{
       clear: left;
@@ -202,7 +203,14 @@
       animation: rotateAni 1s ease-out infinite;
    }
   
+   .content_loading {
+   		display: table;
+   		margin: auto;	
+   }
    
+    .content_loading>#cl {
+   		margin: 20px;
+   }
    @keyframes rotateAni{
       0%{
          transform: rotate(0deg);
@@ -340,6 +348,25 @@
       <textarea name="content"><%if(!isLogin){%>댓글 작성을 위해 로그인이 필요 합니다.<%}%></textarea>
       <button class="btn btn-primary" type="submit">등록</button>
    </form>
+   
+   <!-- 이전글 다음글 로딩 -->
+   <div class="content_loading">
+	   <%if(dto.getPrevNum()!=0){ %>
+      	<a id="cl" href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">
+		    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#2252e3" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+	 		 	<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+			</svg>
+		</a>
+	   <%} %>
+	   <%if(dto.getNextNum()!=0){ %>
+	      <a id="cl" href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">
+	      	<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="#2252e3" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+	 		 	<path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
+			</svg>
+	      </a>
+	   <%} %>
+
+   </div>
 </div>
 
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
