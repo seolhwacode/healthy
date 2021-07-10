@@ -106,9 +106,8 @@
 
 	.container {
 		text-align: center;
+		width:75%;
 	}
-	
-	
 	
 	#insert {
 		text-align: right;
@@ -116,8 +115,9 @@
 	}
 	
 	h1 {
-		margin-bottom:20px !important;
+		margin-bottom:35px !important;
 		text-align: center;
+		
 	}
 	
    
@@ -147,8 +147,7 @@
 	  float: left;
 	  padding: 5px 13px;
 	  text-decoration: none;
-	  margin:10px -3px 10px -3px;
-	  line-height:23px;
+	  margin:20px -3px 20px -3px;
 	  vertical-align:middle;
 	  font-size:16px;
 	}

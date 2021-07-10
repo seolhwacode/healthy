@@ -55,7 +55,7 @@ body {
     display: block;
     margin-bottom: 30px;
     border: 3px solid white;
-    font-family: 'Noto Serif KR', serif;
+    font-family: 'Noto Sans KR', sans-serif;
     box-shadow: 3px 3px 7px grey;
 }
 
@@ -63,15 +63,15 @@ a { text-decoration: none; }
 
 p{
 	color: white;
-    font-family: 'Noto Serif KR', serif;
+    font-family: 'Noto Sans KR', sans-serif;
     text-shadow: 3px 3px 7px grey;
     font-size: 40px;
-    margin:0px 0px 20px 0px;
+   
 }
 
 #reply { 
 	color: white;
-    font-family: 'Noto Serif KR', serif;
+  	font-family: 'Noto Sans KR', sans-serif;
     text-shadow: 3px 3px 7px grey;
     font-size: 20px;
     margin:0px 0px 30px 0px;
@@ -82,10 +82,10 @@ p{
 </style>
 </head>
 <body>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
 	<%if(isValid){ %>
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 			<script>
@@ -101,9 +101,9 @@ p{
 			<p><strong><%=id %></strong>님 반갑습니다! </p>
 			<br />
 			<%-- 그냥 확인을 누르면 login_form.jsp 를 호출했던 page 로 이동한다. --%>
-			<button type="button" class="btn btn-secondary btn-lg"> <a class="link-light" href="<%=url %>"> 원래 있던 페이지로 돌아가기 </a></button>
+			<button type="button" class="btn btn-outline-secondary btn-lg"> <a class="link-light" href="<%=url %>"> 원래 있던 페이지로 돌아가기 </a></button>
 			
-			<button type="button" class="btn btn-secondary btn-lg"><a class="link-light" href="${pageContext.request.contextPath}/index.jsp"> 메인화면으로 가기 </a></button>
+			<button type="button" class="btn btn-outline-secondary btn-lg"><a class="link-light" href="${pageContext.request.contextPath}/index.jsp"> 메인화면으로 가기 </a></button>
 		</div>
 	<%}else{ %>
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -118,8 +118,8 @@ p{
 			
 		<div class="container">
 			<p id="reply">입력한 내용을 다시 확인해주세요.</p>
-			<button type="button" class="btn btn-secondary btn-lg"><a class="link-light" href="${pageContext.request.contextPath}/index.jsp">메인으로 돌아가기</a></button>
-			<button type="button" class="btn btn-secondary btn-lg"><a class="link-light" href="${pageContext.request.contextPath}/users/login_form.jsp?url=<%=encodedUrl %>">다시 시도</a></button>
+			<button type="button" class="btn btn-outline-secondary"><a class="link-light" href="${pageContext.request.contextPath}/index.jsp">메인으로 돌아가기</a></button>
+			<button type="button" class="btn btn-outline-secondary"><a class="link-light" href="${pageContext.request.contextPath}/users/login_form.jsp?url=<%=encodedUrl %>">다시 시도</a></button>
 		</div>
 	<%} %>
 </body>
