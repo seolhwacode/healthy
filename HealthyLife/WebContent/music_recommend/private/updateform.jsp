@@ -11,30 +11,36 @@
 <head>
 <meta charset="UTF-8">
 <title>/music_recommend/private/updateform.jsp</title>
+<jsp:include page="../../include/resource.jsp"></jsp:include>
+<style>
+   #content{
+      height: 500px;
+   }
+</style>
 </head>
 <body>
 <div class="container">
    <h1>글 수정 폼</h1>
-   <form action="update.jsp" method="post">
+   <form action="update.jsp" method="post" id="updateForm">
       <input type="hidden" name="num" value="<%=num %>" />
-      <div>
+      <div class="mb-3">
          <label for="writer">작성자</label>
          <input type="text" id="writer" value="<%=dto.getWriter() %>" disabled/>
       </div>
       <div>
-         <label for="title">제목</label>
-         <input type="text" name="title" id="title" value="<%=dto.getTitle()%>"/>
-      </div>
-      <div>
-         <label for="content">내용</label>
-         <textarea name="content" id="content"><%=dto.getContent() %></textarea>
+         <label class="form-label" for="title">제목</label>
+         <input class="form-control" type="text" name="title" id="title" value="<%=dto.getTitle()%>"/>
       </div>
       <div class="mb-3">
-         <label for="music">음악 주소</label>
-         <textarea name="music" id="music"><%=dto.getMusic() %></textarea>
+         <label class="form-label" for="content">내용</label>
+         <textarea class="form-control" name="content" id="content"><%=dto.getContent() %></textarea>
       </div>
-      <button type="submit" onclick="submitContents(this);">수정확인</button>
-      <button type="reset">취소</button>
+      <div class="mb-3">
+         <label class="form-label" for="music">음악 주소</label>
+         <textarea class="form-control" name="music" id="music"><%=dto.getMusic() %></textarea>
+      </div>
+      <button class="btn btn-primary" type="submit" onclick="submitContents(this);">수정확인</button>
+      <button class="btn btn-primary" type="reset">취소</button>
    </form>
 </div>
 <!-- SmartEditor 에서 필요한 javascript 로딩  -->
@@ -87,7 +93,7 @@
    
    function setDefaultFont() {
       var sDefaultFont = '궁서';
-      var nFontSize = 20;
+      var nFontSize = 24;
       oEditors.getById["content"].setDefaultFont(sDefaultFont, nFontSize);
    }
 </script>

@@ -1,5 +1,3 @@
-<%@page import="test.users.dao.UsersDao"%>
-<%@page import="test.users.dto.UsersDto"%>
 <%@page import="java.util.List"%>
 <%@page import="music.rmd.dto.MRCDto"%>
 <%@page import="music.rmd.dao.MRCDao"%>
@@ -198,9 +196,15 @@
          transform: rotate(360deg);
       }
    }
+   .btn{ display: block; width: 200px; height: 50px; background: #4ac4f3;
+	text-decoration: none; text-align: center; line-height: 50px; color: #fff;
+	border-radius:50px;}
+	
 </style>
+<jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
+<jsp:include page="/include/navbar.jsp"></jsp:include>
 <div class="container">
    <%if(dto.getPrevNum()!=0){ %>
       <a href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">이전글</a>
@@ -242,6 +246,9 @@
 			<iframe width="560" height="315" src="<%=Music %>" title="YouTube video player" frameborder="0" 
 			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 			</iframe>
+		</td>
+		<td>
+			<a id="pop_one" href="#pop1" class="btn">팝업열기</a>
 		</td>
 	  </tr>
       <tr>
@@ -482,7 +489,7 @@
                const isMove=confirm("로그인이 필요 합니다. 로그인 페이지로 이동 하시겠습니까?");
                if(isMove){
                   location.href=
-                     "${pageContext.request.contextPath}/users/loginform.jsp?url=${pageContext.request.contextPath}/cafe/detail.jsp?num=<%=num%>";
+                     "${pageContext.request.contextPath}/users/loginform.jsp?url=${pageContext.request.contextPath}/music_recommend/detail.jsp?num=<%=num%>";
                }
                return;
             }
@@ -548,7 +555,9 @@
             });
          });
       }
-
+	document.querySelector("#pop_one").addEventListener("click", function(){
+		window.open("popup.jsp", "small", "width=1000,height=800,top=100,left=100");
+	});
    }
 </script>
 </body>

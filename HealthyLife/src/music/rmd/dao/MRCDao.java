@@ -37,7 +37,7 @@ public class MRCDao {
 	         conn = new DbcpBean().getConn();
 	         //실행할 sql 문 작성
 	         String sql = "SELECT NVL(MAX(ROWNUM), 0) AS count "
-	               + " FROM board_cafe_comment"
+	               + " FROM board_music_comment"
 	               + " WHERE ref_group=?";
 	         //PreparedStatement 객체의 참조값 얻어오기
 	         pstmt = conn.prepareStatement(sql);
@@ -73,7 +73,7 @@ public class MRCDao {
 	      try {
 	         conn = new DbcpBean().getConn();
 	         //실행할 sql 문 작성
-	         String sql = "UPDATE board_cafe_comment"
+	         String sql = "UPDATE board_music_comment"
 	               + " SET content=?"
 	               + " WHERE num=?";
 	         pstmt = conn.prepareStatement(sql);
@@ -108,7 +108,7 @@ public class MRCDao {
 	      try {
 	         conn = new DbcpBean().getConn();
 	         //실행할 sql 문 작성
-	         String sql = "UPDATE board_cafe_comment"
+	         String sql = "UPDATE board_music_comment"
 	               + " SET deleted='yes'"
 	               + " WHERE num=?";
 	         pstmt = conn.prepareStatement(sql);
@@ -149,10 +149,10 @@ public class MRCDao {
 	               "   (SELECT result1.*, ROWNUM AS rnum" + 
 	               "    FROM" + 
 	               "      (SELECT num, writer, content, target_id, ref_group," + 
-	               "      comment_group, deleted, board_cafe_comment.regdate, profile" + 
-	               "      FROM board_cafe_comment" + 
+	               "      comment_group, deleted, board_music_comment.regdate, profile" + 
+	               "      FROM board_music_comment" + 
 	               "      INNER JOIN users" + 
-	               "      ON board_cafe_comment.writer = users.id" + 
+	               "      ON board_music_comment.writer = users.id" + 
 	               "      WHERE ref_group=?" + 
 	               "      ORDER BY comment_group DESC, num ASC) result1)" + 
 	               " WHERE rnum BETWEEN ? AND ?";
@@ -204,7 +204,7 @@ public class MRCDao {
 	         //Connection 객체의 참조값 얻어오기 
 	         conn = new DbcpBean().getConn();
 	         //실행할 sql 문 작성
-	         String sql = "SELECT board_cafe_comment_seq.NEXTVAL AS seq"
+	         String sql = "SELECT board_music_comment_seq.NEXTVAL AS seq"
 	               + " FROM DUAL";
 	         //PreparedStatement 객체의 참조값 얻어오기
 	         pstmt = conn.prepareStatement(sql);
@@ -238,7 +238,7 @@ public class MRCDao {
 	      try {
 	         conn = new DbcpBean().getConn();
 	         //실행할 sql 문 작성
-	         String sql = "INSERT INTO board_cafe_comment"
+	         String sql = "INSERT INTO board_music_comment"
 	               + " (num, writer, content, target_id, ref_group, comment_group, regdate)"
 	               + " VALUES(?, ?, ?, ?, ?, ?, SYSDATE)";
 	         pstmt = conn.prepareStatement(sql);

@@ -86,7 +86,7 @@
    
    function setDefaultFont() {
       var sDefaultFont = '궁서';
-      var nFontSize = 20;
+      var nFontSize = 24;
       oEditors.getById["content"].setDefaultFont(sDefaultFont, nFontSize);
    }
    
