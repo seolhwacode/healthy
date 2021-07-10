@@ -58,7 +58,9 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../../include/navbar.jsp"></jsp:include>
+	<jsp:include page="../../include/navbar.jsp">
+		<jsp:param value="videos" name="thisPage"/>
+	</jsp:include>
 	<div class="container">
 		<div class="WritingHeader">
 			<div>

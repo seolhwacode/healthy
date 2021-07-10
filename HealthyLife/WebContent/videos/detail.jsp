@@ -198,6 +198,9 @@
 </style>
 </head>
 <body>
+	<jsp:include page="../include/navbar.jsp">
+		<jsp:param value="videos" name="thisPage"/>
+	</jsp:include>
 	<div class="container">
 		<div class="ArticleContentBox">
 			<%if(resultDto.getPrevNum() != 0){ %>
@@ -407,7 +410,7 @@
 		addReplyListener(".reply_link");
 		addDeleteListener(".delete_link");
 		addUpdateFormListener(".update_form");
-		addUpdateListener(".update_link")
+		addUpdateListener(".update_link");
 	
 		//게시글 삭제 confirm 함수
 		function deleteConfirm(){
