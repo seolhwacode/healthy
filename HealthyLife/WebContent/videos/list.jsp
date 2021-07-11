@@ -205,10 +205,23 @@
    	#type{
    		display: none;
    	}
+   	
+   	/*좋아요 대신 하트 해보기*/
+   	thead #good_icon{
+   		position: relative;
+	    top: 3px;
+   		display: inline-block;
+		width: 20px;
+		height: 20px;
+		background-image: url('https://ca-fe.pstatic.net/web-pc/static/img/ico-post-like-on-f-53535.svg?7eb6be9a4989d32af686acf09a07747d=');
+		background-repeat: no-repeat;
+	}
 </style>
 </head>
 <body>
-	<jsp:include page="../include/navbar.jsp"></jsp:include>
+	<jsp:include page="../include/navbar.jsp">
+		<jsp:param value="videos" name="thisPage"/>
+	</jsp:include>
 	<div class="container">
 		<h1>영상 자료실</h1>
 		<div id="insert">
@@ -222,7 +235,7 @@
 					<th scope="col">작성자</th>
 					<th scope="col">등록일</th>
 					<th scope="col">조회수</th>
-					<th scope="col">좋아요</th>
+					<th scope="col"><span id="good_icon"></span></th>
 				</tr>
 			</thead>
 			<tbody>
