@@ -1,3 +1,4 @@
+
 <%@page import="test.homeW.dao.HomeWDao"%>
 <%@page import="test.homeW.dto.HomeWDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -24,14 +25,26 @@
 </head>
 <body>
    <%if(isSuccess){ %>
+   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
    <script>
-      alert("새글이 추가 되었습니다.");
-      location.href="${pageContext.request.contextPath}/homeW/list.jsp";
+	   swal({
+	 	  title: "새글이 등록되었습니다!",
+	 	  icon: "success",
+	 	  button: "확인",
+	 	  
+	 	}).then(function() {
+	 		location.href="../list.jsp";
+	 	});
    </script>
    <%}else{ %>
+   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
    <script>
-      alert("글 작성을 실패 했습니다");
-      location.href="${pageContext.request.contextPath}/homeW/private/insert_form.jsp";
+	   swal({
+	     	title: "작성 실패!",
+	     	button: "다시 작성하기"     	  
+	 	}).then(function() {
+	 		location.href="insert_form.jsp";
+	 	});
    </script>
    <%} %>
 </body>
