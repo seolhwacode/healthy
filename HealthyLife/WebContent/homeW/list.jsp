@@ -1,3 +1,4 @@
+
 <%@page import="java.net.URLEncoder"%>
 <%@page import="test.homeW.dao.HomeWDao"%>
 <%@page import="java.util.List"%>
@@ -6,7 +7,7 @@
     pageEncoding="UTF-8"%>
 <%
    //한 페이지에 몇개씩 표시할 것인지
-   final int PAGE_ROW_COUNT=10;
+   final int PAGE_ROW_COUNT=3;
    //하단 페이지를 몇개씩 표시할 것인지
    final int PAGE_DISPLAY_COUNT=5;
    
@@ -100,77 +101,100 @@
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <style>
 	
-   .page-ui a{
-      text-decoration: none;
-      color: #000;
-      
-   }
-   
-   .page-ui a:hover{
-      text-decoration: underline;
-   }
-   
-   .page-ui a.active{
-      color: red;
-      font-weight: bold;
-      text-decoration: underline;
-   }
-   .page-ui ul{
-      list-style-type: none;
-      padding: 0;
-     
-   }
-   
-   .page-ui ul > li{
-      float: left;
-      padding: 5px;
-   }
-   
-   #pageUl{
-   		  display: inline-block;
-   }
-   .page-ui{
-   		
-   		text-align:center;
-   }			  
-    
-   
-   h1{
-   		margin-top:30px !important;
-   		margin-bottom:30px !important;
-   		
-   		
-   }
-   #saveId{
-   			text-decoration:none;
-   			color:white;
-   			
-   }
-   .container{
-   		position:rabsolute;
-   }
-   form{
-   		text-align:center;
-   }
-   .btn{
-   		position:relative,top:60px, bottom:0px, right:0px;
-   }
-   th{
-   		color:#2252e3;
-   		font-size:large;
-   		font-weight:bold;
-   		
-   }
-   table{
-   	  text-align:center;
-   }
-   #searchBtn{
-   	margin-left: -8px;
-   	width:40px;
-   	background-color:#2252e3;
-   	border-radius: 3.5px;
-   	
-   }
+  /*가운데 정렬*/
+	.container {
+		text-align: center;
+		margin-top: 40px;
+		padding-bottom: 80px;
+	}
+	
+	#insert{
+		text-align: right;
+		margin-top: 10px;
+	}
+	
+	#table{
+		margin-top: 10px;
+	}
+	thead{
+		background:white;
+		color : #2252e3;
+		font-size :20px;
+	}
+	.content_align_left{
+		text-align: left;
+	}
+	
+	
+	.pagination {
+	  display: inline-block;
+	  margin-top: 10px;
+	  margin-bottm: 10px;
+	}
+	
+	.pagination a {
+	  color: black;
+	  float: left;
+	  padding: 5px 13px;
+	  text-decoration: none;
+	  margin: 5px;
+	  vertical-align:middle;
+	  font-size:16px;
+	}
+	
+	.pagination>#pageNum {
+		border : 2px solid #2252e3;
+	  	border-radius: 50%;
+	}
+	
+	.pagination a.active {
+	  background-color: #2252e3;
+	  color: white;
+	  border-radius: 50%;
+	  font-weight:bold;
+	}
+	
+	.pagination #pageNum:hover:not(.active) {
+	  background-color: lightgray;
+	  border-radius:  50%;
+	}
+	
+	/* 검색창 */
+	.seartch_wrapper{
+		margin-top: 15px;
+	}
+	input:focus { 
+		outline: none !important;
+    	border-color: #2252e3;
+    	box-shadow: 0 0 3px #2252e3;
+	}
+	.seartch_wrapper{
+		display: flex;
+	    align-items: center;
+	    padding: .375rem .75rem;
+	    justify-content: center;
+	}
+	.input-group-text{
+		border: none;
+		background-color: white;
+	}
+	.input-group{
+		display:flex;
+		justify-content: center;
+	}
+	.search_submit{
+	    background-color: #2252e3;
+	    color: white;
+	    border-radius: .25rem;
+	    border: none;
+        padding: 1px 12px;
+	}
+   	#type{
+   		display: none;
+   	}
+   	#saveId{
+   		color:white;
+   	}
 </style>
 </head>
 <body>
@@ -182,7 +206,7 @@
 	<h1>🦾홈트 정보 공유 게시판🦾</h1>
 	<table class="table">
 		<thead>
-			<tr class="table">
+			<tr id="thead">
 				<th scope="col">번호</th>
 				<th scope="col">작성자</th>
 				<th scope="col">제목</th>
@@ -196,7 +220,7 @@
             <td><%=tmp.getNum() %></td>
             <td><%=tmp.getWriter() %></td>
             <td>
-               <a href="detail.jsp?num=<%=tmp.getNum() %>"><%=tmp.getTitle()%></a>
+               <a href="detail.jsp?num=<%=tmp.getNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>"><%=tmp.getTitle()%></a>
             </td>
             <td><%=tmp.getViewCount() %></td>
             <td><%=tmp.getRegdate() %></td>
@@ -204,52 +228,68 @@
       	<%} %>
 		</tbody>
 	</table>
-	<div class="page-ui clearfix">
-      <ul id="pageUl">
+	<div  class="pagination ">
+      
          <%if(startPageNum != 1){ %>
-            <li>
-               <a href="list.jsp?pageNum=<%=startPageNum-1 %>">Prev</a>
-            </li>   
-         <%} %>
+            <a>
+               	<a href="list.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">
+               	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2252e3" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+				  <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+				</svg>
+               	</a>
+            </a>   
+         <% } %>
          
          <%for(int i=startPageNum; i<=endPageNum ; i++){ %>
-            <li>
+            <a >
                <%if(pageNum == i){ %>
-                  <a class="active" href="list.jsp?pageNum=<%=i %>"><%=i %></a>
+                  <a id=pageNum class="active" href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
                <%}else{ %>
-                  <a href="list.jsp?pageNum=<%=i %>"><%=i %></a>
+                  <a id=pageNum href="list.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
                <%} %>
-            </li>   
+            </a>   
          <%} %>
          <%if(endPageNum < totalPageCount){ %>
-            <li>
-               <a href="list.jsp?pageNum=<%=endPageNum+1 %>">Next</a>
-            </li>
+            <a>
+               	<a href="list.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">
+               	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2252e3" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+				  <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+				</svg>
+				</a>
+            </a>
          <%} %>
-      </ul>
+        
+      
    </div>
-   
-   <div style="clear:both;"></div>
-   
-   <form action="list.jsp" method="get"> 
-      <select name="condition" id="condition">
-         <option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
-         <option value="title" <%=condition.equals("title") ? "selected" : ""%>>제목</option>
-         <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
-      </select>
-      <input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요 " value="<%=keyword%>"/>
-      <button id="searchBtn" type="submit">
-      	<svg style="color:white" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-  			<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-		</svg>
-      </button>
-   </form>   
-   
-   <%if(!condition.equals("")){ %>
+	<div style="clear:both;"></div> <!-- 부트스트랩에서 clearfix를 포함하고 있어 현재 jsp에서는 생략 가능  -->
+   		
+   		<div class="input-group mb-3">
+   		<form class="input-group-text" id="search" action="list.jsp" method="get" style="display: flex; justify-content: center;"> 
+	      	<select name="condition" id="condition">
+		         <option value="title_content" <%=condition.equals("title_content") ? "selected" : ""%>>제목+내용</option>
+		         <option value="title" <%=condition.equals("title") ? "selected" : ""%>>제목</option>
+		         <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
+	      	</select>
+      	<!-- style="display: flex; justify-content: center;" 감싸는 outer에 배치하면 가운데 정렬할 수 있음  -->
+	      		<div class="input-group-text">
+	      		<input class= "border border-secondary" type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" value="<%=keyword%>"/>
+	      		<button type="submit" style="background-color: #2252e3; color:white;" class="input-group-text" id="inputGroupPrepend2">
+	      		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	  				<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+				</svg>
+				</button>
+				</div>
+   		</form>
+   		</div>
+
+
+   	<%if(!condition.equals("")){ %>
       <p>
          <strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
       </p>
-   <%} %>
+   	<%} %>
 </div>
 </body>
 </html>
