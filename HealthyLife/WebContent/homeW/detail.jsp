@@ -1,3 +1,5 @@
+
+
 <%@page import="java.util.List"%>
 <%@page import="test.homeW.dao.HomeWCommentDao"%>
 <%@page import="test.homeW.dto.HomeWCommentDto"%>
@@ -96,9 +98,13 @@
 <meta charset="UTF-8">
 <title>/homeW/detail.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
 <style>
    .content{
       border: 1px solid gray;
+      
    }
    
    /* 댓글 프로필 이미지를 작은 원형으로 만든다. */
@@ -122,20 +128,32 @@
    }
    .comment-form textarea, .comment-form button{
       float: left;
+      margin-bottom: 40px;
+      position:relative; left:120px;
+      
    }
    .comments li{
       clear: left;
    }
    .comments ul li{
       border-top: 1px solid #888;
+       width: 700px;
+       margin: 20px 20px;
    }
    .comment-form textarea{
-      width: 84%;
+      width: 55%;
       height: 100px;
+      border-radius:10px;
+      border-color:	#aaaaaa;
+      
+      
    }
    .comment-form button{
-      width: 14%;
+      width: 10%;
       height: 100px;
+      background-color:#FFEFD5;
+ 	  border-radius:10px;
+ 	  border-color:#FFEFD5;
    }
    /* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다. */
    .comments .comment-form{
@@ -153,9 +171,9 @@
    }
    pre {
      display: block;
-     padding: 9.5px;
+     padding: 10px;
      margin: 0 0 10px;
-     font-size: 13px;
+     font-size: 15px;
      line-height: 1.42857143;
      color: #333333;
      word-break: break-all;
@@ -163,10 +181,12 @@
      background-color: #f5f5f5;
      border: 1px solid #ccc;
      border-radius: 4px;
+     width:600px;
    }  
    .loader{
    		/*로딩 이미지를 가운데 정렬하기 위해*/
    		text-align: center;
+   		position:relative; right:80px;
    		
    }
    
@@ -182,25 +202,61 @@
    			transform: rotate(360deg);
    		}
    }    
-
-
+	
+   h5{
+   	text-align:center;
+   	font-weight: bold;
+   }	
+  
+   .container{
+   		width:900px;
+   }
+   #preNum,#nextNum{
+   		text-decoration: none;
+   		color:black;
+   		
+   }
+  
+   #updateList{
+   		display:flex;
+   		flex-direction:row;
+		float: right;
+		
+		
+		
+   }
+   #updateList >ul>a{
+   		list-style:none;
+   		color:black;
+   }
+   
+    body{
+    	font-family: 'Noto Serif KR', serif;
+    }
+    #ranImg1, #ranImg2{
+    	display:flex;
+    	justify-content: center;
+    }
 </style>
 </head>
 <body>
 <div class="container">
 	 <%if(dto.getPrevNum()!=0){ %>
-      <a href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">이전글</a>
+      <a id="preNum" class="btn btn-outline-warning" href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">이전글</a>
 	 <%} %>
 	 <%if(dto.getNextNum()!=0){ %>
-	 	<a href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">다음글</a>
+	 	<a id="nextNum" class="btn btn-outline-warning" href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">다음글</a>
 	 <%} %>
-	 <ul>
-	 	<li><a href="list.jsp">목록보기</a></li> 
-	 	<%if(dto.getWriter().equals(id)){ %>
-	        <li><a href="private/updateform.jsp?num=<%=dto.getNum()%>">수정</a></li>
-	        <li><a href="private/delete.jsp?num=<%=dto.getNum()%>">삭제</a></li>
-      	<%} %>
-	 </ul>
+	 <div id="updateList" style="justify-content:space:between;" >
+	 	<ul >
+		 	<a class="btn btn-outline-warning" href="list.jsp" >목록보기</a>
+		 	<%if(dto.getWriter().equals(id)){ %>
+	        <a class="btn btn-outline-warning" href="private/update_form.jsp?num=<%=dto.getNum()%>">수정</a>
+	        <a class="btn btn-outline-warning" href="private/delete.jsp?num=<%=dto.getNum()%>">삭제</a>
+      		<%} %>
+	 	</ul>
+	 </div>
+	 
 	 <% if(!keyword.equals("")){ %>
      	<p>   
           <strong><%=condition %></strong> 조건, 
@@ -226,11 +282,11 @@
 	      </tr>
 	      <tr class="table">
 	         <td colspan="6">
-	            <div class="content"><%=dto.getContent() %></div>
+	            <div class="content" ><%=dto.getContent() %></div>
 	         </td>
 	      </tr>
 	   </table>
-	   <p><strong>홈트 관련 상품 구매하기</strong></p>
+	   <h5>홈트 관련 상품 구매하기</h5>
 	   <script language="JavaScript">
 			function random_imglink(){
 		    let myimages=new Array()
@@ -258,6 +314,8 @@
 		   }
 		   random_imglink()
 		   random_imglink()
+		  
+		   
 	  </script>
 	  
 	  <!-- 댓글 목록 -->
@@ -331,7 +389,7 @@
    </div>
 	  <br />
 	  <div class="loader">
-	  		<button type="submit">댓글 더보기</button>
+	  		<button class="btn btn-dark" type="submit">댓글 더보기</button>
 	  </div>
 	  <br />
 	  <!-- 원글의 댓글을 작성할 댓글 폼 -->
@@ -341,8 +399,8 @@
 	  		<input type="hidden" name="ref_group" value="<%=num %>" />
 	  		<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
 	  		<input type="hidden" name="target_id" value="<%=dto.getWriter() %>" />
-	  		<textarea name="content" ><%if(!isLogin) {%>로그인이 필요합니다.<%}else{%>댓글을 입력하세요..<%}%></textarea>
-	  		<button type="submit">확인</button>
+	  		<textarea class="form-control" name="content" ><%if(!isLogin) {%>로그인이 필요합니다.<%}else{%>댓글을 입력하세요..<%}%></textarea>
+	  		<button id="saveBtn" type="submit"><strong>확인</strong></button>
 	  </form>		
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>

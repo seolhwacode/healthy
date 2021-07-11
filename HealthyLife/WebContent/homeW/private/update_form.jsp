@@ -1,3 +1,5 @@
+
+
 <%@page import="test.homeW.dto.HomeWDto"%>
 <%@page import="test.homeW.dao.HomeWDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -13,26 +15,70 @@
 <head>
 <meta charset="UTF-8">
 <title>/homeW/private/update_form.jsp</title>
+<jsp:include page="../../include/resource.jsp"></jsp:include>
+
+<style>
+   #content{
+      height: 500px;
+   }
+   h1{
+   		margin-top:30px !important;
+   		margin-bottom:30px !important;
+   		padding:10px;
+   		border:solid; 
+   		border-color: #2252e3;
+   		
+   		
+   }
+   
+   #updateForm{
+   		width:700px;
+   		height:500px;
+   		margin:auto; 		
+   }
+   
+   .container{
+   		width:750px;
+   }
+ 
+   #hometImg{
+   		display:flex;
+   		flex-direction: row;
+   		justify-content: space-between;
+   		
+   }
+   #homeT1{
+   		width:120px;
+   }
+   
+  
+</style>
 </head>
 <body>
 <div class="container">
-   <h1>글 수정 폼 입니다.</h1>
-   <form action="update.jsp" method="post">
+	<div id="hometImg">
+		<img id="homeT1" src="../../ht_images/ht1.png"/>
+		<img id="homeT1" src="../../ht_images/ht1.png"/>
+		<img id="homeT1" src="../../ht_images/ht1.png"/>
+		<img id="homeT1" src="../../ht_images/ht1.png"/>
+	</div>
+   <h1 style="text-align:center;">글 수정 폼 입니다.</h1>
+   <form action="update.jsp" method="post" id="updateForm">
 	  <input type="hidden" name="num" value="<%=num %>"  />
-      <div>
-         <label for="writer">작성자</label>
-         <input type="text" id="writer" value="<%=dto.getWriter() %>" disabled/>
+      <div class="md-4">
+         <label class="form-label" for="writer">작성자</label>
+         <input class="form-control" type="text" id="writer" value="<%=dto.getWriter() %>" disabled/>
+      </div>
+      <div class="md-4">
+         <label class="form-label"  for="title">제목</label>
+         <input class="form-control" type="text" name="title" id="title" value="<%=dto.getTitle()%>"/>
       </div>
       <div>
-         <label for="title">제목</label>
-         <input type="text" name="title" id="title" value="<%=dto.getTitle()%>"/>
+         <label class="form-label" for="content">내용</label>
+         <textarea class="form-control" name="content" id="content"><%=dto.getContent() %></textarea>
       </div>
-      <div>
-         <label for="content">내용</label>
-         <textarea name="content" id="content"><%=dto.getContent() %></textarea>
-      </div>
-      <button type="submit" onclick="submitContents(this);">수정확인</button>
-      <button type="reset">취소</button>
+      <button class="btn btn-primary" type="submit" onclick="submitContents(this);">수정확인</button>
+      <button class="btn btn-primary" type="reset">취소</button>
    </form>
 </div>
 	<%--

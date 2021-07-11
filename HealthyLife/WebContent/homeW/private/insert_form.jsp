@@ -1,3 +1,6 @@
+
+
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -14,8 +17,10 @@
    h1{
    		margin-top:30px !important;
    		margin-bottom:30px !important;
-   		background-color:#2252e3;
-   		color:white;
+   		padding:10px;
+   		border:solid; 
+   		border-color: #2252e3;
+   		
    		
    }
    
@@ -26,35 +31,52 @@
    }
    
    .container{
-   		width:700px;
+   		width:750px;
    }
-   #dumImg1{
-   		position:relative; left:100px
-   }
-   
-   #dumImg2{
+ 
+   #hometImg{
+   		display:flex;
+   		flex-direction: row;
+   		justify-content: space-between;
    		
-   		position:relative; left:1000px;
    }
+   #homeT1{
+   		width:120px;
+   }
+   span{
+   		color: 	blue;
+   }
+  
 </style>
 </head>
 <body>
 <div class="container">
-   <h1 style="text-align:center;">홈트 정보공유 게시판 입니다</h1>
+	<div id="hometImg">
+		<img id="homeT1" src="../../ht_images/ht1.png"/>
+		<img id="homeT1" src="../../ht_images/ht1.png"/>
+		<img id="homeT1" src="../../ht_images/ht1.png"/>
+		<img id="homeT1" src="../../ht_images/ht1.png"/>
+	</div>
+   <h1 style="text-align:center;">홈트 정보공유 게시판</h1>
    <form action="insert.jsp" method="post" id="insertForm">
       <div class="md-4">
          <label class="form-label" for="title"><strong>제목</strong></label>
          <input class="form-control" type="text" name="title" id="title"/>
       </div>
       <div class="md-4">
-         <label class="form-label" for="content"><strong>내용</strong></label>
-         <textarea class="form-control"  name="content" id="content"></textarea>
+         <label class="form-label" for="content"><strong>내용</strong>
+          	&nbsp&nbsp<span>게시판 목적에 맞는 글을 작성해주세요</span>
+          </label>
+         <textarea class="form-control"  name="content" id="content" ></textarea>
       </div>
       <button class="btn btn-primary" type="submit">저장</button>
    </form>
 </div>
-<img id="dumImg1" src="../../ht_images/dumbbell.jpg"/>
-<img id="dumImg2" src="../../ht_images/dumbbell.jpg"/>
+<!-- 
+	<img id="homeT1" src="../../ht_images/ht1.png"/>
+	<img id="homeT2" src="../../ht_images/ht1.png"/>
+ -->
+
 
 <%--
    [ SmartEditor 를 사용하기 위한 설정 ]
@@ -126,12 +148,10 @@
          //만일 폼 제출을 막고 싶으면  
          //e.preventDefault();
          //을 수행하게 해서 폼 제출을 막아준다.
-         if(title.length < 5){
-            alert("제목을 5글자 이상 입력하세요");
-            e.preventDefault();
-         }
+         
          
       });
+   
 </script>
 </body>
 </html>
