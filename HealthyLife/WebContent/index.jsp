@@ -14,8 +14,18 @@
 <jsp:include page="/include/resource.jsp"></jsp:include>
 <jsp:include page="/include/navbar.jsp"></jsp:include>
 <style>
-
+	.carousel {
+		width : 800px;
+		margin: auto;
+	}
 	
+	h1 {
+	    text-align: center;
+	    margin: 30px;
+	    font-style: italic;
+	    font-weight: 600;
+	    font-size: 35px;
+	}
 </style>
 </head>
 <body>
@@ -27,16 +37,42 @@
 				<a href="${pageContext.request.contextPath}/users/logout.jsp">로그아웃</a>
 			</p>
 		<%} %>
-		<ul>
-        <!-- 해당 게시판으로 가는 link 추가해주세요. -->
-        <li><a href="${pageContext.request.contextPath}/users/signup_form.jsp">sign</a></li>
-        <li><a href="${pageContext.request.contextPath}/users/login_form.jsp">로그인</a></li>
-        <li><a href="${pageContext.request.contextPath}/hfood/list.jsp">healthy food</a></li>
-        <li><a href="${pageContext.request.contextPath}/homeW/list.jsp">home_workout</a></li>
-        <li><a href="${pageContext.request.contextPath}/oneday_class/class.jsp">oneday_class</a></li>
-        <li><a href="${pageContext.request.contextPath}/videos/list.jsp">videos</a></li>
-        <li><a href="${pageContext.request.contextPath}/music_recommend/list.jsp">music_recommend</a></li>
-		</ul>
+		
+		<h1>I support your health!</h1>
+		<div id="carouselExampleIndicators" class="carousel slide w-75" data-bs-ride="carousel">
+		  <div class="carousel-indicators">
+		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>  
+		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>  
+		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>  
+		    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>  
+		  </div>
+		  <div class="carousel-inner">
+		  	<div class="carousel-item">
+		      <img src="image/homeW.jpg" class="d-block w-100" alt="...">
+		    </div>
+		    <div class="carousel-item">
+		      <img src="image/video.jpg" class="d-block w-100" alt="...">
+		    </div>
+		    <div class="carousel-item active">
+		      <img src="image/oneday.jpg" class="d-block w-100" alt="...">
+		    </div>
+		    <div class="carousel-item">
+		      <img src="image/tomato.jpg" class="d-block w-100" alt="...">
+		    </div>
+		    <div class="carousel-item">
+		      <img src="image/music.jpg" class="d-block w-100" alt="...">
+		    </div>
+		  </div>
+		  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+		    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		    <span class="visually-hidden">Previous</span>
+		  </button>
+		  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+		    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		    <span class="visually-hidden">Next</span>
+		  </button>
+		</div>
 	</div>
 </body>
 </html>

@@ -34,7 +34,7 @@ a { text-decoration:none !important }
 
 /* 네비게이션 바가 body 의 요소를 먹어버리는 현상을 고치기 위해 추가 */
 body{
-	padding-top: 100px;
+	margin-top: 70px;
 }
 /*로그아웃 버튼의 css 수정*/
 #logout_button{
