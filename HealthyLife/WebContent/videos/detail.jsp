@@ -98,7 +98,7 @@
 	
 //댓글 리스트 가져오기 - 댓글 pagination 처리(더보기 누르면 댓글 추가)
 	//한 페이지에 몇개씩 표시할 것인지
-	final int PAGE_ROW_COUNT=10;
+	final int PAGE_ROW_COUNT=5;
 
 	//deatil.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. -> 더보기로 ajax 요청할 것
 	int pageNum = 1;
@@ -358,7 +358,7 @@
 	}
 	/*댓글 textarea 조절*/
 	.comment_form_wrapper textarea{
-		/*border: none;*/	/*선 없애기*/
+		border: none;	/*선 없애기*/
 		word-break: break-all;	/*자동으로 개행 -> 단어별로가 아닌 그냥 글자별로*/
 		overflow: visible;	/*넘쳐도 보임*/
 		resize: none;	/*사이즈 조절하는 버튼같은 것 없애기*/
@@ -601,7 +601,7 @@
 								<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
 		                  		<!-- '댓글' 의 comment_group 을 따라간다. -->
 		                  		<input type="hidden" name="comment_group" value="<%=tmp.getComment_group()%>"/>
-		                  		<textarea name="content"></textarea>
+		                  		<textarea name="content" placeholder="댓글을 입력하세요."></textarea>
 		                  		<div class="form_control_btns">
 									<button class="btn submit_btn" type="submit">등록</button>
 									<button class="btn reset_btn" type="reset">취소</button>
@@ -638,7 +638,7 @@
 						<input type="hidden" name="target_id" value="<%=resultDto.getWriter() %>" />
 						<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
 						<input type="hidden" name="ref_group" value="<%=num %>" />
-						<textarea name="content"><%= isLogin ? "" : "댓글 작성을 위해 로그인이 필요합니다." %></textarea>
+						<textarea name="content" placeholder="댓글을 입력하세요."><%= isLogin ? "" : "댓글 작성을 위해 로그인이 필요합니다." %></textarea>
 						<div class="form_control_btns">
 							<button class="btn submit_btn" type="submit">등록</button>
 							<button class="btn reset_btn" type="reset">취소</button>
@@ -670,6 +670,7 @@
 		addDeleteListener(".delete_link");
 		addUpdateFormListener(".update_form");
 		addUpdateListener(".update_link");
+		addResizeListener(".comment_form textarea");
 	
 		//게시글 삭제 confirm 함수
 		function deleteConfirm(){
@@ -740,6 +741,7 @@
 					addReplyFormListener(".page-" + currentPage + " .re_insert_form")
 					addUpdateFormListener(".page-" + currentPage + " .update_form");
 					addUpdateListener(".page-" + currentPage + " .update_link");
+					addResizeListener(".page-" + currentPage + " .comment_form textarea");
 				});
 			}
 			
@@ -983,9 +985,14 @@
 		   			const updateForm = document.querySelector("#update_form_"+num);
 		   			//form 을 감싸는 div
 		   			const updateFormDiv = updateForm.parentElement;
-		   			
+		   			//보이게 하기
 		   			updateFormDiv.style.display="block";
 		   			updateForm.style.display="block";
+		   			
+			   		//내부 textarea 크기 조절
+		   			//textarea 의 value 에 맞게 높이 늘리기
+					const updateFormTextarea = updateForm.querySelector("textarea");
+					updateFormTextarea.style.height = (updateFormTextarea.scrollHeight + 2) + "px";
 		   		});
 		   	}
 		}
@@ -1061,18 +1068,29 @@
 			
 		});
 		
-		
-		//댓글 form 에서 textarea 와 comment_form_wrapper 크기 같이 조절
-		//document.querySelector(".comment_form_wrapper .comment_form").addEventListener("", comment_resize);
+		//모든 댓글의 div 의 textarea 에 자동으로 세로 길이 늘어나도록 하는 function
+		//sel : 인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
+		//sel = ".comment_form" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
+		//sel = ".page-N .comment_form" (N : currentPage) 형식의 내용이다.
+		function addResizeListener(sel){
+			//댓글 form 의 참조값을 배열에 담아오기 
+		   	let forms = document.querySelectorAll(sel);
+			for(let i = 0; i < forms.length; i++){
+				forms[i].addEventListener("input", function(){
+					//textarea 의 기본 높이로 줄어든다.
+					this.style.height = 'auto';
+					//textarea 높이 늘리기 -> scrollHeight 변화 없으면 크기 변경 X
+					this.style.height = (this.scrollHeight + 2) + "px";
+				});
+			}
+		}
+		/* //댓글 form 에서 textarea 와 comment_form_wrapper 크기 같이 조절
 		document.querySelector(".insert textarea").addEventListener("input", function(){
-			//원래 textarea 높이
-			const before = this.offsetHeight;
-			//textarea 높이 늘리기
+			//textarea 의 기본 높이로 줄어든다.
 			this.style.height = 'auto';
+			//textarea 높이 늘리기 -> scrollHeight 변화 없으면 크기 변경 X
 			this.style.height = (this.scrollHeight + 2) + "px";
-			//현재 늘어난 textarea 높이
-			const now = this.offsetHeight;
-		});
+		}); */
 		
 	</script>
 </body>
