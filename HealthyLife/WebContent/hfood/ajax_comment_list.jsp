@@ -4,7 +4,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	Thread.sleep(3000);
 
 	String id=(String)session.getAttribute("id");
 	
@@ -72,7 +71,7 @@
             <pre id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></pre>                  
          </dd>
       </dl>   
-      <form id="reForm<%=tmp.getNum() %>" class="animate__animated comment-form re-insert-form" 
+      <form id="reForm<%=tmp.getNum() %>" class="comment-form re-insert-form" 
          action="private/comment_insert.jsp" method="post">
          <input type="hidden" name="ref_group"
             value="<%=num%>"/>
