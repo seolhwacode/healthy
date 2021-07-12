@@ -264,7 +264,7 @@
 	   	<!-- 댓글  -->
       
 		<div class="comments">
-      	<ul class="comment_list">
+      	<ul>
          <%for(Hfood_comment_dto tmp: commentList){ %>
             <%if(tmp.getDeleted().equals("yes")){ %>
                <li>삭제된 댓글 입니다.</li>
@@ -405,15 +405,11 @@
 //댓글의 현재 페이지 번호를 관리할 변수를 만들고, 초기값 1 대입하기
 		let currentPage = 1;
 		
-
+<<<<<<< HEAD
 		//마지막 페이지는 totalPageCount 이다.
 		let lastPage = <%=totalPageCount %>;
 
 		//현재 페이지가 마지막 페이지보다 작거나 같을 때 -> 댓글 페이지 출력하기
-<<<<<<< HEAD
-		if(<%=totalRow %> <= 10){
-			document.querySelector("#view_more").style.display = "none";
-=======
 		if(currentPage <= lastPage){				
 			/*
 				해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
@@ -433,7 +429,11 @@
 				addUpdateFormListener(".page-" + currentPage + " .update_form");
 				addUpdateListener(".page-" + currentPage + " .update_link");
 			});
->>>>>>> stash
+		}
+
+		
+		if(<%=totalRow %> <= 10){
+			document.querySelector("#view_more").style.display = "none";
 		}
 		
 		document.querySelector("#view_more").addEventListener("click", function(){
@@ -465,7 +465,7 @@
 			if(currentPage == lastPage){
 				document.querySelector("#view_more").style.display = "none";
 			}else{
-				document.querySelector("#view_more").style.display = "block";
+				document.querySelector("#view_more").steyl.display = "block";
 			}
 		});
     //인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 
