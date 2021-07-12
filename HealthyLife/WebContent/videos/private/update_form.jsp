@@ -178,9 +178,12 @@
 	<script src="${pageContext.request.contextPath }/SmartEditor/js/HuskyEZCreator.js"></script>
 	<script>
 		document.querySelector("#go_back_button").addEventListener("click", function(e){
-			//혹시 모를 폼 제출 막기
-			e.preventDefault();
-			location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num %>";
+			let isGoBack = confirm("작성 중인 수정사항을 저장하지 않고, 이전으로 돌아가시겠습니까?");
+			if(isGoBack){
+				//혹시 모를 폼 제출 막기
+				e.preventDefault();
+				location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num %>";
+			}
 		});
 		
 		
