@@ -6,7 +6,7 @@
     pageEncoding="UTF-8"%>
 <%
 	//한 페이지에 몇개씩 표시할 것인지
-	final int PAGE_ROW_COUNT=3;
+	final int PAGE_ROW_COUNT=10;
 	//하단 페이지를 몇개씩 표시할 것인지
 	final int PAGE_DISPLAY_COUNT=5;
 
@@ -177,20 +177,20 @@
 <body>
 <jsp:include page="/include/navbar.jsp"></jsp:include>
 <div class="container">
-	<h1>추천 음악 페이지</h1>
+	
 	<div id="insert">
-	<button class="btn btn-secondary" type="button"><a href="private/insertform.jsp" class="link-light">새글 작성</a></button>
+	<button class="btn btn-secondary" type="button"><a href="private/insertform.jsp" class="link-light">새 글 작성</a></button>
 	</div>
 	
 	<table class="table table-hover" >
-   
+   	<h1 class="text-primary">추천 음악 페이지</h1>
       <thead>
          <tr class="table-primary">
             <th scope="col">글번호</th>
-            <th scope="col">작성자</th>
             <th scope="col">제목</th>
-            <th scope="col">조회수</th>
+            <th scope="col">작성자</th>
             <th scope="col">등록일</th>
+            <th scope="col">조회수</th>
          </tr>
       </thead>
       <tbody>
@@ -199,12 +199,12 @@
       %>
          <tr>
             <td><%=tmp.getNum() %></td>
-            <td><%=tmp.getWriter() %></td>
             <td>
                <a href="detail.jsp?num=<%=tmp.getNum()%>&keyword=<%=encodedK %>&condition=<%=condition%>"><%=tmp.getTitle() %></a>
             </td>
-            <td><%=tmp.getViewCount() %></td>
+            <td><%=tmp.getWriter() %></td>
             <td><%=tmp.getRegdate() %></td>
+            <td><%=tmp.getViewCount() %></td>
          </tr>
       <%} %>
       </tbody>
