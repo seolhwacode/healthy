@@ -153,7 +153,7 @@
     
      #book-link{
     	position: fixed;
-        top: 600px;
+        bottom: 15px;
         right: 10px;
         height: 60px;
         width: 60px;
