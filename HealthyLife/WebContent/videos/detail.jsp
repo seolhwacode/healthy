@@ -201,23 +201,6 @@
 		margin-top: 20px;
 		padding: 30px;
 	}
-	.comment_form textarea{
-		width: 500px;
-		height: 100px;
-	}
-	/*댓글의 프로필 사진 크기*/
-	.commet_profile-image{
-		width: 35px;
-		height: 35px;
-	}
-	/*댓글에 댓글을 다는 form 은 처음에는 숨겨져있다.*/
-	.re_insert_form{
-		display: none;
-	}
-	/*댓글 수정하는 form 은 처음에는 숨겨져있다.*/
- 	.update_form{
-		display: none;
-	}
 	
 	
 	/*좋아요, 댓글개수 박스 -> link 는 색 변화 X*/
@@ -358,6 +341,65 @@
 	/* 댓글 출력 부분만 크기 늘리기 */
 	.comment_box{
 		flex-grow: 8;
+	}
+	
+	/*댓글 쓰는 form css 설정*/
+	.comment_form_wrapper{
+		width: 100%;
+		border: 2px solid #e8e8e8;
+		border-radius: 10px;
+		padding: 5px;
+		flex-direction: column;
+	}
+	/*댓글다는 모든 form 의 크기 조절*/
+	.comment_form_wrapper .comment_form{
+		width: 100%;
+		height: 100%;
+	}
+	/*댓글 textarea 조절*/
+	.comment_form_wrapper textarea{
+		/*border: none;*/	/*선 없애기*/
+		word-break: break-all;	/*자동으로 개행 -> 단어별로가 아닌 그냥 글자별로*/
+		overflow: visible;	/*넘쳐도 보임*/
+		resize: none;	/*사이즈 조절하는 버튼같은 것 없애기*/
+		width: 100%;
+	}
+	/*댓글 등록 버튼 색*/
+	.form_control_btns .submit_btn{
+		background-color: #4f4fbd;
+	    color: white;
+	}
+	/*댓글 제출 버튼 색*/
+	.form_control_btns .reset_btn{
+		background-color: #e8e8e8;
+	    color: black;
+	}
+	/*댓글 form 의 submit, reset 버튼 위치 조절 - 맨 오른쪽 고정*/
+	.form_control_btns{
+		display: flex;
+		justify-content: flex-end;
+	}
+	/*댓글 form 의 submit, reset 버튼 위치 조절 - 사이 띄우기*/
+	.form_control_btns button{
+		margin-left: 10px;
+	}
+	
+	/* 댓글 textarea 포커스 될 때 굵은 테두리 없애기 */
+	.comment_form_wrapper textarea:focus{
+		outline: none;
+	}
+	/*댓글의 프로필 사진 크기*/
+	.commet_profile-image{
+		width: 35px;
+		height: 35px;
+	}
+	/*댓글에 댓글을 다는 form 은 처음에는 숨겨져있다.*/
+	.comment_form_wrapper.reply{
+		display: none;
+	}
+	/*댓글 수정하는 form 은 처음에는 숨겨져있다.*/
+ 	.comment_form_wrapper.update{
+		display: none;
 	}
 </style>
 </head>
@@ -530,7 +572,7 @@
 									<!-- 댓글 작성 일자 -->
 									<span><%=tmp.getRegdate() %></span>
 									<!-- 답글 다는 링크 -->
-									<a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply_link">댓글</a>
+									<a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply_link" id="reply_link_<%=tmp.getNum()%>">댓글 달기</a>
 								</div>
 							</div>
 						<%if(id != null && tmp.getWriter().equals(id)){ %>
@@ -549,26 +591,36 @@
 						<%} %>
 						</div>
 						<%-- 댓글에 댓글을 다는 from --%>
-						<form id="reply_form_<%=tmp.getNum() %>" class="comment_form re_insert_form" 
-								action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" 
-								method="post">
-							<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
-							<input type="hidden" name="ref_group" value="<%=resultDto.getNum()%>"/>
-							<!-- '댓글'의 작성자가 대상자가 된다. -->
-							<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
-	                  		<!-- '댓글' 의 comment_group 을 따라간다. -->
-	                  		<input type="hidden" name="comment_group" value="<%=tmp.getComment_group()%>"/>
-	                  		<textarea name="content"></textarea>
-	                  		<button type="submit">등록</button>
-						</form>
+						<div class="comment_form_wrapper reply">
+							<form id="reply_form_<%=tmp.getNum() %>" class="comment_form re_insert_form" 
+									action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" 
+									method="post">
+								<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
+								<input type="hidden" name="ref_group" value="<%=resultDto.getNum()%>"/>
+								<!-- '댓글'의 작성자가 대상자가 된다. -->
+								<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
+		                  		<!-- '댓글' 의 comment_group 을 따라간다. -->
+		                  		<input type="hidden" name="comment_group" value="<%=tmp.getComment_group()%>"/>
+		                  		<textarea name="content"></textarea>
+		                  		<div class="form_control_btns">
+									<button class="btn submit_btn" type="submit">등록</button>
+									<button class="btn reset_btn" type="reset">취소</button>
+								</div>
+							</form>
+						</div>
 						
 						<%-- 댓글 수정 form --%>
 						<%if(tmp.getWriter().equals(id)){ %>
-						<form id="update_form_<%=tmp.getNum() %>" class="comment_form update_form" action="${pageContext.request.contextPath}/videos/private/comment_update.jsp" method="post">
-							<input type="hidden" name="num" value="<%=tmp.getNum() %>" />
-							<textarea name="content" cols="30" rows="10"><%=tmp.getContent() %></textarea>
-							<button type="submit">수정</button>
-						</form>
+						<div class="comment_form_wrapper update">
+							<form id="update_form_<%=tmp.getNum() %>" class="comment_form update_form" action="${pageContext.request.contextPath}/videos/private/comment_update.jsp" method="post">
+								<input type="hidden" name="num" value="<%=tmp.getNum() %>" />
+								<textarea name="content"><%=tmp.getContent() %></textarea>
+								<div class="form_control_btns">
+									<button class="btn submit_btn" type="submit">수정</button>
+									<button class="btn reset_btn" type="reset">취소</button>
+								</div>
+							</form>
+						</div>
 						<%} %>
 					</li>
 				<%} %>
@@ -580,18 +632,20 @@
 				</div>
 				
 				<%-- 원글에 댓글을 작성할 폼 --%>
-				<div class="insert_form_wrapper">
+				<div class="comment_form_wrapper insert">
 					<form class="comment_form insert_form" action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" method="post">
 						<!-- 원글의 작성자가 대상자가 된다. -->
 						<input type="hidden" name="target_id" value="<%=resultDto.getWriter() %>" />
 						<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
 						<input type="hidden" name="ref_group" value="<%=num %>" />
 						<textarea name="content"><%= isLogin ? "" : "댓글 작성을 위해 로그인이 필요합니다." %></textarea>
-						<button type="submit">등록</button>
+						<div class="form_control_btns">
+							<button class="btn submit_btn" type="submit">등록</button>
+							<button class="btn reset_btn" type="reset">취소</button>
+						</div>
 					</form>
 				</div>
 			</div>
-			
 		</div>
 		
 
@@ -612,6 +666,7 @@
 		
 		//페이지 로딩시에 출력되는 댓글들에 이벤트 리스너들 추가
 		addReplyListener(".reply_link");
+		addReplyFormListener(".re_insert_form");
 		addDeleteListener(".delete_link");
 		addUpdateFormListener(".update_form");
 		addUpdateListener(".update_link");
@@ -627,7 +682,7 @@
 			//no : false -> 아무 일도 없음
 		}
 		
-		//게시글에 댓글 달기 -> login 검사하기
+		//게시글에 댓글 달기 -> login 검사하기 & 댓글 내용이 비었는지 확인
 		document.querySelector(".insert_form").addEventListener("submit", function(e){
 			//로그인 하지 않았으면 -> 폼 전송 막음 -> 로그인 폼으로 이동한다.
 			if(!isLogin){
@@ -637,7 +692,16 @@
 				const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
 				if(isMove){
 					location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
+					return;
 				}
+			}
+			
+			//댓글 내용 비었는지 검사
+			const inputText = this.querySelector("textarea").value;
+			if(inputText === ""){
+				//폼 전송 막기
+				e.preventDefault();
+				alert("내용을 입력해주세요.");
 			}
 		});
 		
@@ -673,6 +737,7 @@
 					//새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록하기
 					addDeleteListener(".page-" + currentPage + " .delete_link");
 					addReplyListener(".page-" + currentPage + " .reply_link");
+					addReplyFormListener(".page-" + currentPage + " .re_insert_form")
 					addUpdateFormListener(".page-" + currentPage + " .update_form");
 					addUpdateListener(".page-" + currentPage + " .update_link");
 				});
@@ -713,29 +778,83 @@
 					const num = this.getAttribute("data-num");
 					//열고 닫을 reForm 객체를 가져온다. - 번호를 이용해서 댓글의 댓글 폼을 선택
 					const replyForm = document.querySelector("#reply_form_"+num);
+					//댓글을 감싸고 있는 div 또한 가져오기
+					const replyFormDiv = replyForm.parentElement;
 					
 					//링크의 텍스트를 읽어옴
 					let current = this.innerText;
 					
-					if(current === "댓글"){
+					if(current === "댓글 달기"){
 						//텍스트가 "답글" -> "취소" 로 바꾸고, reForm 의 display = "block" 으로 변경	
 						this.innerText = "취소";
-						//replyForm.classList.remove("animate__fadeOutDown");
-						//replyForm.classList.add("animate__fadeInDown");
+						replyFormDiv.style.display = "block";
 						replyForm.style.display = "block";
 					}else if(current === "취소"){
 						//텍스트가 "취소" -> "답글" 로 바꾸고, reForm 의 display = "none" 으로 변경
-						this.innerText = "댓글";
-						//replyForm.classList.remove("animate__fadeInDown");
-						//replyForm.classList.add("animate__fadeOutDown");
-						/* replyForm.addEventListener("animationend", function(){
-							replyForm.style.display = "none";
-						}, {once:true}); */
+						this.innerText = "댓글 달기";
+						replyFormDiv.style.display = "none";
 						replyForm.style.display = "none";
 					}
 				});
 			}
 		}
+		
+		//댓글 에 댓글 추가 : 인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
+		//sel = ".reply_link" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
+		//sel = ".page-N .reply_link" (N : currentPage) 형식의 내용이다.
+		function addReplyFormListener(sel){
+			//댓글 수정 폼의 참조값을 배열에 담아오기
+	 		let replyForms = document.querySelectorAll(sel);
+			for(let i = 0; i < replyForms.length; i++){
+				//폼에 submit 이벤트가 일어났을 때 호출되는 함수 등록
+				replyForms[i].addEventListener("submit", function(e){
+					//submit 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
+					const form = this;
+					//submit 이벤트가 일어난 form 의 부모 div
+					const formDiv = this.parentElement;
+					//댓글의 textarea 의 내용 읽어오기
+					const replyText = this.querySelector("textarea").value;
+					
+					if(replyText == ""){
+						//textarea 가 빈칸
+						//폼 제출 막기
+						e.preventDefault();
+						alert("내용을 입력해주세요.");
+					}
+				});
+				
+				//취소 버튼
+ 				replyForms[i].addEventListener("reset", function(e){
+					//reset 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
+					const form = this;
+					//reset 이벤트가 일어난 form 의 부모 div
+					const formDiv = this.parentElement;
+					
+					//form 의 id : reply_form_n 가져와서 n 추출
+					const id = form.getAttribute('id');
+					const num = id.replace(/[^0-9]/g,'');
+					
+					//id 를 사용해서 reply_link_num 완성해서 link 가져오기					
+					let replyLink = document.querySelector("#reply_link_" + num);
+					
+					let isReset = confirm("댓글 내용을 삭제하시겠습니까?");
+					if(isReset){
+						//삭제
+						//열려잇는 form 과 div 닫기
+						form.style.display="none";
+						formDiv.style.display = "none";
+						//링크 내용 : "취소" -> "댓글달기" 로 변경
+						replyLink.innerText = "댓글 달기";
+					}else{
+						//폼 reset 막기
+						e.preventDefault();
+					}
+				});
+				
+			}
+		}
+		
+		
 		
 		//댓글 삭제 : 인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
 		//sel = ".reply_link" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
@@ -782,6 +901,18 @@
 				updateForms[i].addEventListener("submit", function(e){
 					//submit 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
 					const form = this;
+					//submit 이벤트가 일어난 form 의 부모 div
+					const formDiv = this.parentElement;
+					
+					//입력한 내용이 빈칸인지 확인
+					const inputText = this.querySelector("textarea").value;
+					if(inputText === ""){
+						//빈칸이면 -> 함수 끝
+						//폼 제출 막기
+						e.preventDefault();
+						alert("내용을 입력해주세요.");
+						return;
+					}
 					
 					//폼 제출 막기
 					e.preventDefault();
@@ -805,12 +936,35 @@
 							const num = form.querySelector("input[name=num]").value;
 							const content = form.querySelector("textarea[name=content]").value;
 							document.querySelector("#commet_item_"+num+" .comment_main_text pre").innerText = content;
+							//form & div 닫기
 							form.style.display="none";
+							formDiv.style.display = "none";
 						}else{
 							//수정 실패
 							alert("댓글 수정 실패");
 						}
 					});
+				});
+				
+				//취소 버튼
+ 				updateForms[i].addEventListener("reset", function(e){
+					//reset 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
+					const form = this;
+					//reset 이벤트가 일어난 form 의 부모 div
+					const formDiv = this.parentElement;
+					
+					let isReset = confirm("댓글 내용을 삭제하시겠습니까?");
+					if(isReset){
+						//삭제
+						//form 내용 삭제
+						form.reset();
+						//열려잇는 form 과 div 닫기
+						form.style.display="none";
+						formDiv.style.display = "none";
+					}else{
+						//폼 reset 막기
+						e.preventDefault();
+					}
 				});
 				
 			}
@@ -826,7 +980,12 @@
 		   		updateLinks[i].addEventListener("click", function(){
 		   			//click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다. 
 		   			const num = this.getAttribute("data-num");
-		   			document.querySelector("#update_form_"+num).style.display="block";
+		   			const updateForm = document.querySelector("#update_form_"+num);
+		   			//form 을 감싸는 div
+		   			const updateFormDiv = updateForm.parentElement;
+		   			
+		   			updateFormDiv.style.display="block";
+		   			updateForm.style.display="block";
 		   		});
 		   	}
 		}
@@ -902,6 +1061,18 @@
 			
 		});
 		
+		
+		//댓글 form 에서 textarea 와 comment_form_wrapper 크기 같이 조절
+		//document.querySelector(".comment_form_wrapper .comment_form").addEventListener("", comment_resize);
+		document.querySelector(".insert textarea").addEventListener("input", function(){
+			//원래 textarea 높이
+			const before = this.offsetHeight;
+			//textarea 높이 늘리기
+			this.style.height = 'auto';
+			this.style.height = (this.scrollHeight + 2) + "px";
+			//현재 늘어난 textarea 높이
+			const now = this.offsetHeight;
+		});
 		
 	</script>
 </body>
