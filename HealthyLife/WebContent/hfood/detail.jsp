@@ -89,7 +89,7 @@
 <title>Insert title here</title>
 <style>
 	.container{
-		width:75%;
+		width:800px !important;
 	}
 	#content {
 		 margin-top:20px;
@@ -233,8 +233,7 @@
 	    <div class="col-sm"><a href="list.jsp">건강레시피</a></div>
 	  </div>
 	  <div class="row">
-	    <div class="col-sm-10" style="font-size:20px; font-weight:bold;"><%=dto.getTitle() %></div>
-	    <div class="col-sm-2">조회수 <%=dto.getViewCount() %></div>
+	    <div class="col-sm" style="font-size:20px; font-weight:bold;"><%=dto.getTitle() %></div>
 	  </div>	
 	  <div class="row">
 	    <div class="col-sm"><%=dto.getWriter() %></div>
@@ -243,7 +242,8 @@
 	    <div class="col-sm" id="content"><%=dto.getContent() %></div>
 	  </div>
 	  <div class="row">
-	    <div class="col-sm" style="font-size:13px;"><%=dto.getRegdate() %></div>
+	    <div class="col-sm-3" style="font-size:13px; padding-right:0px; width:160px;"><%=dto.getRegdate() %></div>
+	    <div class="col-sm-2" style="font-size:13px; padding-left:0px; ">조회수 <%=dto.getViewCount() %></div>
 	  </div>
 		<ul id="private">
 	      <%if(dto.getWriter().equals(id)){ %>
