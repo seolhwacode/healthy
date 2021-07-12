@@ -98,7 +98,7 @@
 	
 //댓글 리스트 가져오기 - 댓글 pagination 처리(더보기 누르면 댓글 추가)
 	//한 페이지에 몇개씩 표시할 것인지
-	final int PAGE_ROW_COUNT=10;
+	final int PAGE_ROW_COUNT=5;
 
 	//deatil.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. -> 더보기로 ajax 요청할 것
 	int pageNum = 1;
@@ -142,31 +142,71 @@
 <title>/videos/detail.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <style>
+	/* 전체 content 크기 조절 */
+	.container{
+   		padding-bottom: 80px;
+   		transition: all 1s ease-out;
+    }
+
+	@media(max-width: 576px){
+		.container{
+		    width: 500px;
+		}
+		/*동영상 크기*/
+		/* 원래 크기 : width="560" height="315"*/
+		.article_video iframe{
+			width: 100%;
+			height: 234px;
+		}
+	}
+	@media(min-width: 576px){
+		.container{
+		    width: 600px;
+		}
+		/*동영상 크기*/
+		/* 원래 크기 : width="560" height="315"*/
+		.article_video iframe{
+			width: 100%;
+			height: 255px;
+		}
+	}
+	@media(min-width: 768px){
+		.container{
+		    width: 700px;
+		}
+		/*동영상 크기*/
+		/* 원래 크기 : width="560" height="315"*/
+		.article_video iframe{
+			width: 100%;
+			height: 345px;
+		}
+	}
+	
+	@media (min-width: 992px){
+    	.container{
+		    width: 800px;
+		}
+		/*동영상 크기*/
+		/* 원래 크기 : width="560" height="315"*/
+		.article_video iframe{
+			width: 100%;
+			height: 403px;
+		}
+    }
+
+	/* 게시글 전체 감싸는 div */
 	.ArticleContentBox{
-		border: 1px solid #ebecef;
+		border: 2px solid #ebecef;
 		border-radius: 6px;
-		margin-top: 50px;
-	}
-	.comment_form textarea{
-		width: 500px;
-		height: 100px;
-	}
-	/*댓글의 프로필 사진 크기*/
-	.commet_profile-image{
-		width: 30px;
-		height: 30px;
-	}
-	/*댓글에 댓글을 다는 form 은 처음에는 숨겨져있다.*/
-	.re_insert_form{
-		display: none;
-	}
-	/*댓글 수정하는 form 은 처음에는 숨겨져있다.*/
- 	.update_form{
-		display: none;
+		margin-top: 20px;
+		padding: 30px;
 	}
 	
 	
 	/*좋아요, 댓글개수 박스 -> link 는 색 변화 X*/
+	.reply_box{
+		display: flex;
+	}
 	.reply_box a{
 		color: inherit;
 	}
@@ -193,207 +233,428 @@
 		background-image: url('https://ca-fe.pstatic.net/web-pc/static/img/ico-post-like-on-f-53535.svg?7eb6be9a4989d32af686acf09a07747d=');
 		background-repeat: no-repeat;
 	}
+	/* 좋아요 버튼 & 댓글 개수  -> 사이 띄우기 */
+	.good_wrapper, .reply_count_wrapper{
+		margin-right: 20px;
+	}
 	
-	    
+	
+	/* 게시글 가장 위의 헤더 */
+	.article_header{
+	    border-bottom: 2px solid #e8e8e8;
+	    margin-bottom: 20px;
+	    padding-bottom: 15px;
+	}
+	
+	/* 상위 이전글, 다음글, 목록, 수정, 삭제 버튼 감싸는 div */
+	.menu_button_wrapper{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	/* 상위 이전글, 다음글, 목록, 수정, 삭제 버튼 설정*/
+	.menu_button_wrapper .btn{
+		color: black;
+	    background-color: #e8e8e8;
+	}
+	
+	
+	/*글 번호 css*/
+	.post_num{
+		color: #9595a5;
+	}
+	/*제목 - 카테고리 명*/
+	.post_title span{
+		margin-right: 8px;
+	}
+	.article_writer{
+	    display: flex;
+	}
+	.post_writer_text{
+		display: flex;
+		padding: 5px 0;
+	    margin-left: 5px;
+	}
+	/* 글씨 위치 맞추기 */
+	.post_writer_text div{
+	    margin: 0 5px;
+	}
+	/*프로필 사진 크기*/
+	.profileImage{
+		width: 35px;
+		height: 35px;
+	    border-radius: 50%;
+	}
+	
+	
+	/* 게시글 내용 표기하는 container : 동영상 & 글 */
+	.article_container{
+		border-bottom: 2px solid #e8e8e8;
+		margin: 20px 0;
+	}
+	/* 비디오 div */
+	.article_video{
+		border-bottom: 2px solid #e8e8e8;
+		margin: 20px 0;
+		padding-bottom: 15px;
+	}
+	/* 글 내용 div */
+	.article_viewer{
+		padding: 20px 0;
+	}
+	
+	
+	/* 댓글 css*/
+	/* ul 디스크 없애기 */
+	.comment_list{
+		list-style:none;
+		padding-left: 0;
+	}
+	/* 댓글 하나 아래 boder 넣기 */
+	/* 댓글 아래에 패딩 추가 */
+	.comment_item{
+		border-bottom: 1px solid #e8e8e8;
+		padding: 10px 0;
+	}
+	
+	/* 댓글에 댓글을 달 때 나오는 id - 밑줄 추가 */
+	.comment_for_id{
+		text-decoration: underline;
+	}
+	/* 댓글 프로필 / 내용 포함하는 div : flex 로 정렬 */
+	.comment_flex{
+		display: flex;
+	}
+	/* 오른쪽 margin 추가*/
+	.comment_profile_wrapper{
+		margin-right: 6px;
+	}
+	/* 댓글의 날짜, 댓글 달기 -> 작고 회색 글씨로 만들기 */
+	.commet_function{
+		font-size: 14px;
+		color: #858b9c;
+	}
+	/* 날짜 오른쪽에 margin 추가 */
+	.commet_function span{
+		margin-right: 5px;
+	}
+	/* 댓글 출력 부분만 크기 늘리기 */
+	.comment_box{
+		flex-grow: 8;
+	}
+	
+	/*댓글 쓰는 form css 설정*/
+	.comment_form_wrapper{
+		width: 100%;
+		border: 2px solid #e8e8e8;
+		border-radius: 10px;
+		padding: 5px;
+		flex-direction: column;
+	}
+	/*댓글다는 모든 form 의 크기 조절*/
+	.comment_form_wrapper .comment_form{
+		width: 100%;
+		height: 100%;
+	}
+	/*댓글 textarea 조절*/
+	.comment_form_wrapper textarea{
+		border: none;	/*선 없애기*/
+		word-break: break-all;	/*자동으로 개행 -> 단어별로가 아닌 그냥 글자별로*/
+		overflow: visible;	/*넘쳐도 보임*/
+		resize: none;	/*사이즈 조절하는 버튼같은 것 없애기*/
+		width: 100%;
+	}
+	/*댓글 등록 버튼 색*/
+	.form_control_btns .submit_btn{
+		background-color: #4f4fbd;
+	    color: white;
+	}
+	/*댓글 제출 버튼 색*/
+	.form_control_btns .reset_btn{
+		background-color: #e8e8e8;
+	    color: black;
+	}
+	/*댓글 form 의 submit, reset 버튼 위치 조절 - 맨 오른쪽 고정*/
+	.form_control_btns{
+		display: flex;
+		justify-content: flex-end;
+	}
+	/*댓글 form 의 submit, reset 버튼 위치 조절 - 사이 띄우기*/
+	.form_control_btns button{
+		margin-left: 10px;
+	}
+	
+	/* 댓글 textarea 포커스 될 때 굵은 테두리 없애기 */
+	.comment_form_wrapper textarea:focus{
+		outline: none;
+	}
+	/*댓글의 프로필 사진 크기*/
+	.commet_profile-image{
+		width: 35px;
+		height: 35px;
+	}
+	/*댓글에 댓글을 다는 form 은 처음에는 숨겨져있다.*/
+	.comment_form_wrapper.reply{
+		display: none;
+	}
+	/*댓글 수정하는 form 은 처음에는 숨겨져있다.*/
+ 	.comment_form_wrapper.update{
+		display: none;
+	}
 </style>
 </head>
 <body>
+	<jsp:include page="../include/navbar.jsp">
+		<jsp:param value="videos" name="thisPage"/>
+	</jsp:include>
 	<div class="container">
-		<div class="ArticleContentBox">
+		<div class="menu_button_wrapper">
+			<div class="left_buttons">
 			<%if(resultDto.getPrevNum() != 0){ %>
-			<a href="detail.jsp?num=<%=resultDto.getPrevNum() %>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>">이전글</a>
+				<a class="btn" href="detail.jsp?num=<%=resultDto.getPrevNum() %>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>">이전글</a>
 			<%} %>
 			<%if(resultDto.getNextNum()!=0){ %>
-			<a href="detail.jsp?num=<%=resultDto.getNextNum() %>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>">다음글</a>
+				<a class="btn" href="detail.jsp?num=<%=resultDto.getNextNum() %>&condition=<%=condition%>&keyword=<%=encodeK%>&type=<%=type %>">다음글</a>
 			<%} %>
-			
-			<!-- 목록보기 / 삭제 버튼 -->
-			<ul>
-				<li><a href="list.jsp">목록보기</a></li>
-				<%if(resultDto.getWriter().equals(id)){ %>
-					<li><a href="${pageContext.request.contextPath}/videos/private/update_form.jsp?num=<%=num %>">수정</a></li>
-					<li><a href="javascript:deleteConfirm()">삭제</a></li>
-				<%} %>
-			</ul>
-			
-			<table>
-				<tr>
-					<th>글번호</th>
-					<td><%=num %></td>
-				</tr>
-				<tr>
-					<th>제목</th>
-					<td>
-						<span>[<%=resultDto.getType() %>]</span>
-						<%=resultDto.getTitle() %>
-					</td>
-				</tr>
-				<tr>
-					<th>프로필</th>
-					<td>
+				<a class="btn" href="list.jsp">목록보기</a>
+			</div>
+			<div class="right_buttons">
+			<%if(resultDto.getWriter().equals(id)){ %>
+				<a class="btn" href="${pageContext.request.contextPath}/videos/private/update_form.jsp?num=<%=num %>">수정</a>
+				<a class="btn" href="javascript:deleteConfirm()">삭제</a>
+			<%} %>
+			</div>
+		</div>
+	
+		<div class="ArticleContentBox">
+			<!-- 게시글 헤더 -->
+			<div class="article_header">
+				<!-- 게시글 제목 & 기본 정보 -->
+				<div class="article_title">
+					<!-- 게시글 번호 -->
+					<div class="post_num">
+						<span>글번호 : <%=num %></span>
+					</div>
+					<!-- 게시글 제목 -->
+					<div class="post_title">
+						<h2><span>[<%=resultDto.getType() %>]</span><%=resultDto.getTitle() %></h2>
+					</div>
+				</div>
+				<!-- 게시글 작성자 -->
+				<div class="article_writer">
+					<!-- 게시글 작성자 프로필 사진 -->
+					<div class="post_writer_profile">
 					<%if(resultUsersDto.getProfile() == null){ %>
 						<%-- 프로필 사진이 null 일  때 : 기본 사진 --%>
-						<svg id="profileImage" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+						<svg class="profileImage" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
 							<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
 							<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
 						</svg>
 					<%}else{ %>
-						<img src="${pageContext.request.contextPath}<%=resultUsersDto.getProfile() %>" alt="프로필 사진" />
+						<img class="profileImage" src="${pageContext.request.contextPath}<%=resultUsersDto.getProfile() %>" alt="프로필 사진" />
 					<%} %>
-					</td>
-				</tr>
-				<tr>
-					<th>글쓴이</th>
-					<td><%=resultDto.getWriter() %></td>
-				</tr>
-				<tr>
-					<th>조회수</th>
-					<td><%=resultDto.getView_count() %></td>
-				</tr>
-				<tr>
-					<th>등록일</th>
-					<td><%=resultDto.getRegdate()%></td>
-				</tr>
-				<tr>
-					<th>동영상</th>
-					<td>
-						<%-- https://youtu.be/R6ti4FCLom4 에서 => /R6ti4FCLom4 부분만 잘라서 새로 db 에 input 해야한다. 이거 고치지--%>
-						<iframe width="560" height="315" src="<%=video %>" title="YouTube video player" frameborder="0" 
-						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-						</iframe>
-					</td>
-				</tr>
-				<tr>
-					<th>내용</th>
-					<%-- textarea 에서는 html 을 해석하지 않고 그냥 출력하기 때문에, div 에 넣어준다. --%>
-					<td>
-						<div style="border:1px solid gray;">
-							<%=resultDto.getContent() %>
+					</div>
+					<div class="post_writer_text">
+						<!-- 게시글 작성자 id -->
+						<div class="post_writer_id">
+							<strong>
+								<%=resultDto.getWriter() %>
+							</strong>
 						</div>
-					</td>
-				</tr>
-			</table>
-		</div>
-		
-<%-- 좋아요 개수 & 좋아요 버튼 / 댓글의 개수 출력 --%>
-		<div class="reply_box">
-			<div class="good_wrapper">
-				<a href="javascript:" class="good_button">
-					<span class="good_icon"></span>
-				</a>
-				<em class="good_text">좋아요</em>
-				<strong class="good_count"><%=resultDto.getGood_count() %></strong>
+						/
+						<!-- 게시글 조회수 -->
+						<div class="post_view_count">
+							조회수 : <%=resultDto.getView_count() %>
+						</div>
+						/
+						<!-- 게시글 작성일 -->
+						<div class="post_regdate">
+							<%=resultDto.getRegdate()%>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="reply_count_wrapper">
-				<span class="reply_icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-square-dots" viewBox="0 0 16 16">
-  						<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-  						<path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-					</svg>
-				</span>
-				<em class="reply_text">댓글</em>
-				<strong class="reply_count"><%=totalRow %></strong>
-			</div>
-		</div>
-		
-<%-- 댓글 리스트 출력 --%>
-		<div class="commet_box">
-			<ul class="comment_list">
-			<%for(VideosCommentDto tmp:commentList){ %>
-				<%if(tmp.getDeleted().equals("yes")){ %>
-				<li class="comment_item" id="commet_item_<%=tmp.getNum() %>">삭제된 댓글입니다.</li>
-				<%
-					//continue : 아래의 코드를 수행하지 않고, for 문으로 실행순서를 다시 보내기
-					continue;
-				}%>
-
-				<%-- li : class="comment_item", id="commet_item_댓글num" --%>
-				<%if(tmp.getNum() == tmp.getComment_group()){ %>
-				<%-- tmp.getNum() == tmp.getComment_group() : 게시글에 댓글 -> 들여쓰기 X --%>
-				<li class="comment_item" id="commet_item_<%=tmp.getNum() %>">
-				<%}else{ %>
-				<%-- tmp.getNum() != tmp.getComment_group() : 게시글에 댓글 -> 들여쓰기 O --%>
-				<li class="comment_item" id="commet_item_<%=tmp.getNum() %>" style="padding-left:50px;">
-				<%} %>				
-					<dl>
-						<!-- <dt>프로필 이미지, 작성자 아아디, 수정, 삭제 표시할 예정</dt> -->
-						<dt>
-							<span class="comment_profile_wrapper">
-							<!-- 프로필 이미지 -->
-							<%if(tmp.getProfile() == null){ %>
-								<%-- 프로필 이미지 없음 -> 기본 이미지 출력 --%>
-								<svg class="commet_profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-			  						<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-			  						<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-								</svg>
-							<%}else{ %>
-								<%-- 해당 이미지 출력 --%>
-								<img class="commet_profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile() %>" alt="프로필 사진" />
+			
+			<!-- 위의 div 에 border-bottm 으로 선긋기 -->
+			
+			<!-- 게시글 출력 -->
+			<div class="article_container">
+				<!-- 영상 출력 -->
+				<div class="article_video">
+					<iframe src="<%=video %>" title="YouTube video player" frameborder="0" 
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+					</iframe>
+				</div>
+				<!-- 게시글 내용 출력 -->
+				<div class="article_viewer">
+					<%-- textarea 에서는 html 을 해석하지 않고 그냥 출력하기 때문에, div 에 넣어준다. --%>
+					<div class="content_main">
+						<%=resultDto.getContent() %>
+					</div>
+				</div>
+				<!-- 좋아요 개수 & 좋아요 버튼 / 댓글의 개수 출력 -->
+				<div class="reply_box">
+					<div class="good_wrapper">
+						<a href="javascript:" class="good_button">
+							<span class="good_icon"></span>
+						</a>
+						<em class="good_text">좋아요</em>
+						<strong class="good_count"><%=resultDto.getGood_count() %></strong>
+					</div>
+					<div class="reply_count_wrapper">
+						<span class="reply_icon">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-square-dots" viewBox="0 0 16 16">
+		  						<path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+		  						<path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+							</svg>
+						</span>
+						<em class="reply_text">댓글</em>
+						<strong class="reply_count"><%=totalRow %></strong>
+					</div>
+				</div>
+			</div>		
+			
+			<!-- 위의 div 에 border-bottm 으로 선긋기 -->
+			
+			<!-- 댓글 리스트 출력 -->
+			<div class="commet_box">
+				<ul class="comment_list">
+				<%for(VideosCommentDto tmp:commentList){ %>
+					<%-- 삭제 o / 게시글에 댓글 : 들여쓰기 X --%>
+					<%if(tmp.getDeleted().equals("yes")){ 
+						if(tmp.getNum() == tmp.getComment_group()){
+					%>
+					<li class="comment_item" id="commet_item_<%=tmp.getNum() %>">삭제된 댓글입니다.</li>
+						<%}else{%>
+					<li class="comment_item" id="commet_item_<%=tmp.getNum() %>" style="padding-left:50px;">삭제된 댓글입니다.</li>
+						<%}
+						//continue : 아래의 코드를 수행하지 않고, for 문으로 실행순서를 다시 보내기
+						continue;
+					}%>
+	
+					<%-- li : class="comment_item", id="commet_item_댓글num" --%>
+					<%if(tmp.getNum() == tmp.getComment_group()){ %>
+					<%-- tmp.getNum() == tmp.getComment_group() : 게시글에 댓글 -> 들여쓰기 X --%>
+					<li class="comment_item" id="commet_item_<%=tmp.getNum() %>">
+					<%}else{ %>
+					<%-- tmp.getNum() != tmp.getComment_group() : 게시글에 댓글 -> 들여쓰기 O --%>
+					<li class="comment_item" id="commet_item_<%=tmp.getNum() %>" style="padding-left:50px;">
+					<%} %>				
+						<div class="comment_flex">
+							<!-- <dt>프로필 이미지, 작성자 아아디, 수정, 삭제 </dt> -->
+							<div class="comment_profile_wrapper">
+								<span class="comment_profile_wrapper">
+								<!-- 프로필 이미지 -->
+								<%if(tmp.getProfile() == null){ %>
+									<%-- 프로필 이미지 없음 -> 기본 이미지 출력 --%>
+									<svg class="commet_profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+				  						<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+				  						<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+									</svg>
+								<%}else{ %>
+									<%-- 해당 이미지 출력 --%>
+									<img class="commet_profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile() %>" alt="프로필 사진" />
+								<%} %>
+								</span>
+							</div>
+							<div class="comment_box">
+								<!-- 작성자 id -->
+								<span class="comment_writer_id"><strong><%=tmp.getWriter() %></strong></span>
+								<%-- num != comment_group : 댓글에 단 댓글이다. --%>
+							<%if(tmp.getNum() != tmp.getComment_group()){ %>
+								<!-- 댓글의 댓글을 달 때, 어느 댓글인지 id 사용자 출력 -->
+								<span class="comment_for_id">@<i><%=tmp.getTarget_id() %></i></span>
 							<%} %>
-							</span>
-							<!-- 작성자 id -->
-							<span><%=tmp.getWriter() %></span>
-						<%-- num != comment_group : 댓글에 단 댓글이다. --%>
-						<%if(tmp.getNum() != tmp.getComment_group()){ %>
-							<!-- 댓글의 댓글을 달 때, 어느 댓글인지 id 사용자 출력 -->
-							@<i><%=tmp.getTarget_id() %></i>
-						<%} %>
-							<!-- 댓글 작성 일자 -->
-							<span><%=tmp.getRegdate() %></span>
-							<!-- 답글 다는 링크 -->
-							<a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply_link">댓글</a>
+								<div class="comment_main_text">
+									<pre><%=tmp.getContent() %></pre>
+								</div>
+								<div class="commet_function">
+									<!-- 댓글 작성 일자 -->
+									<span><%=tmp.getRegdate() %></span>
+									<!-- 답글 다는 링크 -->
+									<a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply_link" id="reply_link_<%=tmp.getNum()%>">댓글 달기</a>
+								</div>
+							</div>
 						<%if(id != null && tmp.getWriter().equals(id)){ %>
-							<!-- 수정, 삭제 링크 : 댓글 num(pk) 데이터로 넘기기 -->
-							<a data-num="<%=tmp.getNum() %>" href="javascript:" class="update_link">수정</a>
-							<a data-num="<%=tmp.getNum() %>" href="javascript:" class="delete_link">삭제</a>
+							<div class="dropdown">
+								<button class="btn" type="button" data-bs-toggle="dropdown">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+									  	<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+									</svg>
+								</button>
+								<ul class="dropdown-menu">
+									<!-- 수정, 삭제 링크 : 댓글 num(pk) 데이터로 넘기기 -->
+									<li><a data-num="<%=tmp.getNum() %>" href="javascript:" class="update_link dropdown-item">수정</a></li>
+									<li><a data-num="<%=tmp.getNum() %>" href="javascript:" class="delete_link dropdown-item">삭제</a></li>
+								</ul>
+							</div>
 						<%} %>
-						</dt>
-						<dd>
-							<pre><%=tmp.getContent() %></pre>
-						</dd>
-					</dl>
-					<%-- 댓글에 댓글을 다는 from --%>
-					<form id="reply_form_<%=tmp.getNum() %>" class="comment_form re_insert_form" 
-							action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" 
-							method="post">
+						</div>
+						<%-- 댓글에 댓글을 다는 from --%>
+						<div class="comment_form_wrapper reply">
+							<form id="reply_form_<%=tmp.getNum() %>" class="comment_form re_insert_form" 
+									action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" 
+									method="post">
+								<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
+								<input type="hidden" name="ref_group" value="<%=resultDto.getNum()%>"/>
+								<!-- '댓글'의 작성자가 대상자가 된다. -->
+								<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
+		                  		<!-- '댓글' 의 comment_group 을 따라간다. -->
+		                  		<input type="hidden" name="comment_group" value="<%=tmp.getComment_group()%>"/>
+		                  		<textarea name="content" placeholder="댓글을 입력하세요."></textarea>
+		                  		<div class="form_control_btns">
+									<button class="btn submit_btn" type="submit">등록</button>
+									<button class="btn reset_btn" type="reset">취소</button>
+								</div>
+							</form>
+						</div>
+						
+						<%-- 댓글 수정 form --%>
+						<%if(tmp.getWriter().equals(id)){ %>
+						<div class="comment_form_wrapper update">
+							<form id="update_form_<%=tmp.getNum() %>" class="comment_form update_form" action="${pageContext.request.contextPath}/videos/private/comment_update.jsp" method="post">
+								<input type="hidden" name="num" value="<%=tmp.getNum() %>" />
+								<textarea name="content"><%=tmp.getContent() %></textarea>
+								<div class="form_control_btns">
+									<button class="btn submit_btn" type="submit">수정</button>
+									<button class="btn reset_btn" type="reset">취소</button>
+								</div>
+							</form>
+						</div>
+						<%} %>
+					</li>
+				<%} %>
+				</ul>
+				
+				<div id="view_more" >
+					<%-- ajax 로 전송할 것 --%>
+					<a href="javascript:">[더보기]</a>
+				</div>
+				
+				<%-- 원글에 댓글을 작성할 폼 --%>
+				<div class="comment_form_wrapper insert">
+					<form class="comment_form insert_form" action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" method="post">
+						<!-- 원글의 작성자가 대상자가 된다. -->
+						<input type="hidden" name="target_id" value="<%=resultDto.getWriter() %>" />
 						<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
-						<input type="hidden" name="ref_group" value="<%=resultDto.getNum()%>"/>
-						<!-- '댓글'의 작성자가 대상자가 된다. -->
-						<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
-                  		<!-- '댓글' 의 comment_group 을 따라간다. -->
-                  		<input type="hidden" name="comment_group" value="<%=tmp.getComment_group()%>"/>
-                  		<textarea name="content"></textarea>
-                  		<button type="submit">등록</button>
+						<input type="hidden" name="ref_group" value="<%=num %>" />
+						<textarea name="content" placeholder="댓글을 입력하세요."><%= isLogin ? "" : "댓글 작성을 위해 로그인이 필요합니다." %></textarea>
+						<div class="form_control_btns">
+							<button class="btn submit_btn" type="submit">등록</button>
+							<button class="btn reset_btn" type="reset">취소</button>
+						</div>
 					</form>
-					
-					<%-- 댓글 수정 form --%>
-					<%if(tmp.getWriter().equals(id)){ %>
-					<form id="update_form_<%=tmp.getNum() %>" class="comment_form update_form" action="${pageContext.request.contextPath}/videos/private/comment_update.jsp" method="post">
-						<input type="hidden" name="num" value="<%=tmp.getNum() %>" />
-						<textarea name="content" cols="30" rows="10"><%=tmp.getContent() %></textarea>
-						<button type="submit">수정</button>
-					</form>
-					<%} %>
-				</li>
-			<%} %>
-			</ul>
-			<div id="view_more" >
-				<%-- ajax 로 전송할 것 --%>
-				<a href="javascript:">[더보기]</a>
+				</div>
 			</div>
 		</div>
+		
 
-<%-- 원글에 댓글을 작성할 폼 --%>
-		<div class="insert_form_wrapper">
-			<form class="comment_form insert_form" action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" method="post">
-				<!-- 원글의 작성자가 대상자가 된다. -->
-				<input type="hidden" name="target_id" value="<%=resultDto.getWriter() %>" />
-				<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
-				<input type="hidden" name="ref_group" value="<%=num %>" />
-				<textarea name="content"><%= isLogin ? "" : "댓글 작성을 위해 로그인이 필요합니다." %></textarea>
-				<button type="submit">등록</button>
-			</form>
-		</div>		
+		
+		
+
+		
+
+
 	</div>
 	
 	
@@ -405,9 +666,11 @@
 		
 		//페이지 로딩시에 출력되는 댓글들에 이벤트 리스너들 추가
 		addReplyListener(".reply_link");
+		addReplyFormListener(".re_insert_form");
 		addDeleteListener(".delete_link");
 		addUpdateFormListener(".update_form");
-		addUpdateListener(".update_link")
+		addUpdateListener(".update_link");
+		addResizeListener(".comment_form textarea");
 	
 		//게시글 삭제 confirm 함수
 		function deleteConfirm(){
@@ -420,7 +683,7 @@
 			//no : false -> 아무 일도 없음
 		}
 		
-		//게시글에 댓글 달기 -> login 검사하기
+		//게시글에 댓글 달기 -> login 검사하기 & 댓글 내용이 비었는지 확인
 		document.querySelector(".insert_form").addEventListener("submit", function(e){
 			//로그인 하지 않았으면 -> 폼 전송 막음 -> 로그인 폼으로 이동한다.
 			if(!isLogin){
@@ -430,7 +693,16 @@
 				const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
 				if(isMove){
 					location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
+					return;
 				}
+			}
+			
+			//댓글 내용 비었는지 검사
+			const inputText = this.querySelector("textarea").value;
+			if(inputText === ""){
+				//폼 전송 막기
+				e.preventDefault();
+				alert("내용을 입력해주세요.");
 			}
 		});
 		
@@ -466,8 +738,10 @@
 					//새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록하기
 					addDeleteListener(".page-" + currentPage + " .delete_link");
 					addReplyListener(".page-" + currentPage + " .reply_link");
+					addReplyFormListener(".page-" + currentPage + " .re_insert_form")
 					addUpdateFormListener(".page-" + currentPage + " .update_form");
 					addUpdateListener(".page-" + currentPage + " .update_link");
+					addResizeListener(".page-" + currentPage + " .comment_form textarea");
 				});
 			}
 			
@@ -506,29 +780,83 @@
 					const num = this.getAttribute("data-num");
 					//열고 닫을 reForm 객체를 가져온다. - 번호를 이용해서 댓글의 댓글 폼을 선택
 					const replyForm = document.querySelector("#reply_form_"+num);
+					//댓글을 감싸고 있는 div 또한 가져오기
+					const replyFormDiv = replyForm.parentElement;
 					
 					//링크의 텍스트를 읽어옴
 					let current = this.innerText;
 					
-					if(current === "댓글"){
+					if(current === "댓글 달기"){
 						//텍스트가 "답글" -> "취소" 로 바꾸고, reForm 의 display = "block" 으로 변경	
 						this.innerText = "취소";
-						//replyForm.classList.remove("animate__fadeOutDown");
-						//replyForm.classList.add("animate__fadeInDown");
+						replyFormDiv.style.display = "block";
 						replyForm.style.display = "block";
 					}else if(current === "취소"){
 						//텍스트가 "취소" -> "답글" 로 바꾸고, reForm 의 display = "none" 으로 변경
-						this.innerText = "댓글";
-						//replyForm.classList.remove("animate__fadeInDown");
-						//replyForm.classList.add("animate__fadeOutDown");
-						/* replyForm.addEventListener("animationend", function(){
-							replyForm.style.display = "none";
-						}, {once:true}); */
+						this.innerText = "댓글 달기";
+						replyFormDiv.style.display = "none";
 						replyForm.style.display = "none";
 					}
 				});
 			}
 		}
+		
+		//댓글 에 댓글 추가 : 인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
+		//sel = ".reply_link" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
+		//sel = ".page-N .reply_link" (N : currentPage) 형식의 내용이다.
+		function addReplyFormListener(sel){
+			//댓글 수정 폼의 참조값을 배열에 담아오기
+	 		let replyForms = document.querySelectorAll(sel);
+			for(let i = 0; i < replyForms.length; i++){
+				//폼에 submit 이벤트가 일어났을 때 호출되는 함수 등록
+				replyForms[i].addEventListener("submit", function(e){
+					//submit 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
+					const form = this;
+					//submit 이벤트가 일어난 form 의 부모 div
+					const formDiv = this.parentElement;
+					//댓글의 textarea 의 내용 읽어오기
+					const replyText = this.querySelector("textarea").value;
+					
+					if(replyText == ""){
+						//textarea 가 빈칸
+						//폼 제출 막기
+						e.preventDefault();
+						alert("내용을 입력해주세요.");
+					}
+				});
+				
+				//취소 버튼
+ 				replyForms[i].addEventListener("reset", function(e){
+					//reset 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
+					const form = this;
+					//reset 이벤트가 일어난 form 의 부모 div
+					const formDiv = this.parentElement;
+					
+					//form 의 id : reply_form_n 가져와서 n 추출
+					const id = form.getAttribute('id');
+					const num = id.replace(/[^0-9]/g,'');
+					
+					//id 를 사용해서 reply_link_num 완성해서 link 가져오기					
+					let replyLink = document.querySelector("#reply_link_" + num);
+					
+					let isReset = confirm("댓글 내용을 삭제하시겠습니까?");
+					if(isReset){
+						//삭제
+						//열려잇는 form 과 div 닫기
+						form.style.display="none";
+						formDiv.style.display = "none";
+						//링크 내용 : "취소" -> "댓글달기" 로 변경
+						replyLink.innerText = "댓글 달기";
+					}else{
+						//폼 reset 막기
+						e.preventDefault();
+					}
+				});
+				
+			}
+		}
+		
+		
 		
 		//댓글 삭제 : 인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
 		//sel = ".reply_link" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
@@ -575,6 +903,18 @@
 				updateForms[i].addEventListener("submit", function(e){
 					//submit 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
 					const form = this;
+					//submit 이벤트가 일어난 form 의 부모 div
+					const formDiv = this.parentElement;
+					
+					//입력한 내용이 빈칸인지 확인
+					const inputText = this.querySelector("textarea").value;
+					if(inputText === ""){
+						//빈칸이면 -> 함수 끝
+						//폼 제출 막기
+						e.preventDefault();
+						alert("내용을 입력해주세요.");
+						return;
+					}
 					
 					//폼 제출 막기
 					e.preventDefault();
@@ -597,13 +937,36 @@
 							
 							const num = form.querySelector("input[name=num]").value;
 							const content = form.querySelector("textarea[name=content]").value;
-							document.querySelector("#commet_item_"+num+" pre").innerText = content;
+							document.querySelector("#commet_item_"+num+" .comment_main_text pre").innerText = content;
+							//form & div 닫기
 							form.style.display="none";
+							formDiv.style.display = "none";
 						}else{
 							//수정 실패
 							alert("댓글 수정 실패");
 						}
 					});
+				});
+				
+				//취소 버튼
+ 				updateForms[i].addEventListener("reset", function(e){
+					//reset 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
+					const form = this;
+					//reset 이벤트가 일어난 form 의 부모 div
+					const formDiv = this.parentElement;
+					
+					let isReset = confirm("댓글 내용을 삭제하시겠습니까?");
+					if(isReset){
+						//삭제
+						//form 내용 삭제
+						form.reset();
+						//열려잇는 form 과 div 닫기
+						form.style.display="none";
+						formDiv.style.display = "none";
+					}else{
+						//폼 reset 막기
+						e.preventDefault();
+					}
 				});
 				
 			}
@@ -619,7 +982,17 @@
 		   		updateLinks[i].addEventListener("click", function(){
 		   			//click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다. 
 		   			const num = this.getAttribute("data-num");
-		   			document.querySelector("#update_form_"+num).style.display="block";
+		   			const updateForm = document.querySelector("#update_form_"+num);
+		   			//form 을 감싸는 div
+		   			const updateFormDiv = updateForm.parentElement;
+		   			//보이게 하기
+		   			updateFormDiv.style.display="block";
+		   			updateForm.style.display="block";
+		   			
+			   		//내부 textarea 크기 조절
+		   			//textarea 의 value 에 맞게 높이 늘리기
+					const updateFormTextarea = updateForm.querySelector("textarea");
+					updateFormTextarea.style.height = (updateFormTextarea.scrollHeight + 2) + "px";
 		   		});
 		   	}
 		}
@@ -695,6 +1068,29 @@
 			
 		});
 		
+		//모든 댓글의 div 의 textarea 에 자동으로 세로 길이 늘어나도록 하는 function
+		//sel : 인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수
+		//sel = ".comment_form" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
+		//sel = ".page-N .comment_form" (N : currentPage) 형식의 내용이다.
+		function addResizeListener(sel){
+			//댓글 form 의 참조값을 배열에 담아오기 
+		   	let forms = document.querySelectorAll(sel);
+			for(let i = 0; i < forms.length; i++){
+				forms[i].addEventListener("input", function(){
+					//textarea 의 기본 높이로 줄어든다.
+					this.style.height = 'auto';
+					//textarea 높이 늘리기 -> scrollHeight 변화 없으면 크기 변경 X
+					this.style.height = (this.scrollHeight + 2) + "px";
+				});
+			}
+		}
+		/* //댓글 form 에서 textarea 와 comment_form_wrapper 크기 같이 조절
+		document.querySelector(".insert textarea").addEventListener("input", function(){
+			//textarea 의 기본 높이로 줄어든다.
+			this.style.height = 'auto';
+			//textarea 높이 늘리기 -> scrollHeight 변화 없으면 크기 변경 X
+			this.style.height = (this.scrollHeight + 2) + "px";
+		}); */
 		
 	</script>
 </body>

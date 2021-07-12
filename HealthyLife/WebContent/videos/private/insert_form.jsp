@@ -35,9 +35,15 @@
 		margin-bottom: 10px;
 	}
 	/* 게시글 등록 버튼 */
-	.WritingHeader .btn{
+	.WritingHeader #submit_button{
 		background-color: #1c3992;
 	    border-color: #1c3992;
+	    color: white;
+	}
+	/* 뒤로가기 버튼 */
+	.WritingHeader #goback_button{
+		background-color: #777777;
+	    border-color: #777777;
 	    color: white;
 	}
 
@@ -58,7 +64,9 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../../include/navbar.jsp"></jsp:include>
+	<jsp:include page="../../include/navbar.jsp">
+		<jsp:param value="videos" name="thisPage"/>
+	</jsp:include>
 	<div class="container">
 		<div class="WritingHeader">
 			<div>
@@ -66,6 +74,7 @@
 			</div>
 			<div>
 				<a class="btn" id="submit_button">등록</a>
+				<a class="btn" id="goback_button">취소</a>
 			</div>
 		</div>
 		
@@ -172,6 +181,17 @@
 			document.querySelector("#insertForm button").click();
 		});
 		
+		//취소 버튼 -> 이전 페이지로 돌아간다.
+		document.querySelector("#goback_button").addEventListener("click", function(e){
+			let isGoBack = confirm("작성 중인 글을 지우고 이전으로 돌아가시겠습니까?");
+			if(isGoBack){
+				//혹시 모를 폼 제출 막기
+				e.preventDefault();
+				//리스트 페이지로 돌아가기
+				location.href = "${pageContext.request.contextPath}/videos/list.jsp";
+			}
+			//취소 -> 아무 일도 없음
+		});
 	</script>
 	
 </body>
