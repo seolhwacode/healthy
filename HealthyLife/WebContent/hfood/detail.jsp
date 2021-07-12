@@ -264,7 +264,7 @@
 	   	<!-- 댓글  -->
       
 		<div class="comments">
-      	<ul>
+      	<ul class="comment_list">
          <%for(Hfood_comment_dto tmp: commentList){ %>
             <%if(tmp.getDeleted().equals("yes")){ %>
                <li>삭제된 댓글 입니다.</li>
@@ -405,33 +405,11 @@
 //댓글의 현재 페이지 번호를 관리할 변수를 만들고, 초기값 1 대입하기
 		let currentPage = 1;
 		
-<<<<<<< HEAD
+
 		//마지막 페이지는 totalPageCount 이다.
 		let lastPage = <%=totalPageCount %>;
-=======
+
 		//현재 페이지가 마지막 페이지보다 작거나 같을 때 -> 댓글 페이지 출력하기
-		if(currentPage <= lastPage){				
-			/*
-				해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
-				"pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다.
-			*/
-			ajaxPromise("${pageContext.request.contextPath}/hfood/ajax_comment_list.jsp", "post", "pageNum="+currentPage+"&num="+<%=num %>)
-			.then(function(response){
-				return response.text();
-			})
-			.then(function(data){
-				//data 에는 html text 가 들어있다.
-				document.querySelector(".comment_list").insertAdjacentHTML("beforeend", data);
-				
-				//새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록하기
-				addDeleteListener(".page-" + currentPage + " .delete_link");
-				addReplyListener(".page-" + currentPage + " .reply_link");
-				addUpdateFormListener(".page-" + currentPage + " .update_form");
-				addUpdateListener(".page-" + currentPage + " .update_link");
-			});
-		}
->>>>>>> stash
-		
 		if(<%=totalRow %> <= 10){
 			document.querySelector("#view_more").style.display = "none";
 		}
@@ -465,7 +443,7 @@
 			if(currentPage == lastPage){
 				document.querySelector("#view_more").style.display = "none";
 			}else{
-				document.querySelector("#view_more").steyl.display = "block";
+				document.querySelector("#view_more").style.display = "block";
 			}
 		});
     //인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 
