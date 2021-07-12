@@ -13,15 +13,21 @@
    
    .container {
 	  width : 50%;
-	  margin-top:50px;
-	  border: solid  #2252e3 3px;
 	  padding : 50px;
+   }
+   
+   p {
+	    background-color: #2252e3;
+	    font-size: 20px;
+	    color: white;
+	    width: 170px;
+	    font-family: 'Noto Sans KR', sans-serif;
    }
    
    h1 {
 		margin-bottom:30px;
-		text-align:center;
-		
+		text-align:left;
+		font-family: 'Noto Sans KR', sans-serif;
    }
    
    #title { 
@@ -32,19 +38,31 @@
    
    
 </style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+	
 </head>
 <body>
 <div class="container rounded-3">
    <form action="insert.jsp" method="post" id="insertForm">
-   		<h1>당신만의 건강한 레시피를 공유해주세요!</h1>
+   		<p>
+   		<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-emoji-wink" viewBox="-1 0 15 19">
+	  		<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+	  		<path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm1.757-.437a.5.5 0 0 1 .68.194.934.934 0 0 0 .813.493c.339 0 .645-.19.813-.493a.5.5 0 1 1 .874.486A1.934 1.934 0 0 1 10.25 7.75c-.73 0-1.356-.412-1.687-1.007a.5.5 0 0 1 .194-.68z"/>
+		</svg>
+		HEALTHY LIFE
+		</p>
+   		<h1>건강한 레시피를 공유하기</h1>
       	<div class="mb-3">         
          	<input class="form-control" type="text" name="title" id="title" placeholder="제목"/>
       	</div>
       	<div class="mb-3">
          	<textarea class="form-control"  name="content" id="content"></textarea>
       	</div>
-      	<div style="text-align:right; margin-right:20px;">
-   			<button class="btn btn-primary me-md-3" style="background:#2252e3;" type="submit">저장</button>
+      	<div style="text-align:center;">
+   			<button class="btn btn-primary me-md-3" style="background:#2252e3;" type="submit">저장하기</button>
 		</div>   
    </form>
 </div>
