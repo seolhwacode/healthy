@@ -312,8 +312,10 @@
 		
 		   document.write('<a href='+'"'+imagelinks[array]+'"'+' target=_blank><img src="'+myimages[array]+'" border=0></a>')
 		   }
-		   random_imglink()
-		   random_imglink()
+		   
+		  random_imglink();
+		  random_imglink();
+		   
 		  
 		   
 	  </script>

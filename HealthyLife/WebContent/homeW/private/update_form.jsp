@@ -50,7 +50,9 @@
    #homeT1{
    		width:120px;
    }
-   
+   span{
+   		color: 	blue;
+   }
   
 </style>
 </head>
@@ -62,7 +64,7 @@
 		<img id="homeT1" src="../../ht_images/ht1.png"/>
 		<img id="homeT1" src="../../ht_images/ht1.png"/>
 	</div>
-   <h1 style="text-align:center;">글 수정 폼 입니다.</h1>
+   <h1 style="text-align:center;">홈트 정보공유 게시판</h1>
    <form action="update.jsp" method="post" id="updateForm">
 	  <input type="hidden" name="num" value="<%=num %>"  />
       <div class="md-4">
@@ -74,7 +76,9 @@
          <input class="form-control" type="text" name="title" id="title" value="<%=dto.getTitle()%>"/>
       </div>
       <div>
-         <label class="form-label" for="content">내용</label>
+         <label class="form-label" for="content">
+         	내용 &nbsp&nbsp<span>게시판 목적에 맞는 글을 작성해주세요</span>
+         </label>
          <textarea class="form-control" name="content" id="content"><%=dto.getContent() %></textarea>
       </div>
       <button class="btn btn-primary" type="submit" onclick="submitContents(this);">수정확인</button>

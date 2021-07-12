@@ -7,7 +7,7 @@
     pageEncoding="UTF-8"%>
 <%
    //한 페이지에 몇개씩 표시할 것인지
-   final int PAGE_ROW_COUNT=3;
+   final int PAGE_ROW_COUNT=5;
    //하단 페이지를 몇개씩 표시할 것인지
    final int PAGE_DISPLAY_COUNT=5;
    
@@ -194,6 +194,11 @@
    	}
    	#saveId{
    		color:white;
+   		
+   	}
+   	h1{
+   		margin-top: 30px;
+   		margin-bottom: 30px;
    	}
 </style>
 </head>
@@ -203,6 +208,7 @@
 	<button class="btn btn-secondary" style="float:right" type="submit">
 		<a id="saveId" href="${pageContext.request.contextPath}/homeW/private/insert_form.jsp">작성하기</a>
 	</button>
+	
 	<h1>🦾홈트 정보 공유 게시판🦾</h1>
 	<table class="table">
 		<thead>
