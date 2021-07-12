@@ -6,7 +6,7 @@
     pageEncoding="UTF-8"%>
 <%
 //한 페이지에 몇개씩 표시할 것인지
-final int PAGE_ROW_COUNT=10;
+final int PAGE_ROW_COUNT=5;
 //하단 페이지를 몇개씩 표시할 것인지
 final int PAGE_DISPLAY_COUNT=5;
 
@@ -106,6 +106,53 @@ if(endPageNum > totalPageCount){
 	.container {
 		text-align: center;
 	}
+	
+	.pagination {
+	  display: inline-block;
+	}
+	
+	.pagination a {
+	  color: black;
+	  float: left;
+	  padding: 5px 13px;
+	  text-decoration: none;
+	  margin:10px -3px 10px -3px;
+	  line-height:23px;
+	  vertical-align:middle;
+	  font-size:16px;
+	}
+	
+	.pagination>#pageNum {
+		border : 2px solid #2252e3;
+	  	border-radius: 50%;
+	}
+	
+	.pagination a.active {
+	  background-color: #2252e3;
+	  color: white;
+	  border-radius: 50%;
+	  font-weight:bold;
+	}
+	
+	.pagination #pageNum:hover:not(.active) {
+	  background-color: lightgray;
+	  border-radius:  50%;
+	}
+	
+	#search {
+	 	line-height: 23px;
+		margin:auto;
+   	}
+   	
+   	.input-group-text {
+  	background-color: white;
+  	border: none;
+  	}
+  	
+  	h1{
+  		text-align: center;
+  		margin: 20px 20px;
+  	}
 </style>
 </head>
 <body>
@@ -138,50 +185,59 @@ if(endPageNum > totalPageCount){
 		<%} %>
 		</tbody>
 	</table>
-	     <ul class="pagination justify-content-center">
+	    <div  class="pagination ">
+      
          <%if(startPageNum != 1){ %>
-            <li class="page-item">
-               <a class="page-link" href="bookingList.jsp?pageNum=<%=startPageNum-1 %>&keyword=<%=encodedK%>&condition=<%=condition%>">Prev</a>
-            </li>
-         <%}else{ %>
-            <li class="page-item disabled">
-               <a class="page-link" href="javascript:">Prev</a>
-            </li>
-         <%} %>
-         <%for(int i=startPageNum; i<=endPageNum; i++) {%>
-            <%if(i==pageNum){ %>
-               <li class="page-item active">
-                  <a class="page-link" href="bookingList.jsp?pageNum=<%=i %>&keyword=<%=encodedK%>&condition=<%=condition%>"><%=i %></a>
-               </li>
-            <%}else{ %>
-               <li class="page-item">
-                  <a class="page-link" href="bookingList.jsp?pageNum=<%=i %>&keyword=<%=encodedK%>&condition=<%=condition%>"><%=i %></a>
-               </li>
-            <%} %>
+            <a>
+               	<a href="bookingList.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">
+               	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2252e3" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+				  <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+				</svg>
+               	</a>
+            </a>   
+         <% } %>
+         
+         <%for(int i=startPageNum; i<=endPageNum ; i++){ %>
+            <a >
+               <%if(pageNum == i){ %>
+                  <a id=pageNum class="active" href="bookingList.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+               <%}else{ %>
+                  <a id=pageNum href="bookingList.jsp?pageNum=<%=i %>&condition=<%=condition %>&keyword=<%=encodedK %>"><%=i %></a>
+               <%} %>
+            </a>   
          <%} %>
          <%if(endPageNum < totalPageCount){ %>
-            <li class="page-item">
-               <a class="page-link" href="bookingList.jsp?pageNum=<%=endPageNum+1 %>&keyword=<%=encodedK%>&condition=<%=condition%>">Next</a>
-            </li>
-         <%}else{ %>
-            <li class="page-item disabled">
-               <a class="page-link" href="javascript:">Next</a>
-            </li>
+            <a>
+               	<a href="bookingList.jsp?pageNum=<%=endPageNum+1 %>&condition=<%=condition %>&keyword=<%=encodedK %>">
+               	<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#2252e3" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+				  <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+				  <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+				</svg>
+				</a>
+            </a>
          <%} %>
-      </ul>
-      
-      <div style="clear:both;"></div>
-   
-   	<form id="search" action="bookingList.jsp" method="get"> 
+        
+     <div style="clear:both;"></div>
+     
+   <div class="input-group mb-3">
+   	<form class="input-group-text" id="search" action="bookingList.jsp" method="get"> 
       <select name="condition" id="condition">
          <option value="className" <%=condition.equals("className") ? "selected" : ""%>>클래스명</option>
          <option value="name" <%=condition.equals("name") ? "selected" : ""%>>예약자</option>
          <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
       </select>
-      <input class= "border border-secondary" type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" value="<%=keyword%>"/>
-      <button class="btn btn-primary me-md-2" type="submit">검색</button>
-     
+     <div class="input-group-text">
+	   <input class= "border border-secondary" type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" value="<%=keyword%>"/>
+	   	<button type="submit" style="background-color: #2252e3; color:white;" class="input-group-text" id="inputGroupPrepend2">
+	   		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+	  			<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+			</svg>
+		</button>
+	</div>
    	</form>
+   	</div>
+   	
    	
 
 

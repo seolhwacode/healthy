@@ -5,6 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>/oneday_class/class.jsp</title>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
 <jsp:include page="/include/resource.jsp"></jsp:include>
 <style>
     html,
@@ -99,7 +103,7 @@
         opacity: 1;
     }
     
-    .bi{
+    .bi-journal-check{
     	position: absolute;
    		top: 8px;
         left: 10px;
@@ -147,11 +151,35 @@
         text-decoration: none;
     }
     
+     #book-link{
+    	position: fixed;
+        top: 600px;
+        right: 10px;
+        height: 60px;
+        width: 60px;
+        background: #2252e3;
+        border-radius: 50%;
+        opacity: 0.8;
+        cursor: pointer;
+        box-shadow: 3px 3px rgba(0,0,0,0.4);
+    }
+    
+    #book-link:hover{
+    	opacity: 1;
+    }
+    
+    #book-link .bi-card-checklist{
+    	position: absolute;
+    	top: 10px;
+    	left: 9px;
+    	color: white;
+    	height: 40px;
+    	width: 40px;
+    }
 </style>
 </head>
 <body>
 <jsp:include page="/include/navbar.jsp"></jsp:include>
-<a href="private/bookingList.jsp">예약 목록 확인</a>
         <div class="product-container">
             <div class="container">
                 <div class="row">
@@ -323,6 +351,18 @@
                 </div>
             </div>
         </div>
+        
+<!-- 예약목록 확인 버튼 -->
+<!-- 예약목록 확인 버튼 -->
+	<div id="book-link" class="animate__animated" >
+		<a href="${pageContext.request.contextPath}/oneday_class/private/bookingList.jsp">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
+  				<path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+  				<path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
+			</svg>
+		</a>
+	</div>
+
 <!-- modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -366,6 +406,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 
+
+//예약리스트 hover할 때 애니메이션 추가
+document.querySelector("#book-link")
+	.addEventListener("mouseover",function(){
+	this.classList.add("animate__pulse");
+});
+
+document.querySelector("#book-link")
+	.addEventListener("mouseout", function(){
+	this.classList.remove("animate__pulse");
+});
+
 classNameSend(".send");
 function classNameSend(sel) {
 	//댓글 수정 링크의 참조값을 배열에 담아오기 
@@ -381,7 +433,6 @@ function classNameSend(sel) {
 		
 	}
 }
-
 $(function(){
 	$('.card-content').hover(function() {
 	   $(this).find('.description').animate({
@@ -390,7 +441,6 @@ $(function(){
 	   }, 300);
 	 });
 });
-
 const videos = document.querySelectorAll(".video");
 	for(let i=0; i<videos.length; i++){
 		videos[i].addEventListener("mouseover",function(){
@@ -402,7 +452,6 @@ const videos = document.querySelectorAll(".video");
 			this.pause();
 		});
 	}
-
 </script>
 </body>
-</html>
+</html>l>

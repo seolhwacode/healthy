@@ -28,15 +28,27 @@
 </head>
 <body>
 	<%if(isSuccess){ %>
-	<script>
-      alert("예약이 완료되었습니다.");
-      location.href="bookingList.jsp";
-   </script>
-	<%}else{ %>
-	<script>
-      alert("예약이 실패하였습니다.");
-      location.href="class.jsp";
-   </script>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+			<script>
+			swal({
+		    	  title: "예약 성공",
+		    	  icon: "success",
+		    	  button: "예약 확인",
+		    	}).then(function(){
+		    		location.href="bookingList.jsp"
+		    	});
+			</script>
+	<%}else if(!isSuccess){%>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script>
+		swal({
+    	 	 title: "예약 실패",
+    	 	 icon: "warning",
+    	 	 button: "다시 예약",
+    		}).then(function(){
+    			location.href="../class.jsp"
+    		});
+	</script>
 	<%} %>
 </body>
 </html>
