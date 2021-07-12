@@ -30,14 +30,6 @@
 </head>
 <body>
 	<div class="container">
-		
-		<%if(id != null){ %>
-			<p>
-				<a href="${pageContext.request.contextPath}/users/private/info.jsp"><%=id %></a> 님 로그인 중...
-				<a href="${pageContext.request.contextPath}/users/logout.jsp">로그아웃</a>
-			</p>
-		<%} %>
-		
 		<h1>I support your health!</h1>
 		<div id="carouselExampleIndicators" class="carousel slide w-75" data-bs-ride="carousel">
 		  <div class="carousel-indicators">
