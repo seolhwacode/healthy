@@ -196,9 +196,9 @@
          transform: rotate(360deg);
       }
    }
-   .btn{ display: block; width: 200px; height: 50px; background: #4ac4f3;
-	text-decoration: none; text-align: center; line-height: 50px; color: #fff;
-	border-radius:50px;}
+   #new{ display: block; width: 200px; height: 100px;
+	text-decoration: none; text-align: center; line-height: 50px;
+	border-radius:10px;}
 	
 </style>
 <jsp:include page="/include/resource.jsp"></jsp:include>
@@ -206,39 +206,38 @@
 <body>
 <jsp:include page="/include/navbar.jsp"></jsp:include>
 <div class="container">
-   <%if(dto.getPrevNum()!=0){ %>
-      <a href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">이전글</a>
-   <%} %>
-   <%if(dto.getNextNum()!=0){ %>
-      <a href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">다음글</a>
-   <%} %>
    <% if(!keyword.equals("")){ %>
       <p>   
          <strong><%=condition %></strong> 조건, 
          <strong><%=keyword %></strong> 검색어로 검색된 내용 자세히 보기 
       </p>
    <%} %>
-   <table>
-      <tr>
-         <th>글번호</th>
+   <table class="table">
+   <h1 class="text-primary">추천 음악 페이지</h1>
+   	<thead>
+         <tr class="table-primary">
+            <th scope="col">글번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성자</th>
+            <th scope="col">등록일</th>
+            <th scope="col">조회수</th>
+            
+         </tr>
+    </thead>
+    <tbody>
+		<tr>
          <td><%=dto.getNum() %></td>
-      </tr>
-      <tr>
-         <th>작성자</th>
+      	
+      	<td><%=dto.getTitle() %></td>
+         
          <td><%=dto.getWriter() %></td>
-      </tr>
-      <tr>
-         <th>제목</th>
-         <td><%=dto.getTitle() %></td>
-      </tr>
-      <tr>
-         <th>조회수</th>
-         <td><%=dto.getViewCount() %></td>
-      </tr>
-      <tr>
-         <th>등록일</th>
+      
          <td><%=dto.getRegdate() %></td>
+      
+         <td><%=dto.getViewCount() %></td> 
       </tr>
+    </tbody> 
+    
       <tr>
 		<th>동영상</th>
 		<td>
@@ -248,7 +247,7 @@
 			</iframe>
 		</td>
 		<td>
-			<a id="pop_one" href="#pop1" class="btn">팝업열기</a>
+			<a id="new" href="<%=Music %>" class="btn btn-outline-primary" type="button" target="new">새 탭에 동영상열기</a>
 		</td>
 	  </tr>
       <tr>
@@ -258,14 +257,22 @@
          </td>
       </tr>
    </table>
-   <ul>
-      <li><a href="list.jsp">목록보기</a></li>
+   <div class="btn-group" role="group" aria-label="basic outlined example">
+		<%if(dto.getPrevNum()!=0){ %>
+      		<a class="btn btn-outline-primary" type="button" href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">이전글</a>
+   		<%} %>
+   		<%if(dto.getNextNum()!=0){ %>
+      		<a class="btn btn-outline-primary" type="button" href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">다음글</a>
+   		<%} %>
+	</div>
+   <div class="btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
+      <a type="button" class="btn btn-outline-primary" href="list.jsp">목록</a>
       <%if(dto.getWriter().equals(id)){ %>
-         <li><a href="private/updateform.jsp?num=<%=dto.getNum()%>">수정</a></li>
-         <li><a href="private/delete.jsp?num=<%=dto.getNum()%>">삭제</a></li>
+         <a type="button" class="btn btn-outline-primary"  href="private/updateform.jsp?num=<%=dto.getNum()%>">수정</a>
+         <a type="button" class="btn btn-outline-primary"  href="private/delete.jsp?num=<%=dto.getNum()%>">삭제</a>
       <%} %>
       
-   </ul>
+   </div>
    <!-- 댓글 목록 -->
    <div class="comments">
       <ul>
@@ -555,9 +562,7 @@
             });
          });
       }
-	document.querySelector("#pop_one").addEventListener("click", function(){
-		window.open("popup.jsp", "small", "width=1000,height=800,top=100,left=100");
-	});
+	
    }
 </script>
 </body>

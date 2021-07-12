@@ -148,8 +148,6 @@ public class MRDao {
 					dto2.setContent(rs.getString("content"));
 					dto2.setViewCount(rs.getInt("viewCount"));
 					dto2.setRegdate(rs.getString("regdate"));
-					dto2.setPrevNum(rs.getInt("prevNum"));
-					dto2.setNextNum(rs.getInt("nextNum"));
 					dto2.setMusic(rs.getString("music"));
 				}
 			} catch (Exception e) {
