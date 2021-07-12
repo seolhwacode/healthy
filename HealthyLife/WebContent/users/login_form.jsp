@@ -23,10 +23,12 @@
 		text-align: center;
 	}
 	.form-container{
-		width: 400px;
-		margin: 100px auto;
+	    width: 400px;
+	    margin-top: 160px;
+	    margin-left: auto;
+	    margin-right: auto;
 	}
-	.btn{
+	#login_submit_btn{
 		width: 50%;
     	margin: 40px 100px;
 	}
@@ -37,6 +39,7 @@
 </style>
 </head>
 <body>
+	<jsp:include page="../include/navbar.jsp"></jsp:include>
 	<div class="container">
 		
 		<div class="form-container">
@@ -52,7 +55,7 @@
 				<label class="form-label" for="pwd"></label>
 				<input class="form-control" type="password" id="pwd" name="pwd" placeholder="비밀번호"/>
 			</div>
-			<button type="submit" class="btn btn-outline-secondary">로그인</button>
+			<button type="submit" class="btn btn-outline-secondary" id="login_submit_btn">로그인</button>
 		</form>
 		</div>
 	</div>
