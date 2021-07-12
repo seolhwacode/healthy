@@ -20,16 +20,85 @@
 <head>
 <meta charset="UTF-8">
 <title>/users/signup.jsp</title>
+<jsp:include page="../include/resource.jsp"></jsp:include>
+<style>
+	body {
+		background-image: url(../image/running.jpg);
+		background-position: center ;
+		background-attachment: fixed;
+		background-repeat: no-repeat;
+	}
+	
+	.container {
+		margin: 200px 100px 0px 200px;
+	}
+	.btn {
+	    display: block;
+	    margin-bottom: 30px;
+	    border: 3px solid white;
+	    font-family: 'Noto Sans KR', sans-serif;
+	    box-shadow: 3px 3px 7px grey;
+	}
+	
+	a { text-decoration: none; }
+	
+	p{
+		color: white;
+	    font-family: 'Noto Sans KR', sans-serif;
+	    text-shadow: 3px 3px 7px grey;
+	    font-size: 40px;
+	   
+	}
+	
+	#reply { 
+		color: white;
+	  	font-family: 'Noto Sans KR', sans-serif;
+	    text-shadow: 3px 3px 7px grey;
+	    font-size: 20px;
+	    margin:0px 0px 30px 0px;
+	
+	}
+	
+	.login_btn:hover{
+		background-color:#9b9b9b;
+	}
+	.login_btn{
+	    width: 230px;
+	}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
-	<div class="container">
 	<%if(isSuccess){ %>
-		<p><strong><%=id %></strong> 회원님. 가입되었습니다.</p>
-		<a href="${pageContext.request.contextPath}/users/login.jsp">로그인</a>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script>
+			swal({
+	    	  	title: "회원가입 완료!",
+	    	  	icon: "success",
+	    	  	button: "oh~ yes!",
+	    	});
+		</script>
+		<div class="container">
+			<p><strong><%=id %></strong> 님. 가입되셨습니다!</p>
+			<br />
+			<%-- 그냥 확인을 누르면 login_form.jsp 를 호출했던 page 로 이동한다. --%>
+			<a class="btn login_btn link-light" href="${pageContext.request.contextPath}/users/login_form.jsp"> 로그인하러 가기! </a>
+			<a class="btn login_btn link-light" href="${pageContext.request.contextPath}/index.jsp"> 메인화면으로 가기 </a>
+		</div>
 	<%}else{ %>
-		<p>회원가입에 실패했습니다.</p>
-		<a href="${pageContext.request.contextPath}/users/login_form.jsp">회원가입으로 돌아가기</a>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script>
+			swal({
+	    	  	title: "회원가입 실패..ㅠㅠ",
+	    	  	button: "oh~ No!",
+	    	});
+		</script>
+		<div class="container">
+			<p id="reply">회원가입에 실패했습니다.</p>
+			<a class="btn login_btn link-light" href="${pageContext.request.contextPath}/users/signup_form.jsp">회원가입으로 돌아가기</a>
+		</div>
 	<%} %>
-	</div>
 </body>
 </html>

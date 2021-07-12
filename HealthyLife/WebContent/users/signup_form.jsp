@@ -11,8 +11,10 @@
 		text-align: center;
 	}
 	.form-container{
-		width: 400px;
-		margin: 100px auto;
+	    width: 400px;
+	    margin-top: 150px;
+	    margin-left: auto;
+	    margin-right: auto;
 	}
 	.form-container button{
 		width: 100%;
@@ -20,6 +22,7 @@
 </style>
 </head>
 <body>
+	<jsp:include page="../include/navbar.jsp"></jsp:include>
 	<div class="container">
 		<div class="form-container">
 			<h1>회원가입</h1>
@@ -48,7 +51,7 @@
 				</div>
 				<div>
 					<%-- 비밀번호 확인 : 위의 비밀번호와 동일하게 입력하였는지 확인하기 --%>
-					<label class="form-label" for="pwd2">비민번호 확인</label>
+					<label class="form-label" for="pwd2">비밀번호 확인</label>
 					<input class="form-control" type="password" id="pwd2" name="pwd2" />
 					
 					<%-- 가용하지 않을 때 feedback--%>
