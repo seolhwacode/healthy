@@ -1,5 +1,3 @@
-
-
 <%@page import="test.homeW.dto.HomeWDto"%>
 <%@page import="test.homeW.dao.HomeWDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -16,7 +14,9 @@
 <meta charset="UTF-8">
 <title>/homeW/private/update_form.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300;400&display=swap" rel="stylesheet">
 <style>
    #content{
       height: 500px;
@@ -39,6 +39,7 @@
    
    .container{
    		width:750px;
+   		font-family: 'Gothic A1', sans-serif;
    }
  
    #hometImg{

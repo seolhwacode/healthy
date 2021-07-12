@@ -106,6 +106,7 @@
 		text-align: center;
 		margin-top: 40px;
 		padding-bottom: 80px;
+		font-family: 'Gothic A1', sans-serif;
 	}
 	
 	#insert{

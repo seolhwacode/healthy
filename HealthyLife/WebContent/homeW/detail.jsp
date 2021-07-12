@@ -100,7 +100,7 @@
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300;400&display=swap" rel="stylesheet">
 <style>
    .content{
       border: 1px solid gray;
@@ -210,6 +210,7 @@
   
    .container{
    		width:900px;
+   		font-family: 'Gothic A1', sans-serif;
    }
    #preNum,#nextNum{
    		text-decoration: none;
@@ -230,9 +231,7 @@
    		color:black;
    }
    
-    body{
-    	font-family: 'Noto Serif KR', serif;
-    }
+   
     #ranImg1, #ranImg2{
     	display:flex;
     	justify-content: center;
