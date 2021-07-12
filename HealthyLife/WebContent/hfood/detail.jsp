@@ -24,6 +24,8 @@
 	HfoodDto dto=new HfoodDto();
 	dto.setNum(num);
 	
+	HfoodDto resultDto =null;
+	
 	 if(!keyword.equals("")){
 	      //검색 조건이 무엇이냐에 따라 분기 하기
 	      if(condition.equals("title_content")){//제목 + 내용 검색인 경우
@@ -158,6 +160,8 @@
    }
    
    /* 댓글 더보러가기 CSS */
+   
+  
    #view_more {
    	    border: 2px solid #bfbebe;
     	background-color: #e8e8e8;
@@ -165,6 +169,8 @@
     	width: 75%;
    		text-align: center;   
  	}
+ 
+ 	
    /* .reply_icon 을 li 요소를 기준으로 배치 하기 */
    .comments li{
       position: relative;
@@ -256,8 +262,9 @@
 
 		
 	   	<!-- 댓글  -->
-	 <div class="comments">
-      <ul>
+      
+		<div class="comments">
+      	<ul>
          <%for(Hfood_comment_dto tmp: commentList){ %>
             <%if(tmp.getDeleted().equals("yes")){ %>
                <li>삭제된 댓글 입니다.</li>
@@ -265,16 +272,17 @@
                // continue; 아래의 코드를 수행하지 않고 for 문으로 실행순서 다시 보내기 
                continue;
             }%>
-         	
-         	<!-- 원 게시글의 번호와 댓글그룹의 번호가 같다면 원 게시글에 대해 달리고, 그렇지 않으면 들여쓰기해서  -->
+         
             <%if(tmp.getNum() == tmp.getComment_group()){ %>
             <li id="reli<%=tmp.getNum()%>">
             <%}else{ %>
-            <li id="reli<%=tmp.getNum()%>" style="padding: 1px; background-color:#f4f5f7; margin-left:40px; border-radius: 20px;">
-               
+            <li id="reli<%=tmp.getNum()%>" style="padding-left:50px;">
+               <svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+               </svg>
             <%} %>
-               <dl style="margin:3px;">
-                  <dd>
+               <dl>
+                  <dt>
                   <%if(tmp.getProfile() == null){ %>
                      <svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                           <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -283,29 +291,22 @@
                   <%}else{ %>
                      <img class="profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile()%>"/>
                   <%} %>
-                  
-                     <span><strong><%=tmp.getWriter() %></span></strong>
-                     
+                     <span><%=tmp.getWriter() %></span>
                   <%if(tmp.getNum() != tmp.getComment_group()){ %>
-                     <span style="color:#2252e3;">@<i><%=tmp.getTarget_id() %></i></span>
+                     @<i><%=tmp.getTarget_id() %></i>
                   <%} %>
-                  		
-                  	<a id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></a>
-                            
-                  </dd>
-                  <dd id="reply_info">
-                     <span><%=tmp.getRegdate() %></span>     
-                     
-                    <a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply-link">답글</a>
-                     
+                     <span><%=tmp.getRegdate() %></span>
+                     <a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply-link">답글</a>
                   <%if(id != null && tmp.getWriter().equals(id)){ %>
                      <a data-num="<%=tmp.getNum() %>" class="update-link" href="javascript:">수정</a>
                      <a data-num="<%=tmp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
-                  <%} %>  
-                          
+                  <%} %>
+                  </dt>
+                  <dd>
+                     <pre id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></pre>                  
                   </dd>
                </dl>   
-               <form id="reForm<%=tmp.getNum() %>" class="re-insert-form" 
+               <form id="reForm<%=tmp.getNum() %>" class="comment-form re-insert-form" 
                   action="private/comment_insert.jsp" method="post">
                   <input type="hidden" name="ref_group"
                      value="<%=dto.getNum()%>"/>
@@ -314,7 +315,7 @@
                   <input type="hidden" name="comment_group"
                      value="<%=tmp.getComment_group()%>"/>
                   <textarea name="content"></textarea>
-                  <button class="btn btn-primary" type="submit">등록</button>
+                  <button type="submit">등록</button>
                </form>   
                <%if(tmp.getWriter().equals(id)){ %>   
                <form id="updateForm<%=tmp.getNum() %>" class="comment-form update-form" 
@@ -327,12 +328,13 @@
             </li>
          <%} %>
       </ul>
+      
       	<div id="view_more" >
 			<%-- ajax 로 전송할 것 --%>
-			<a href="javascript:" class="link-secondary">댓글 더 보러 가기(ง ᵕᴗᵕ)ว</a>
+			<a href="javascript:" >댓글 더 보러 가기(ง ᵕᴗᵕ)ว</a>
 		</div>
-   </div>
    
+   </div>
     <div class="loader">
       <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
@@ -400,47 +402,48 @@
    
    
    //댓글의 현재 페이지 번호를 관리할 변수를 만들고 초기값 1 대입하기
-   let currentPage=1;
-   //마지막 페이지는 totalPageCount 이다.  
-   let lastPage=<%=totalPageCount%>;
-   
-   if(<%=totalRow %> <= 10){
-		document.querySelector("#view_more").style.display = "none";
-	}
-   document.querySelector("#view_more").addEventListener("click", function(){
-		//현재 댓글 페이지를 1 증가시키고
-		currentPage++;			
+//댓글의 현재 페이지 번호를 관리할 변수를 만들고, 초기값 1 대입하기
+		let currentPage = 1;
 		
-		//현재 페이지가 마지막 페이지보다 작거나 같을 때 -> 댓글 페이지 출력하기
-		if(currentPage <= lastPage){				
-			/*
-				해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
-				"pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다.
-			*/
-			ajaxPromise("${pageContext.request.contextPath}/videos/ajax_comment_list.jsp", "post", "pageNum="+currentPage+"&num="+<%=num %>)
-			.then(function(response){
-				return response.text();
-			})
-			.then(function(data){
-				//data 에는 html text 가 들어있다.
-				document.querySelector(".comment_list").insertAdjacentHTML("beforeend", data);
-				
-				//새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록하기
-				addDeleteListener(".page-" + currentPage + " .delete_link");
-				addReplyListener(".page-" + currentPage + " .reply_link");
-				addUpdateFormListener(".page-" + currentPage + " .update_form");
-				addUpdateListener(".page-" + currentPage + " .update_link");
-			});
-		}
+		//마지막 페이지는 totalPageCount 이다.
+		let lastPage = <%=totalPageCount %>;
 		
-		if(currentPage == lastPage){
+		if(<%=totalRow %> <= 10){
 			document.querySelector("#view_more").style.display = "none";
-		}else{
-			document.querySelector("#view_more").steyl.display = "block";
 		}
-	});
-   
-      
+		
+		document.querySelector("#view_more").addEventListener("click", function(){
+			//현재 댓글 페이지를 1 증가시키고
+			currentPage++;			
+			
+			//현재 페이지가 마지막 페이지보다 작거나 같을 때 -> 댓글 페이지 출력하기
+			if(currentPage <= lastPage){				
+				/*
+					해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
+					"pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다.
+				*/
+				ajaxPromise("${pageContext.request.contextPath}/hfood/ajax_comment_list.jsp", "post", "pageNum="+currentPage+"&num="+<%=num %>)
+				.then(function(response){
+					return response.text();
+				})
+				.then(function(data){
+					//data 에는 html text 가 들어있다.
+					document.querySelector(".comment_list").insertAdjacentHTML("beforeend", data);
+					
+					//새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록하기
+					addDeleteListener(".page-" + currentPage + " .delete_link");
+					addReplyListener(".page-" + currentPage + " .reply_link");
+					addUpdateFormListener(".page-" + currentPage + " .update_form");
+					addUpdateListener(".page-" + currentPage + " .update_link");
+				});
+			}
+			
+			if(currentPage == lastPage){
+				document.querySelector("#view_more").style.display = "none";
+			}else{
+				document.querySelector("#view_more").steyl.display = "block";
+			}
+		});
     //인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 
       function addUpdateListener(sel){
          //댓글 수정 링크의 참조값을 배열에 담아오기 

@@ -155,8 +155,8 @@ public class Hfood_comment_dao {
 		            "      inner join users" + 
 		            "      on hfood_board_comment.writer = users.id" + 
 		            "      where ref_group=?" + 
-		            "      order by comment_group desc, num asc) result1)" + 
-		            " where rnum between ? and ?";
+		            "      order by comment_group asc, num asc) result1)" + 
+		            " WHERE rnum >= ? AND rnum <= ?";
 		         // PreparedStatement 객체의 참조값 얻어오기
 		         pstmt = conn.prepareStatement(sql);
 		         // ? 에 binding할 내용이 있으면 여기서 binding
@@ -238,7 +238,7 @@ public class Hfood_comment_dao {
 			//Connection 객체의 참조값 얻어오기 
 			conn = new DbcpBean().getConn();
 			//실행할 sql 문 작성
-			String sql = "select nvl(max(rownum), 0) as count"
+			String sql = "select COUNT(1) as count"
 		               + " from hfood_board_comment"
 		               + " where ref_group=?";;
 			//PreparedStatement 객체의 참조값 얻어오기
