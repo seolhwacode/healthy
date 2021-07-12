@@ -140,18 +140,18 @@ public class HomeWCommentDao {
 			//Connection 객체의 참조값 얻어오기 
 			conn = new DbcpBean().getConn();
 			//실행할 sql 문 작성
-			String sql ="select *" + 
-		            " from" + 
-		            "   (select result1.*, rownum as rnum" + 
-		            "   from" + 
-		            "      (select num, writer, content, target_id, ref_group," + 
-		            "      comment_group, deleted, home_workout_comment.regdate, profile" + 
-		            "      from home_workout_comment" + 
-		            "      inner join users" + 
-		            "      on home_workout_comment.writer = users.id" + 
-		            "      where ref_group=?" + 
-		            "      order by comment_group desc, num asc) result1)" + 
-		            " where rnum between ? and ?";
+			String sql ="SELECT *" + 
+		               " FROM" + 
+		               "   (SELECT result1.*, ROWNUM AS rnum" + 
+		               "    FROM" + 
+		               "      (SELECT num, writer, content, target_id, ref_group," + 
+		               "      comment_group, deleted, home_workout_comment.regdate, profile" + 
+		               "      FROM home_workout_comment" + 
+		               "      INNER JOIN users" + 
+		               "      ON home_workout_comment.writer = users.id" + 
+		               "      WHERE ref_group=?" + 
+		               "      ORDER BY comment_group ASC, num ASC) result1)" + 
+		               " WHERE rnum BETWEEN ? AND ?";
 					
 			//PreparedStatement 객체의 참조값 얻어오기
 			pstmt = conn.prepareStatement(sql);

@@ -15,7 +15,7 @@
       [ 댓글 페이징 처리에 관련된 로직 ]
    */
    //한 페이지에 몇개씩 표시할 것인지
-   final int PAGE_ROW_COUNT=10;
+   final int PAGE_ROW_COUNT=5;
    
    //보여줄 페이지의 시작 ROWNUM
    int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;

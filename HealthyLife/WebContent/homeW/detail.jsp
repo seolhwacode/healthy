@@ -63,7 +63,7 @@
      [ 댓글 페이징 처리에 관련된 로직 ]
   */
   //한 페이지에 몇개씩 표시할 것인지
-  final int PAGE_ROW_COUNT=10;
+  final int PAGE_ROW_COUNT=5;
   
   //detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. 
   int pageNum=1;
@@ -376,7 +376,7 @@
                   <textarea name="content"></textarea>
                   <button type="submit">등록</button>
                </form>   
-               <!-- 대댓글 수정폼 -->
+               <!-- 댓글 수정폼 -->
                <%if(tmp.getWriter().equals(id)){ %>   
                <form id="updateForm<%=tmp.getNum() %>" class="comment-form update-form" 
                   action="private/comment_update.jsp" method="post">
@@ -391,7 +391,7 @@
    </div>
 	  <br />
 	  <div class="loader">
-	  		<button class="btn btn-dark" type="submit">댓글 더보기</button>
+	  		<button class="btn btn-dark">댓글 더보기</button>
 	  </div>
 	  <br />
 	  <!-- 원글의 댓글을 작성할 댓글 폼 -->
@@ -401,7 +401,7 @@
 	  		<input type="hidden" name="ref_group" value="<%=num %>" />
 	  		<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
 	  		<input type="hidden" name="target_id" value="<%=dto.getWriter() %>" />
-	  		<textarea class="form-control" name="content" ><%if(!isLogin) {%>로그인이 필요합니다.<%}else{%>댓글을 입력하세요..<%}%></textarea>
+	  		<textarea class="form-control" name="content" placeholder="댓글을 입력하세요.." ><%if(!isLogin) {%>로그인이 필요합니다.<%}else{%><%}%></textarea>
 	  		<button id="saveBtn" type="submit"><strong>확인</strong></button>
 	  </form>		
 </div>
@@ -441,17 +441,14 @@
 		   
 		  
 		   //댓글의 수가 10개보다 적으면 버튼 감추기
-		   if(<%=totalRow%> < 10){
+		   if(<%=totalRow%> < 5){
 			   document.querySelector(".loader").style.display="none";
 		   } 
 		   
 		   document.querySelector(".loader").addEventListener("click", function(){
 		     
-		      //현재 페이지가 마지막 페이지인지 여부 알아내기
-		      let isLast = currentPage == lastPage;   
 		    
-		    
-		      //현재 바닥까지 스크롤 했고 로딩중이 아니고 현재 페이지가 마지막이 아니라면
+		      //현재 페이지가 마지막 페이지보다 같거나 작으면 페이지 로딩
 		      if(currentPage <= lastPage){
 		        
 		         //현재 댓글 페이지를 1 증가 시키고 
@@ -481,15 +478,16 @@
 		            addReplyListener(".page-"+currentPage+" .reply-link");
 		            //새로 추가된 댓글 li 요소 안에 있는 댓글 수정폼에 이벤트 리스너 등록하기
 		            addUpdateFormListener(".page-"+currentPage+" .update-form");
+
 		         });
-		       	//로딩바 숨기기
+		       	//현재 페이지가 마지막 페이지면 로딩바 숨기기
 				if(currentPage == lastPage){
 				  	document.querySelector(".loader").style.display="none";
+				//현재 페이지가 마지막 페이지가 아니면 로딩바 보이기
 				}else{
 					document.querySelector(".loader").style.display="block";
 				}
 		      }
-		      
 		      
 		   });
 		   
