@@ -66,8 +66,24 @@ if(id != null){
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap');
+	
+	.container{
+		font-family: 'Nanum Gothic', sans-serif;
+	}
+	
+	#back_list{
+		position: relative;
+		top: 10px;
+		left: 20px;
+	}
+	
 	.content{
-		border: 1px dotted gray;
+		border: 3px solid #C6E2FF;
+		margin: 0 auto;
+		align: center;
+		width: 800px;
+		height: 600px;
 	}
 	
 	/*댓글 프로필 이미지를 작은 원형으로 만든다.*/
@@ -84,61 +100,103 @@ if(id != null){
 		height: 100px;
 	}
 	
+	.comments {
+		width: 850px;
+		margin: 20px auto;
+	}
+	
 	/*댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다.*/
 	.comments .comment-form{
 		display: none;
+	}
+	
+	.comment-form{
+		margin: 0 auto;
+		width: 800px;
 	}
 	
 	.loader{
 		text-align: center;
 	}
 	
+	li{
+		list-style: none;
+	}
+	
+	#className{
+		text-align: center;
+	}
+	
+	.profile > p{
+		position: relative;
+		left: 20px;
+		margin-bottom: 5px;
+	}
+	
+	.mention-block{
+		align: center;
+		text-align: center;
+		background-color: #ffffff;
+		border-radius: 10%;
+		height: 300px;
+		width: 400px;
+		margin: 5px; 5px; 
+	}
+	.buttons{
+		position: relative;
+		top: -5px;
+		left: 650px;
+	}
+	
+	.table{
+		margin-top: 20px;
+	}
 
+	#mention-block {
+		position: relative;
+		left: 20px;
+	}
 </style>
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
 <div class="container">
 	<jsp:include page="/include/navbar.jsp"></jsp:include>
-	<table>
-		<tr>
-			<th>글 번호</th>
-			<td><%=dto.getNum() %></td>
-		</tr>
-		<tr>
-			<th>조회수</th>
-			<td><%=dto.getViewCount() %></td>
-		</tr>
-		<tr>
-			<th>작성자</th>
-			<td><%=dto.getWriter() %></td>
-		</tr>
-		<tr>
-			<th>예약자</th>
-			<td><%=dto.getName() %></td>
-		</tr>
-		<tr>
-			<th>연락처</th>
-			<td><%=dto.getPhone() %></td>
-		</tr>
-		<tr>
-			<th>클래스명</th>
-			<td><%=dto.getClassName() %></td>
-		</tr>
-		<tr>
-			<th>클래스 날짜</th>
-			<td><%=dto.getClassDate() %></td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<div class="content"><%=dto.getMention() %></div>
-			</td>
-		</tr>
-	</table>
-	<a href="bookingList.jsp">목록보기</a>
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+	<div class="content">
+	<a id="back_list" href="classList.jsp">예약 목록 ></a>
+	<div class="buttons">
+	<button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
 		data-bs-target="#exampleModal" data-bs-whatever="@mdo">수정</button>
-	<button type="button" id="deleteBtn" class="btn btn-danger">삭제</button>
+	<button type="button" id="deleteBtn" class="btn btn-outline-danger">삭제</button>
+	</div>
+	<h1 id="className">🧘‍♂️예약 내역🏄‍♀️</h1>
+	<div class="profile">
+		<p id="num">글 번호 | <%=dto.getNum() %></p>
+		<p id="id">작성자 | <%=dto.getWriter() %></p>
+		<p id="viewCount">조회수 | <%=dto.getViewCount() %></p>
+	</div>
+	<table class="table table-light">
+		<tbody>
+			<tr>
+				<th>📌</th>
+				<td colspan="5"><%=dto.getClassName() %></td>
+			</tr>
+			<tr>
+				<th>👨‍🦲</th>
+				<td colspan="5"><%=dto.getName() %></td>
+			</tr>
+			<tr>
+				<th>📞</th>
+				<td><%=dto.getPhone() %></td>
+				<th>📆</th>
+				<td> <%=dto.getClassDate() %></td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="metion-block">
+		<h4 id="mention-block"><%=dto.getMention() %></h4>
+	</div>
+	</div>
 	<!-- 수정 modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -214,10 +272,24 @@ if(id != null){
                      @<i><%=tmp.getTarget_id() %></i>
                   <%} %>
                      <span><%=tmp.getRegdate() %></span>
-                     <a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply-link">답글</a>
+                     <a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply-link">
+                     	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-plus" viewBox="0 0 16 16">
+						  <path fill-rule="evenodd" d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"/>
+						  <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+						  <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+						</svg>
+                     </a>
                   <%if(id != null && tmp.getWriter().equals(id)){ %>
-                     <a data-num="<%=tmp.getNum() %>" class="update-link" href="javascript:">수정</a>
-                     <a data-num="<%=tmp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
+                     <a data-num="<%=tmp.getNum() %>" class="update-link" href="javascript:">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+					  	<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+					 </svg>
+                     </a>
+                     <a data-num="<%=tmp.getNum() %>" class="delete-link" href="javascript:">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+					  <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+					</svg>
+                     </a>
                   <%} %>
                   </dt>
                   <dd>
@@ -227,22 +299,25 @@ if(id != null){
                <!-- 대댓글 폼 -->
                <form id="reForm<%=tmp.getNum() %>" class="animate__animated comment-form re-insert-form" 
                   action="comment_insert.jsp" method="post">
+                  <div class="input-group mb-3">
                   <input type="hidden" name="ref_group"
                      value="<%=dto.getNum()%>"/>
                   <input type="hidden" name="target_id"
                      value="<%=tmp.getWriter()%>"/>
                   <input type="hidden" name="comment_group"
                      value="<%=tmp.getComment_group()%>"/>
-                  <textarea name="content"></textarea>
-                  <button type="submit">등록</button>
+  				<textarea name="content" type="text" class="form-control" placeholder="댓글을 입력하세요..." aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
+ 				 <button class="btn btn-outline-secondary" type="submit" id="button-addon2">등록</button>	
+				  </div>
                </form>   
                <!-- 수정 댓글 폼 -->
                <%if(tmp.getWriter().equals(id)){ %>   
                <form id="updateForm<%=tmp.getNum() %>" class="comment-form update-form" 
                   action="comment_update.jsp" method="post">
+                  <div class="input-group mb-3">
                   <input type="hidden" name="num" value="<%=tmp.getNum() %>" />
-                  <textarea name="content"><%=tmp.getContent() %></textarea>
-                  <button type="submit">수정</button>
+                  <textarea name="content" type="text" class="form-control" placeholder="댓글을 입력하세요..." aria-label="Recipient's username" aria-describedby="button-addon2"><%=tmp.getContent() %></textarea>
+                  <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정</button>
                </form>
                <%} %>                  
             </li>
@@ -256,12 +331,13 @@ if(id != null){
 	 <!-- 원글에 댓글을 작성할 폼 -->
    <form class="comment-form insert-form" action="comment_insert.jsp" method="post">
       <!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
+      <div class="input-group mb-3"> 
       <input type="hidden" name="ref_group" value="<%=num%>"/>
       <!-- 원글의 작성자가 댓글의 대상자가 된다. -->
       <input type="hidden" name="target_id" value="<%=dto.getWriter()%>"/>
-      
-      <textarea name="content"><%if(!isLogin){%>댓글 작성을 위해 로그인이 필요 합니다.<%}%></textarea>
-      <button type="submit">등록</button>
+      <textarea type="text" class="form-control" placeholder="댓글을 입력하세요..." aria-label="Recipient's username" aria-describedby="button-addon2" name="content"><%if(!isLogin){%>댓글 작성을 위해 로그인이 필요 합니다.<%}%></textarea>
+      <button class="btn btn-outline-secondary"id="button-addon2" type="submit">등록</button>
+  	</div>
    </form>
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
