@@ -23,7 +23,7 @@
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <style>
 	body {
-		background-image: url(../image/running.jpg);
+		background-image: url(../image/running2.jpg);
 		background-position: center ;
 		background-attachment: fixed;
 		background-repeat: no-repeat;
