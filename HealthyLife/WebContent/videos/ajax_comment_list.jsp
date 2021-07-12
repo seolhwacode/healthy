@@ -37,9 +37,14 @@
 %>
 
 <%for(VideosCommentDto tmp:commentList){ %>
-	<%if(tmp.getDeleted().equals("yes")){ %>
-	<li class="comment_item page-<%=pageNum %>" id="commet_item_<%=tmp.getNum() %>">삭제된 댓글입니다.</li>
-	<%
+	<%-- 삭제 o / 게시글에 댓글 : 들여쓰기 X --%>
+	<%if(tmp.getDeleted().equals("yes")){ 
+		if(tmp.getNum() == tmp.getComment_group()){
+	%>
+	<li class="comment_item" id="commet_item_<%=tmp.getNum() %>">삭제된 댓글입니다.</li>
+		<%}else{%>
+	<li class="comment_item" id="commet_item_<%=tmp.getNum() %>" style="padding-left:50px;">삭제된 댓글입니다.</li>
+		<%}
 		//continue : 아래의 코드를 수행하지 않고, for 문으로 실행순서를 다시 보내기
 		continue;
 	}%>
@@ -52,9 +57,9 @@
 	<%-- tmp.getNum() != tmp.getComment_group() : 게시글에 댓글 -> 들여쓰기 O --%>
 	<li class="comment_item page-<%=pageNum %>" id="commet_item_<%=tmp.getNum() %>" style="padding-left:50px;">
 	<%} %>				
-		<dl>
-			<!-- <dt>프로필 이미지, 작성자 아아디, 수정, 삭제 표시할 예정</dt> -->
-			<dt>
+		<div class="comment_flex">
+			<!-- <dt>프로필 이미지, 작성자 아아디, 수정, 삭제 </dt> -->
+			<div class="comment_profile_wrapper">
 				<span class="comment_profile_wrapper">
 				<!-- 프로필 이미지 -->
 				<%if(tmp.getProfile() == null){ %>
@@ -68,46 +73,71 @@
 					<img class="commet_profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile() %>" alt="프로필 사진" />
 				<%} %>
 				</span>
+			</div>
+			<div class="comment_box">
 				<!-- 작성자 id -->
-				<span><%=tmp.getWriter() %></span>
-			<%-- num != comment_group : 댓글에 단 댓글이다. --%>
+				<span class="comment_writer_id"><strong><%=tmp.getWriter() %></strong></span>
+				<%-- num != comment_group : 댓글에 단 댓글이다. --%>
 			<%if(tmp.getNum() != tmp.getComment_group()){ %>
 				<!-- 댓글의 댓글을 달 때, 어느 댓글인지 id 사용자 출력 -->
-				@<i><%=tmp.getTarget_id() %></i>
+				<span class="comment_for_id">@<i><%=tmp.getTarget_id() %></i></span>
 			<%} %>
-				<!-- 댓글 작성 일자 -->
-				<span><%=tmp.getRegdate() %></span>
-				<!-- 답글 다는 링크 -->
-				<a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply_link">댓글</a>
-			<%if(id != null && tmp.getWriter().equals(id)){ %>
-				<!-- 수정, 삭제 링크 : 댓글 num(pk) 데이터로 넘기기 -->
-				<a data-num="<%=tmp.getNum() %>" href="javascript:" class="update_link">수정</a>
-				<a data-num="<%=tmp.getNum() %>" href="javascript:" class="delete_link">삭제</a>
-			<%} %>
-			</dt>
-			<dd>
-				<pre><%=tmp.getContent() %></pre>
-			</dd>
-		</dl>
-		<form id="reply_form_<%=tmp.getNum() %>" class="comment_form re_insert_form" 
-				action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" 
-				method="post">
-			<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
-			<input type="hidden" name="ref_group" value="<%=num%>"/>
-			<!-- '댓글'의 작성자가 대상자가 된다. -->
-			<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
-               		<!-- '댓글' 의 comment_group 을 따라간다. -->
-               		<input type="hidden" name="comment_group" value="<%=tmp.getComment_group()%>"/>
-               		<textarea name="content"></textarea>
-               		<button type="submit">등록</button>
-		</form>
+				<div class="comment_main_text">
+					<pre><%=tmp.getContent() %></pre>
+				</div>
+				<div class="commet_function">
+					<!-- 댓글 작성 일자 -->
+					<span><%=tmp.getRegdate() %></span>
+					<!-- 답글 다는 링크 -->
+					<a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply_link" id="reply_link_<%=tmp.getNum()%>">댓글 달기</a>
+				</div>
+			</div>
+		<%if(id != null && tmp.getWriter().equals(id)){ %>
+			<div class="dropdown">
+				<button class="btn" type="button" data-bs-toggle="dropdown">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+					  	<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+					</svg>
+				</button>
+				<ul class="dropdown-menu">
+					<!-- 수정, 삭제 링크 : 댓글 num(pk) 데이터로 넘기기 -->
+					<li><a data-num="<%=tmp.getNum() %>" href="javascript:" class="update_link dropdown-item">수정</a></li>
+					<li><a data-num="<%=tmp.getNum() %>" href="javascript:" class="delete_link dropdown-item">삭제</a></li>
+				</ul>
+			</div>
+		<%} %>
+		</div>
+		<%-- 댓글에 댓글을 다는 from --%>
+		<div class="comment_form_wrapper reply">
+			<form id="reply_form_<%=tmp.getNum() %>" class="comment_form re_insert_form" 
+					action="${pageContext.request.contextPath}/videos/private/comment_insert.jsp" 
+					method="post">
+				<!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
+				<input type="hidden" name="ref_group" value="<%=num %>"/>
+				<!-- '댓글'의 작성자가 대상자가 된다. -->
+				<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
+                		<!-- '댓글' 의 comment_group 을 따라간다. -->
+                		<input type="hidden" name="comment_group" value="<%=tmp.getComment_group()%>"/>
+                		<textarea name="content"></textarea>
+                		<div class="form_control_btns">
+					<button class="btn submit_btn" type="submit">등록</button>
+					<button class="btn reset_btn" type="reset">취소</button>
+				</div>
+			</form>
+		</div>
+		
 		<%-- 댓글 수정 form --%>
 		<%if(tmp.getWriter().equals(id)){ %>
-		<form id="update_form_<%=tmp.getNum() %>" class="comment_form update_form" action="${pageContext.request.contextPath}/videos/private/comment_update.jsp" method="post">
-			<input type="hidden" name="num" value="<%=tmp.getNum() %>" />
-			<textarea name="content" cols="30" rows="10"><%=tmp.getContent() %></textarea>
-			<button type="submit">수정</button>
-		</form>
+		<div class="comment_form_wrapper update">
+			<form id="update_form_<%=tmp.getNum() %>" class="comment_form update_form" action="${pageContext.request.contextPath}/videos/private/comment_update.jsp" method="post">
+				<input type="hidden" name="num" value="<%=tmp.getNum() %>" />
+				<textarea name="content"><%=tmp.getContent() %></textarea>
+				<div class="form_control_btns">
+					<button class="btn submit_btn" type="submit">수정</button>
+					<button class="btn reset_btn" type="reset">취소</button>
+				</div>
+			</form>
+		</div>
 		<%} %>
 	</li>
 <%} %>
