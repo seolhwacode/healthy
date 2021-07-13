@@ -106,6 +106,7 @@
 		text-align: center;
 		margin-top: 40px;
 		padding-bottom: 80px;
+		font-family: 'Gothic A1', sans-serif;
 	}
 	
 	#insert{
@@ -197,8 +198,8 @@
    		
    	}
    	h1{
-   		margin-top: 30px;
-   		margin-bottom: 30px;
+   		margin-top: 90px;
+   		margin-bottom: 40px;
    	}
 </style>
 </head>

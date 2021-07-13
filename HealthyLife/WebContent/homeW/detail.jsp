@@ -63,7 +63,7 @@
      [ 댓글 페이징 처리에 관련된 로직 ]
   */
   //한 페이지에 몇개씩 표시할 것인지
-  final int PAGE_ROW_COUNT=10;
+  final int PAGE_ROW_COUNT=5;
   
   //detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. 
   int pageNum=1;
@@ -100,7 +100,7 @@
 <jsp:include page="../include/resource.jsp"></jsp:include>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@300;400&display=swap" rel="stylesheet">
 <style>
    .content{
       border: 1px solid gray;
@@ -210,6 +210,7 @@
   
    .container{
    		width:900px;
+   		font-family: 'Gothic A1', sans-serif;
    }
    #preNum,#nextNum{
    		text-decoration: none;
@@ -230,12 +231,13 @@
    		color:black;
    }
    
-    body{
-    	font-family: 'Noto Serif KR', serif;
-    }
+   
     #ranImg1, #ranImg2{
     	display:flex;
     	justify-content: center;
+    }
+    #shareBtn{
+    	color:black;
     }
 </style>
 </head>
@@ -249,6 +251,12 @@
 	 <%} %>
 	 <div id="updateList" style="justify-content:space:between;" >
 	 	<ul >
+	 		<button class="btn btn-outline-warning" id="shareBtn" onclick="copy();" > 
+	 		<!-- onclick="window.open(this.href, '_blank', 'width=400, height=300, toolbars=no, scrollbars=no, top=100, left=1000'); return false;"> --> 
+	 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share-fill" viewBox="0 0 16 16">
+  					<path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"/>
+				</svg>
+	 		</button>
 		 	<a class="btn btn-outline-warning" href="list.jsp" >목록보기</a>
 		 	<%if(dto.getWriter().equals(id)){ %>
 	        <a class="btn btn-outline-warning" href="private/update_form.jsp?num=<%=dto.getNum()%>">수정</a>
@@ -376,7 +384,7 @@
                   <textarea name="content"></textarea>
                   <button type="submit">등록</button>
                </form>   
-               <!-- 대댓글 수정폼 -->
+               <!-- 댓글 수정폼 -->
                <%if(tmp.getWriter().equals(id)){ %>   
                <form id="updateForm<%=tmp.getNum() %>" class="comment-form update-form" 
                   action="private/comment_update.jsp" method="post">
@@ -391,7 +399,7 @@
    </div>
 	  <br />
 	  <div class="loader">
-	  		<button class="btn btn-dark" type="submit">댓글 더보기</button>
+	  		<button class="btn btn-dark">댓글 더보기</button>
 	  </div>
 	  <br />
 	  <!-- 원글의 댓글을 작성할 댓글 폼 -->
@@ -401,13 +409,25 @@
 	  		<input type="hidden" name="ref_group" value="<%=num %>" />
 	  		<!-- 원글의 작성자가 댓글의 대상자가 된다. -->
 	  		<input type="hidden" name="target_id" value="<%=dto.getWriter() %>" />
-	  		<textarea class="form-control" name="content" ><%if(!isLogin) {%>로그인이 필요합니다.<%}else{%>댓글을 입력하세요..<%}%></textarea>
+	  		<textarea class="form-control" name="content" placeholder="댓글을 입력하세요.." ><%if(!isLogin) {%>로그인이 필요합니다.<%}else{%><%}%></textarea>
 	  		<button id="saveBtn" type="submit"><strong>확인</strong></button>
 	  </form>		
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <script>
-	
+	//공유하기 버튼을 눌렀을 때 현재 페이지의 url 복사해주는 함수	
+	function copy(){
+		let url = '';
+		let textarea = document.createElement("textarea");
+		document.body.appendChild(textarea);
+		url = window.document.location.href;
+		textarea.value = url;
+		textarea.select();
+		document.execCommand("copy");
+		document.body.removeChild(textarea);
+		alert("URL이 복사되었습니다.");
+		
+	}
 	//로그인했는지 여부
 	let isLogin=<%=isLogin%>;
 	
@@ -440,18 +460,15 @@
 		   let lastPage=<%=totalPageCount%>;
 		   
 		  
-		   //댓글의 수가 10개보다 적으면 버튼 감추기
-		   if(<%=totalRow%> < 10){
+		   //댓글의 수가 10개보다 적거나 같으면 버튼 감추기
+		   if(<%=totalRow%> <= 5){
 			   document.querySelector(".loader").style.display="none";
 		   } 
 		   
 		   document.querySelector(".loader").addEventListener("click", function(){
 		     
-		      //현재 페이지가 마지막 페이지인지 여부 알아내기
-		      let isLast = currentPage == lastPage;   
 		    
-		    
-		      //현재 바닥까지 스크롤 했고 로딩중이 아니고 현재 페이지가 마지막이 아니라면
+		      //현재 페이지가 마지막 페이지보다 같거나 작으면 페이지 로딩
 		      if(currentPage <= lastPage){
 		        
 		         //현재 댓글 페이지를 1 증가 시키고 
@@ -481,16 +498,22 @@
 		            addReplyListener(".page-"+currentPage+" .reply-link");
 		            //새로 추가된 댓글 li 요소 안에 있는 댓글 수정폼에 이벤트 리스너 등록하기
 		            addUpdateFormListener(".page-"+currentPage+" .update-form");
+
 		         });
-		       	//로딩바 숨기기
+		       	//현재 페이지가 마지막 페이지면 로딩바 숨기기
 				if(currentPage == lastPage){
 				  	document.querySelector(".loader").style.display="none";
+				//현재 페이지가 마지막 페이지가 아니면 로딩바 보이기
 				}else{
 					document.querySelector(".loader").style.display="block";
 				}
 		      }
 		      
-		      
+		   });
+		   
+		   //공유하기 버튼을 눌렀을 때 주소가 나오는 함수
+		   document.querySelector("#shareBtn").addEventListener("click", function(){
+			   <% %>
 		   });
 		   
 		   //인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 
