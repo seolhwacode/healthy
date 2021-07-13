@@ -18,6 +18,7 @@
 <meta charset="UTF-8">
 <title>/videos/private/update_form.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 	#content{
 		height: 300px;
@@ -155,7 +156,7 @@
 						<label class="form-label" for="title">제목</label>
 					</div>
 					<div class="title_input_div">
-						<input class="form-control" type="text" id="title" name="title" value="<%=dto.getTitle() %>" />
+						<input class="form-control" type="text" id="title" name="title" value="<%=dto.getTitle() %>" placeholder="제목을 입력해 주세요."/>
 					</div>
 				</div>
 				<div class="video_wrapper">
@@ -163,7 +164,7 @@
 						<label class="form-label" for="video">동영상</label>
 					</div>
 					<div class="video_input_div">
-						<input class="form-control" type="url" id="video" name="video" value="<%=dto.getVideo()%>"/>
+						<input class="form-control" type="url" id="video" name="video" value="<%=dto.getVideo()%>" placeholder="url : youtube 공유 주소 또는 상단의 주소 입력"/>
 					</div>
 				</div>
 				<div>
@@ -178,12 +179,27 @@
 	<script src="${pageContext.request.contextPath }/SmartEditor/js/HuskyEZCreator.js"></script>
 	<script>
 		document.querySelector("#go_back_button").addEventListener("click", function(e){
-			let isGoBack = confirm("작성 중인 수정사항을 저장하지 않고, 이전으로 돌아가시겠습니까?");
-			if(isGoBack){
+			//let isGoBack = confirm("작성 중인 수정사항을 저장하지 않고, 이전으로 돌아가시겠습니까?");
+			swal({
+			  	title: "변경사항이 저장되지 않았습니다.",
+			  	text: `작성 중인 수정사항을 저장하지 않고,
+			  		이전으로 돌아가시겠습니까?`,
+			  	icon: "warning",
+			  	buttons: true,
+			  	dangerMode: true
+			})
+			.then(function(isGoBack){
+				if(isGoBack){
+					//혹시 모를 폼 제출 막기
+					e.preventDefault();
+					location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num %>";
+				}
+			});
+			<%-- if(isGoBack){
 				//혹시 모를 폼 제출 막기
 				e.preventDefault();
 				location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num %>";
-			}
+			} --%>
 		});
 		
 		
@@ -236,12 +252,38 @@
 			
 			//textarea 이외에 입력한 내용을 여기서 검증하고
 			const title = document.querySelector("#title").value;
+			const type = document.querySelector("#type").value;
+			const url = document.querySelector("#video").value;
+			
+			//url 빈칸 검사
+			if(url == ""){
+				//alert("동영상 url을 입력해주세요!");
+				swal({
+				  	title: "동영상 url을 입력해주세요!",
+				  	icon: "warning",
+				});
+				e.preventDefault();
+			}
 			
 			//만일 폼 제출을 막고싶으면 => e.preventDefault() 을 수행해서 폼 제출을 막는다.
 			//제목의 길이가 너무 짧다
-			if(title.length < 5){
+			if(title.length < 3){
 				//제목이 없거나, 길이가 너무 짧다
-				alert("제목을 5글자 이상 입력하세요!");
+				//alert("제목을 3글자 이상 입력하세요!");
+				swal({
+				  	title: "제목을 3글자 이상 입력하세요!",
+				  	icon: "warning",
+				});
+				e.preventDefault();
+			}
+			
+			//타입 선택이 없음 -> 선택해주세요!
+			if(type == "not-selected"){
+				//alert("게시판을 선택해주세요!");
+				swal({
+				  	title: "게시판을 선택해주세요!",
+				  	icon: "warning",
+				});
 				e.preventDefault();
 			}
 			
