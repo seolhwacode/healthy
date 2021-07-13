@@ -29,9 +29,9 @@
 		
 	/*가운데 정렬*/
 	.container {
-		margin-top: 40px;
-		padding-bottom: 80px;
+		padding-bottom: 50px;
 		width: 700px;
+		margin-top: 100px;
 	}
 	/* 맨 위의 제목 & 게시글 작성 버튼 */
 	.WritingHeader{

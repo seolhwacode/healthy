@@ -146,8 +146,9 @@
 <style>
 	/* 전체 content 크기 조절 */
 	.container{
-   		padding-bottom: 80px;
+   		padding-bottom: 60px;
    		transition: all 1s ease-out;
+   		margin-top: 100px;
     }
 
 	@media(max-width: 576px){
