@@ -11,9 +11,13 @@
 <head>
 <meta charset="UTF-8">
 <title>/index.jsp</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <jsp:include page="/include/resource.jsp"></jsp:include>
 <jsp:include page="/include/navbar.jsp"></jsp:include>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@700&display=swap');
+
+	
 	.carousel {
 		width : 800px;
 		margin: auto;
@@ -26,6 +30,81 @@
 	    font-weight: 600;
 	    font-size: 35px;
 	}
+	
+	.member {
+	font-family: 'Nanum Gothic', sans-serif;
+	}
+	
+	.member-img {
+		margin-top: 20px;
+		height: 300px;
+	}
+	
+
+	.member-img .memoticon {
+		z-index:1;
+		float: left;
+		cursor: pointer;
+		margin: 25px;
+		position: relative;
+		vertical-align: middle; 
+		width: 200px;
+		height: 200px;		
+	}
+	.member-info .info{
+		float: left;
+		margin: 25px;
+		position: relative;
+		vertical-align: middle; 
+	}
+	
+	.member-card {
+		position: relative;
+		height: 200px;
+	}
+	
+	.member-card .card{
+		position: absolute;
+		display: none;
+		float: left;
+		top: -180px;
+		margin: 25px;
+		height: 300px;
+		width: 200px;
+		border-radius: 7%;
+		background-color: rgba(255, 201, 71, 0.8);
+		box-shadow: 10px 10px 10px 0 #AAAAAA;
+	}
+	
+	#sori_card{
+		left: 240px;
+	}
+	
+	#rami_card{
+		left: 490px;
+	}
+	
+	#hyeoni_card{
+		left: 738px;
+	}
+	
+	#hani_card{
+		left: 995px;
+	}
+	.member-card .card >h4 {
+		position: relative;
+		text-align: center;
+		top: 80px;
+		
+	}
+	
+	.member-card .card >p {
+		position: relative;
+		text-align: center;
+		top: 120px;	
+	}
+	
+	
 </style>
 </head>
 <body>
@@ -65,6 +144,63 @@
 		    <span class="visually-hidden">Next</span>
 		  </button>
 		</div>
-	</div>
+		<div class="member">		
+		<div class="member-img">
+				<img class="memoticon animate__animated" id="hwani" src="image/hwani.png" />
+				<img class="memoticon animate__animated" id="sori" src="image/sori.png" />
+				<img class="memoticon animate__animated" id="rami" src="image/rami.png"/>
+				<img class="memoticon animate__animated" id="hyeoni" src="image/hyeoni.png"/>
+				<img class="memoticon animate__animated" id="hani" src="image/hani.png"/>	
+		</div>
+		
+		<div class="member-card">
+			<div class="card" id="hwani_card">
+			<h4>팀장 강륜화</h4>
+			<p>📍  프로젝트 총괄 및 관리</p>
+			<p>💻 영상자료 페이지 <br /> 회원 가입 및 로그인 처리 </p>
+			</div>
+			<div class="card" id="sori_card">
+			<h4>팀원 김정솔</h4>
+			<p>📍  프로젝트 발표</p>
+			<p>💻 추천 음악 페이지 </p>
+			</div>
+			<div class="card" id="rami_card">
+			<h4>팀원 양우람</h4>
+			<p>📍  PPT 제작</p>
+			<p>💻 소개 페이지 <br />건강 레시피 페이지 <br /> navbar & CSS 구성  </p>
+			</div>
+			<div class="card" id="hyeoni_card">
+			<h4>팀원 이지현</h4>
+			<p>💻 홈트 페이지 </p>
+			</div>
+			<div class="card" id="hani_card">
+			<h4>팀원 전하은</h4>
+			<p>💻  소개 페이지 <br /> 원데이 클래스 페이지 </p>
+			</div>
+		</div>
+		</div>
+		</div>
+<script>
+	const memoticons = document.querySelectorAll(".memoticon");
+	const cards = document.querySelectorAll(".card");
+	//클릭할 때 애니메이션
+	for(let i=0; i<memoticons.length; i++){
+		memoticons[i].addEventListener("mouseover", function(){
+			this.classList.add("animate__tada");
+		});
+		memoticons[i].addEventListener("mouseout", function(){
+			this.classList.remove("animate__tada");
+		});
+		memoticons[i].addEventListener("click", function(){
+			if(cards[i].style.display=="block"){
+				cards[i].style.display="none";
+			}else{
+				cards[i].style.display="block";
+			}
+		});
+		
+	}
+</script>
 </body>
+
 </html>

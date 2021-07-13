@@ -161,7 +161,7 @@
         border-radius: 50%;
         opacity: 0.8;
         cursor: pointer;
-        box-shadow: 3px 3px rgba(0,0,0,0.4);
+        box-shadow:10px 10px 10px 0 #AAAAAA;
     }
     
     #book-link:hover{
@@ -210,7 +210,7 @@
                                 <p>💵80,000<p>
                                 <ul class="list-inline post-meta">
                                     <li class="card-comment">
-                                        <i class="fa fa-comments"></i><a href="#"> 39 comments</a>
+                                        <i class="fa fa-comments"></i><a href="#"> 129 likes </a>
                                     </li>
                                 </ul>
                             </div>
@@ -243,7 +243,7 @@
                                 <p>💵120,000</p>
                                 <ul class="list-inline post-meta">                                 
                                     <li class="card-comment">
-                                        <i class="fa fa-comments"></i><a href="#"> 39 comments</a>
+                                        <i class="fa fa-comments"></i><a href="#">82 likes</a>
                                     </li>
                                 </ul>
                             </div>
@@ -276,7 +276,7 @@
                                 <p>💵150,000</p>
                                 <ul class="list-inline post-meta">                               
                                     <li class="card-comment">
-                                        <i class="fa fa-comments"></i><a href="#"> 39 comments</a>
+                                        <i class="fa fa-comments"></i><a href="#"> 390 likes </a>
                                     </li>
                                 </ul>
                             </div>
@@ -309,7 +309,7 @@
                                 <p>💵30,000</p>
                                 <ul class="list-inline post-meta">
                                     <li class="card-comment">
-                                        <i class="fa fa-comments"></i><a href="#"> 39 comments</a>
+                                        <i class="fa fa-comments"></i><a href="#">22 likes</a>
                                     </li>
                                 </ul>
                             </div>
@@ -342,7 +342,7 @@
                                 <p>Price $62</p>
                                 <ul class="list-inline post-meta">
                                     <li class="card-comment">
-                                        <i class="fa fa-comments"></i><a href="#"> 39 comments</a>
+                                        <i class="fa fa-comments"></i><a href="#"> 58 likes </a>
                                     </li>
                                 </ul>
                             </div>
