@@ -154,7 +154,8 @@ if(id != null){
 
 	#mention-block {
 		position: relative;
-		left: 20px;
+		top: 20px;
+		text-align: center;
 	}
 </style>
 <jsp:include page="/include/resource.jsp"></jsp:include>
@@ -163,7 +164,7 @@ if(id != null){
 <div class="container">
 	<jsp:include page="/include/navbar.jsp"></jsp:include>
 	<div class="content">
-	<a id="back_list" href="classList.jsp">예약 목록 ></a>
+	<a id="back_list" href="bookingList.jsp">예약 목록 ></a>
 	<div class="buttons">
 	<button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
 		data-bs-target="#exampleModal" data-bs-whatever="@mdo">수정</button>
