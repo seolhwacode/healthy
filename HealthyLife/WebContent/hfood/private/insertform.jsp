@@ -7,12 +7,13 @@
 <title>/hfood/private/insertform.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
-   #content{
+ 	#content{
+   		width : 100%;
       height: 500px;
    }
    
    .container {
-	  width : 50%;
+	  width : 800px;
 	  padding : 50px;
    }
    
@@ -33,7 +34,6 @@
    #title { 
    		height:50px;
    		font-size : 30px;
-   		font-style : italic;
    }
    
    
@@ -54,7 +54,7 @@
 		</svg>
 		HEALTHY LIFE
 		</p>
-   		<h1>건강한 레시피를 공유하기</h1>
+   		<h1>건강한 레시피 공유하기</h1>
       	<div class="mb-3">         
          	<input class="form-control" type="text" name="title" id="title" placeholder="제목"/>
       	</div>

@@ -14,41 +14,44 @@
 	   thisPage="";
 	}
 %>
-<style>
- /* 링크 밑줄 제거*/
-a { text-decoration:none !important } 
-
-/* 로그인 상태입니다 - 흰색 */
-#login {
-	color:white;
-}
-
-#navbar_name {
-	font-family: 'Encode Sans SC', sans-serif;
-}
-
-.navbar-nav {
-	
-	
-}
-
-/* 네비게이션 바가 body 의 요소를 먹어버리는 현상을 고치기 위해 추가 */
-body{
-	margin-top: 70px;
-}
-/*로그아웃 버튼의 css 수정*/
-#logout_button{
-	/*글씨색 통일*/
-	color: #0d6efd;
-	margin-left: 10px;
-}
-
-</style>
-
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&family=Jua&display=swap" rel="stylesheet">
+
+
+<style>
+	 /* 링크 밑줄 제거*/
+	a { text-decoration:none !important } 
+	
+	/* 로그인 상태입니다 - 흰색 */
+	#login {
+		color:white;
+	}
+	
+	#navbar_name {
+		font-family: 'Encode Sans SC', sans-serif;
+	}
+	
+	.navbar-nav {
+		font-family: 'Jua', sans-serif;
+		font-size : 20px;
+	}
+	
+	/* 네비게이션 바가 body 의 요소를 먹어버리는 현상을 고치기 위해 추가 */
+	body{
+		margin-top: 70px;
+	}
+	/*로그아웃 버튼의 css 수정*/
+	#logout_button{
+		/*글씨색 통일*/
+		color: #0d6efd;
+		margin-left: 10px;
+	}
+	
+</style>
+
+
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #2252e3;">
   <div class="container-fluid">
     <a id="navbar_name" class="navbar-brand" href="${pageContext.request.contextPath}/index.jsp">
