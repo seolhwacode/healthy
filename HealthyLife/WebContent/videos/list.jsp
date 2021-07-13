@@ -123,7 +123,7 @@
 	/*가운데 정렬*/
 	.container {
 		text-align: center;
-		margin-top: 40px;
+		margin-top: 140px;
 		padding-bottom: 80px;
 	}
 	
