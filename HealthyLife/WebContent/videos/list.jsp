@@ -5,7 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	//여러 페이지에 나눠서 출력하기 - 여기서는 한 페이지에 10개!
+	//여러 페이지에 나눠서 출력하기 - 여기서는 한 페이지에 5개!
 	//한 페이지에 몇개씩 표시할 것인지
 	final int PAGE_ROW_COUNT=5;
 	//하단 페이지를 몇개씩 표시할 것인지
@@ -110,6 +110,8 @@
 		endPageNum = totalPageCount;
 	}
 	
+	//navbar 에 전달할 현재 주소
+	String url = request.getRequestURI() + "?" + request.getQueryString();
 %>
 <!DOCTYPE html>
 <html>
@@ -221,6 +223,7 @@
 <body>
 	<jsp:include page="../include/navbar.jsp">
 		<jsp:param value="videos" name="thisPage"/>
+		<jsp:param value="<%=url %>" name="url"/>
 	</jsp:include>
 	<div class="container">
 		<h1>영상 자료실</h1>

@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
@@ -13,6 +14,15 @@
 	   //빈 문자열을 대입한다. (NullPointerException 방지용)
 	   thisPage="";
 	}
+	
+	//현재 페이지의 url 을 파라미터로 받아온다.
+	String url = request.getParameter("url");
+	if(url == null){
+		//빈 문자열 -> index.jsp 로 이동
+		url = request.getContextPath() + "/index.jsp";
+	}
+	//로그인 후에 이동할 페이지url 을 인코딩하여 get 방식으로 넘긴다.
+	String encodedUrl = URLEncoder.encode(url);
 %>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,8 +75,8 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       	<div class="navbar-nav me-auto">
-      		<%-- homeW(홈트) / videos(영상자료) / oneday_class(원데이클래스) / hfood(건강레시피) / music_recommend(추천음악) 중 선택 --%>
-	        <a class="nav-link <%=thisPage.equals("")?"active":"" %>" aria-current="page" href="#">소개</a>
+      		<%-- intro(소개) / homeW(홈트) / videos(영상자료) / oneday_class(원데이클래스) / hfood(건강레시피) / music_recommend(추천음악) 중 선택 --%>
+	        <a class="nav-link <%=thisPage.equals("intro")?"active":"" %>" href="#">소개</a>
 	        <a class="nav-link <%=thisPage.equals("homeW")?"active":"" %>" href="${pageContext.request.contextPath}/homeW/list.jsp">홈트</a>
 	        <a class="nav-link <%=thisPage.equals("videos")?"active":"" %>" href="${pageContext.request.contextPath}/videos/list.jsp">영상자료</a>
 	        <a class="nav-link <%=thisPage.equals("oneday_class")?"active":"" %>" href="${pageContext.request.contextPath}/oneday_class/class.jsp">원데이클래스</a>
@@ -82,8 +92,8 @@
 		<%} else {%>
 			<div id="navbar-right-menu">
 				<div class="d-grid gap-2 d-md-flex justify-content-md-end" id="user2">
-			  		<button class="btn btn-primary me-md-2" style="background:white;" type="button" ><a href="${pageContext.request.contextPath}/users/signup_form.jsp">sign up</a></button>
-			  		<button class="btn btn-primary me-md-2" style="background:white;" type="button"><a href="${pageContext.request.contextPath}/users/login_form.jsp">login</a></button>
+			  		<a class="btn btn-primary me-md-2" style="background:white;color:#0d6efd" href="${pageContext.request.contextPath}/users/signup_form.jsp">sign up</a>
+			  		<a class="btn btn-primary me-md-2" style="background:white;color:#0d6efd" href="${pageContext.request.contextPath}/users/login_form.jsp?url=<%=encodedUrl %>">login</a>
 				</div>
 		   	</div>	
 		<%} %>
