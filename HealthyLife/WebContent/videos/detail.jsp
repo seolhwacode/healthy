@@ -134,6 +134,8 @@
 		isGood = UsersGoodDao.getInstance().isExist(goodDto);
 	}
 	
+	//navbar 에 전달할 현재 주소
+	String url = request.getRequestURI() + "?" + request.getQueryString();
 %>
 <!DOCTYPE html>
 <html>
@@ -406,6 +408,7 @@
 <body>
 	<jsp:include page="../include/navbar.jsp">
 		<jsp:param value="videos" name="thisPage"/>
+		<jsp:param value="<%=url %>" name="url"/>
 	</jsp:include>
 	<div class="container">
 		<div class="menu_button_wrapper">
