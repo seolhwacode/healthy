@@ -23,15 +23,28 @@
 <title>/homeW/private/delet.jsp</title>
 </head>
 <body>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<%if(isSuccess) {%>
 		<script>
-			alert("삭제 되었습니다");
-			location.href="${pageContext.request.contextPath}/homeW/list.jsp";
+			swal({
+			 	  title: "삭제 되었습니다",
+			 	  icon: "success",
+			 	  button: "확인",
+			 	  
+			 	}).then(function() {
+			 		location.href="../list.jsp";
+			 	});
 		</script>
 	<%}else{ %>	
 		<script>
-			alert("삭제 실패했습니다");
-			location.href="detail.jsp?num=<%=num%>";
+			swal({
+			 	  title: "삭제 실패",
+			 	  icon: "success",
+			 	  button: "확인",
+			 	  
+			 	}).then(function() {
+			 		location.href="detail.jsp?num=<%=num%>";
+			 	});
 		</script>
 	<%} %>
 </body>

@@ -1,5 +1,3 @@
-
-
 <%@page import="java.util.List"%>
 <%@page import="test.homeW.dao.HomeWCommentDao"%>
 <%@page import="test.homeW.dto.HomeWCommentDto"%>
@@ -418,6 +416,7 @@
 	  </form>		
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 	//공유하기 버튼을 눌렀을 때 현재 페이지의 url 복사해주는 함수	
 	function copy(){
@@ -429,8 +428,11 @@
 		textarea.select();
 		document.execCommand("copy");
 		document.body.removeChild(textarea);
-		alert("URL이 복사되었습니다.");
-		
+		swal({
+		 	  title: "url 복사완료",
+		 	  icon: "success",
+		 	  button: "확인",
+		 	})
 	}
 	//로그인했는지 여부
 	let isLogin=<%=isLogin%>;
