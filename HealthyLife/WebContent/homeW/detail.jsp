@@ -144,16 +144,16 @@
       width: 55%;
       height: 100px;
       border-radius:10px;
-      border-color:	#aaaaaa;
+      border-color:	#6495ED;
       
       
    }
    .comment-form button{
       width: 10%;
       height: 100px;
-      background-color:#FFEFD5;
+      background-color:#90AFFF;
  	  border-radius:10px;
- 	  border-color:#FFEFD5;
+ 	  border-color:#90AFFF;
    }
    /* 댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다. */
    .comments .comment-form{
@@ -239,28 +239,32 @@
     #shareBtn{
     	color:black;
     }
+    #moreBtn{
+    	 background-color:#464646;
+    	 color:white;
+    }
 </style>
 </head>
 <body>
 <div class="container">
 	 <%if(dto.getPrevNum()!=0){ %>
-      <a id="preNum" class="btn btn-outline-warning" href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">이전글</a>
+      <a id="preNum" class="btn btn-outline-primary" href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">이전글</a>
 	 <%} %>
 	 <%if(dto.getNextNum()!=0){ %>
-	 	<a id="nextNum" class="btn btn-outline-warning" href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">다음글</a>
+	 	<a id="nextNum" class="btn btn-outline-primary" href="detail.jsp?num=<%=dto.getNextNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">다음글</a>
 	 <%} %>
 	 <div id="updateList" style="justify-content:space:between;" >
 	 	<ul >
-	 		<button class="btn btn-outline-warning" id="shareBtn" onclick="copy();" > 
+	 		<button class="btn btn-outline-primary" id="shareBtn" onclick="copy();" > 
 	 		<!-- onclick="window.open(this.href, '_blank', 'width=400, height=300, toolbars=no, scrollbars=no, top=100, left=1000'); return false;"> --> 
 	 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share-fill" viewBox="0 0 16 16">
   					<path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"/>
 				</svg>
 	 		</button>
-		 	<a class="btn btn-outline-warning" href="list.jsp" >목록보기</a>
+		 	<a class="btn btn-outline-primary" href="list.jsp" >목록보기</a>
 		 	<%if(dto.getWriter().equals(id)){ %>
-	        <a class="btn btn-outline-warning" href="private/update_form.jsp?num=<%=dto.getNum()%>">수정</a>
-	        <a class="btn btn-outline-warning" href="private/delete.jsp?num=<%=dto.getNum()%>">삭제</a>
+	        <a class="btn btn-outline-primary" href="private/update_form.jsp?num=<%=dto.getNum()%>">수정</a>
+	        <a class="btn btn-outline-primary" href="private/delete.jsp?num=<%=dto.getNum()%>">삭제</a>
       		<%} %>
 	 	</ul>
 	 </div>
@@ -271,8 +275,8 @@
           <strong><%=keyword %></strong> 검색어로 검색된 내용 자세히 보기 
      	</p>
 	   <%} %>
-	   <table class="table table-warning ">
-	      <tr>
+	   <table class="table table-primary"  >
+	      <tr >
 	         <th>글번호</th>
 	         <td colspan="5"><%=dto.getNum() %></td>
 	      </tr>
@@ -280,7 +284,7 @@
 	         <th>제목</th>
 	         <td colspan="5"><%=dto.getTitle() %></td>
 	      </tr>
-	      <tr>
+	      <tr >
 	         <th>작성자</th>
 	         <td><%=dto.getWriter() %></td>
 	         <th>조회수</th>
@@ -399,7 +403,7 @@
    </div>
 	  <br />
 	  <div class="loader">
-	  		<button class="btn btn-dark">댓글 더보기</button>
+	  		<button class="btn" id="moreBtn">댓글 더보기</button>
 	  </div>
 	  <br />
 	  <!-- 원글의 댓글을 작성할 댓글 폼 -->
