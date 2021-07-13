@@ -198,8 +198,8 @@
    		
    	}
    	h1{
-   		margin-top: 30px;
-   		margin-bottom: 30px;
+   		margin-top: 90px;
+   		margin-bottom: 40px;
    	}
 </style>
 </head>

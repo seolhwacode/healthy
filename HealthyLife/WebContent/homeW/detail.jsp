@@ -236,6 +236,9 @@
     	display:flex;
     	justify-content: center;
     }
+    #shareBtn{
+    	color:black;
+    }
 </style>
 </head>
 <body>
@@ -248,6 +251,12 @@
 	 <%} %>
 	 <div id="updateList" style="justify-content:space:between;" >
 	 	<ul >
+	 		<button class="btn btn-outline-warning" id="shareBtn" onclick="copy();" > 
+	 		<!-- onclick="window.open(this.href, '_blank', 'width=400, height=300, toolbars=no, scrollbars=no, top=100, left=1000'); return false;"> --> 
+	 			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share-fill" viewBox="0 0 16 16">
+  					<path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"/>
+				</svg>
+	 		</button>
 		 	<a class="btn btn-outline-warning" href="list.jsp" >목록보기</a>
 		 	<%if(dto.getWriter().equals(id)){ %>
 	        <a class="btn btn-outline-warning" href="private/update_form.jsp?num=<%=dto.getNum()%>">수정</a>
@@ -406,7 +415,19 @@
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <script>
-	
+	//공유하기 버튼을 눌렀을 때 현재 페이지의 url 복사해주는 함수	
+	function copy(){
+		let url = '';
+		let textarea = document.createElement("textarea");
+		document.body.appendChild(textarea);
+		url = window.document.location.href;
+		textarea.value = url;
+		textarea.select();
+		document.execCommand("copy");
+		document.body.removeChild(textarea);
+		alert("URL이 복사되었습니다.");
+		
+	}
 	//로그인했는지 여부
 	let isLogin=<%=isLogin%>;
 	
@@ -439,8 +460,8 @@
 		   let lastPage=<%=totalPageCount%>;
 		   
 		  
-		   //댓글의 수가 10개보다 적으면 버튼 감추기
-		   if(<%=totalRow%> < 5){
+		   //댓글의 수가 10개보다 적거나 같으면 버튼 감추기
+		   if(<%=totalRow%> <= 5){
 			   document.querySelector(".loader").style.display="none";
 		   } 
 		   
@@ -488,6 +509,11 @@
 				}
 		      }
 		      
+		   });
+		   
+		   //공유하기 버튼을 눌렀을 때 주소가 나오는 함수
+		   document.querySelector("#shareBtn").addEventListener("click", function(){
+			   <% %>
 		   });
 		   
 		   //인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 
