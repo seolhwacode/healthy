@@ -200,7 +200,7 @@
 
 	/* 게시글 전체 감싸는 div */
 	.ArticleContentBox{
-		border: 2px solid #ebecef;
+		border: 2px solid #d2d3e4;
 		border-radius: 6px;
 		margin-top: 20px;
 		padding: 30px;
@@ -245,7 +245,7 @@
 	
 	/* 게시글 가장 위의 헤더 */
 	.article_header{
-	    border-bottom: 2px solid #e8e8e8;
+	    border-bottom: 2px solid #d2d3e4;
 	    margin-bottom: 20px;
 	    padding-bottom: 15px;
 	}
@@ -293,12 +293,12 @@
 	
 	/* 게시글 내용 표기하는 container : 동영상 & 글 */
 	.article_container{
-		border-bottom: 2px solid #e8e8e8;
+		border-bottom: 2px solid #d2d3e4;
 		margin: 20px 0;
 	}
 	/* 비디오 div */
 	.article_video{
-		border-bottom: 2px solid #e8e8e8;
+		border-bottom: 2px solid #d2d3e4;
 		margin: 20px 0;
 		padding-bottom: 15px;
 	}
@@ -317,7 +317,7 @@
 	/* 댓글 하나 아래 boder 넣기 */
 	/* 댓글 아래에 패딩 추가 */
 	.comment_item{
-		border-bottom: 1px solid #e8e8e8;
+		border-bottom: 1px solid #d2d3e4;
 		padding: 10px 0;
 	}
 	
@@ -350,7 +350,7 @@
 	/*댓글 쓰는 form css 설정*/
 	.comment_form_wrapper{
 		width: 100%;
-		border: 2px solid #e8e8e8;
+		border: 2px solid #d2d3e4;
 		border-radius: 10px;
 		padding: 5px;
 		flex-direction: column;
@@ -405,6 +405,19 @@
  	.comment_form_wrapper.update{
 		display: none;
 	}
+	
+	/* 댓글 더보기 버튼 */
+	#view_more{
+	    text-align: center;
+	    margin-bottom: 20px;
+	}
+	
+	#view_more > a{
+		width: 100%;
+	    background-color: #d2d3e4;
+	    padding-bottom: 10px;
+	}
+	
 </style>
 </head>
 <body>
@@ -633,7 +646,7 @@
 				
 				<div id="view_more" >
 					<%-- ajax 로 전송할 것 --%>
-					<a href="javascript:">[더보기]</a>
+					<a href="javascript:" class="btn">[더보기]</a>
 				</div>
 				
 				<%-- 원글에 댓글을 작성할 폼 --%>
