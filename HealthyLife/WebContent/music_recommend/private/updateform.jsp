@@ -10,32 +10,45 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic&display=swap" rel="stylesheet">
 <title>/music_recommend/private/updateform.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
    #content{
-      height: 500px;
+      height: 300px;
+		
+   }
+   h1{
+   	font-family: 'Black Han Sans', sans-serif;
+   	margin-bottom:20px !important;
+		text-align: center;
+   }
+   div{
+   font-family: 'Nanum Gothic', sans-serif;
+   font-size: large;
    }
 </style>
 </head>
 <body>
 <div class="container">
-   <h1>글 수정 폼</h1>
+   <h1 class="text-primary">게시글 수정</h1>
    <form action="update.jsp" method="post" id="updateForm">
       <input type="hidden" name="num" value="<%=num %>" />
-      <div class="mb-3">
+      <div class="text-primary">
          <label for="writer">작성자</label>
          <input type="text" id="writer" value="<%=dto.getWriter() %>" disabled/>
       </div>
-      <div>
+      <div class="text-primary">
          <label class="form-label" for="title">제목</label>
          <input class="form-control" type="text" name="title" id="title" value="<%=dto.getTitle()%>"/>
       </div>
-      <div class="mb-3">
+      <div class="text-primary">
          <label class="form-label" for="content">내용</label>
          <textarea class="form-control" name="content" id="content"><%=dto.getContent() %></textarea>
       </div>
-      <div class="mb-3">
+      <div class="text-primary">
          <label class="form-label" for="music">음악 주소</label>
          <textarea class="form-control" name="music" id="music"><%=dto.getMusic() %></textarea>
       </div>
@@ -96,6 +109,17 @@
       var nFontSize = 24;
       oEditors.getById["content"].setDefaultFont(sDefaultFont, nFontSize);
    }
+   
+   document.querySelector("#updateForm").addEventListener("reset", function(e){
+		let isReset = confirm("작성 중인 글을 취소하시겠습니까?");
+		if(isReset){
+			//혹시 모를 폼 제출 막기
+			e.preventDefault();
+			//리스트 페이지로 돌아가기
+			location.href = "${pageContext.request.contextPath}/music_recommend/list.jsp";
+		}
+		
+	});
 </script>
 </body>
 </html>

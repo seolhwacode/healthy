@@ -154,7 +154,7 @@ public class MRCDao {
 	               "      INNER JOIN users" + 
 	               "      ON board_music_comment.writer = users.id" + 
 	               "      WHERE ref_group=?" + 
-	               "      ORDER BY comment_group DESC, num ASC) result1)" + 
+	               "      ORDER BY comment_group ASC, num ASC) result1)" + 
 	               " WHERE rnum BETWEEN ? AND ?";
 	         //PreparedStatement 객체의 참조값 얻어오기
 	         pstmt = conn.prepareStatement(sql);

@@ -4,31 +4,46 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic&display=swap" rel="stylesheet">
 <title>/music_recommend/private/insertform.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
 <style>
    #content{
-      height: 500px;
+      height: 300px;
+		
+   }
+   h1{
+   	font-family: 'Black Han Sans', sans-serif;
+   	margin-bottom:20px !important;
+		text-align: center;
+   }
+   div{
+   font-family: 'Nanum Gothic', sans-serif;
+   font-size: large;
    }
 </style>
 </head>
 <body>
+<jsp:include page="/include/navbar.jsp"></jsp:include>
 <div class="container">
-   <h1>새글 작성 폼</h1>
+   <h1 class="text-primary">게시글 작성</h1>
    <form action="insert.jsp" method="post" id="insertForm">
-      <div class="mb-3">
+      <div class="text-primary">
          <label class="form-label" for="title">제목</label>
          <input class="form-control" type="text" name="title" id="title"/>
       </div>
-      <div class="mb-3">
+      <div class="text-primary">
          <label class="form-label" for="content">내용</label>
          <textarea class="form-control"  name="content" id="content"></textarea>
       </div>
-      <div class="mb-3">
+      <div class="text-primary">
          <label class="form-label" for="music">음악 주소</label>
          <textarea class="form-control"  name="music" id="music"></textarea>
       </div>
       <button class="btn btn-primary" type="submit">저장</button>
+      <button class="btn btn-primary" type="reset">취소</button>
    </form>
 </div>
 <%--
@@ -107,6 +122,16 @@
          }
          
       });
+   document.querySelector("#insertForm").addEventListener("reset", function(e){
+		let isReset = confirm("작성 중인 글을 취소하시겠습니까?");
+		if(isReset){
+			//혹시 모를 폼 제출 막기
+			e.preventDefault();
+			//리스트 페이지로 돌아가기
+			location.href = "${pageContext.request.contextPath}/music_recommend/list.jsp";
+		}
+		
+	});
 </script>
 </body>
 </html>

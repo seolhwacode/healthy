@@ -181,7 +181,7 @@
 	text-decoration: none; text-align: center; line-height: 50px;
 	border-radius:10px;}
 	h1{font-family: 'Black Han Sans', sans-serif;}
-	div{font-family: 'Nanum Gothic', sans-serif;}
+	
 </style>
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
@@ -377,9 +377,9 @@
    //댓글의 현재 페이지 번호를 관리할 변수를 만들고 초기값 1 대입하기
    let currentPage=1;
    //마지막 페이지는 totalPageCount 이다.  
-   let lastPage=<%=totalPageCount%>;
+   let lastPage=<%=totalPageCount %>;
    
-   if(<%=totalRow %> <= 10){
+   if(<%=totalRow %> <= 5){
 		document.querySelector("#view_more").style.display = "none";
 	}	
 	document.querySelector("#view_more").addEventListener("click", function(){
@@ -391,8 +391,8 @@
             해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
             "pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다. 
          */
-         ajaxPromise("${pageContext.request.contextPath}/music_recommend/ajax_comment_list.jsp","post",
-               "pageNum="+currentPage+"&num="+<%=num%>)
+         ajaxPromise("${pageContext.request.contextPath}/music_recommend/ajax_comment_list.jsp", "post",
+               "pageNum="+currentPage+"&num="+<%=num %>)
          .then(function(response){
             //json 이 아닌 html 문자열을 응답받았기 때문에  return response.text() 해준다.
             return response.text();
