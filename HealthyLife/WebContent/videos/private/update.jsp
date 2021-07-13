@@ -26,17 +26,30 @@
 <head>
 <meta charset="UTF-8">
 <title>/videos/private/update.jsp</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 <%if(isSuccess){ %>
 	<script>
-		alert("수정했습니다.");
-		location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num %>";
+		//alert("수정했습니다.");
+		swal({
+		  	title: "수정했습니다!",
+		  	icon: "success",
+		})
+		.then(function(){
+			location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num %>";
+		});
 	</script>
 <%}else{ %>
 	<script>
-		alert("수정 실패!");
-		location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num %>";
+		//alert("수정 실패!");
+		swal({
+		  	title: "수정 실패ㅠㅠ",
+		  	icon: "warning"
+		})
+		.then(function(){
+			location.href = "${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num %>";
+		});
 	</script>
 <%} %>
 </body>
