@@ -75,7 +75,7 @@
       [ 댓글 페이징 처리에 관련된 로직 ]
    */
    //한 페이지에 몇개씩 표시할 것인지
-   final int PAGE_ROW_COUNT=10;
+   final int PAGE_ROW_COUNT=5;
    
    //detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. 
    int pageNum=1;
@@ -106,12 +106,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic&display=swap" rel="stylesheet">
 <title>/music_recommend/detail.jsp</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 <style>
-   .content{
-      border: 1px dotted gray;
-   }
    
    /* 댓글 프로필 이미지를 작은 원형으로 만든다. */
    .profile-image{
@@ -177,29 +177,11 @@
      border-radius: 4px;
    }   
    
-   .loader{
-      /* 로딩 이미지를 가운데 정렬하기 위해 */
-      text-align: center;
-      /* 일단 숨겨 놓기 */
-      display: none;
-   }   
-   
-   .loader svg{
-      animation: rotateAni 1s ease-out infinite;
-   }
-   
-   @keyframes rotateAni{
-      0%{
-         transform: rotate(0deg);
-      }
-      100%{
-         transform: rotate(360deg);
-      }
-   }
    #new{ display: block; width: 200px; height: 100px;
 	text-decoration: none; text-align: center; line-height: 50px;
 	border-radius:10px;}
-	
+	h1{font-family: 'Black Han Sans', sans-serif;}
+	div{font-family: 'Nanum Gothic', sans-serif;}
 </style>
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
@@ -253,7 +235,7 @@
       <tr>
       	<th>내용</th>
          <td colspan="2">
-            <div class="content"><%=dto.getContent() %></div>
+            <div class="border border-3"><%=dto.getContent() %></div>
          </td>
       </tr>
    </table>
@@ -269,7 +251,7 @@
       <a type="button" class="btn btn-outline-primary" href="list.jsp">목록</a>
       <%if(dto.getWriter().equals(id)){ %>
          <a type="button" class="btn btn-outline-primary"  href="private/updateform.jsp?num=<%=dto.getNum()%>">수정</a>
-         <a type="button" class="btn btn-outline-primary"  href="private/delete.jsp?num=<%=dto.getNum()%>">삭제</a>
+         <a type="button" class="btn btn-outline-primary"  href="javascript:deleteConfirm()">삭제</a>
       <%} %>
       
    </div>
@@ -340,11 +322,8 @@
          <%} %>
       </ul>
    </div>
-   <div class="loader">
-      <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-           <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-           <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-      </svg>
+   <div id="view_more">
+      <a href="javascript:">더 보기..</a>
    </div>
    <!-- 원글에 댓글을 작성할 폼 -->
    <form class="comment-form insert-form" action="private/comment_insert.jsp" method="post">
@@ -384,66 +363,58 @@
    addDeleteListener(".delete-link");
    addReplyListener(".reply-link");
    
+ 	//게시글 삭제 confirm 함수
+	function deleteConfirm(){
+		//삭제할지 물어봄
+		let isDelete = confirm("삭제하시겠습니까?");
+		//삭제 할 것 - ok = true
+		if(isDelete){
+			location.href = "${pageContext.request.contextPath}/music_recommend/private/delete.jsp?num=<%=num %>";
+		}
+		//no : false -> 아무 일도 없음
+	}
    
    //댓글의 현재 페이지 번호를 관리할 변수를 만들고 초기값 1 대입하기
    let currentPage=1;
    //마지막 페이지는 totalPageCount 이다.  
    let lastPage=<%=totalPageCount%>;
    
-   //추가로 댓글을 요청하고 그 작업이 끝났는지 여부를 관리할 변수 
-   let isLoading=false; //현재 로딩중인지 여부 
-   
-   /*
-      window.scrollY => 위쪽으로 스크롤된 길이
-      window.innerHeight => 웹브라우저의 창의 높이
-      document.body.offsetHeight => body 의 높이 (문서객체가 차지하는 높이)
-   */
-   window.addEventListener("scroll", function(){
-      //바닥 까지 스크롤 했는지 여부 
-      const isBottom = 
-         window.innerHeight + window.scrollY  >= document.body.offsetHeight;
-      //현재 페이지가 마지막 페이지인지 여부 알아내기
-      let isLast = currentPage == lastPage;   
-      //현재 바닥까지 스크롤 했고 로딩중이 아니고 현재 페이지가 마지막이 아니라면
-      if(isBottom && !isLoading && !isLast){
-         //로딩바 띄우기
-         document.querySelector(".loader").style.display="block";
-         
-         //로딩 작업중이라고 표시
-         isLoading=true;
-         
-         //현재 댓글 페이지를 1 증가 시키고 
-         currentPage++;
-         
+   if(<%=totalRow %> <= 10){
+		document.querySelector("#view_more").style.display = "none";
+	}	
+	document.querySelector("#view_more").addEventListener("click", function(){
+		//현재 댓글 페이지를 1 증가시키고
+		currentPage++;	
+		//현재 페이지가 마지막 페이지보다 작거나 같을 때 -> 댓글 페이지 출력하기
+		if(currentPage <= lastPage){
          /*
             해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
             "pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다. 
          */
-         ajaxPromise("ajax_comment_list.jsp","get",
-               "pageNum="+currentPage+"&num=<%=num%>")
+         ajaxPromise("${pageContext.request.contextPath}/music_recommend/ajax_comment_list.jsp","post",
+               "pageNum="+currentPage+"&num="+<%=num%>)
          .then(function(response){
             //json 이 아닌 html 문자열을 응답받았기 때문에  return response.text() 해준다.
             return response.text();
          })
          .then(function(data){
             //data 는 html 형식의 문자열이다. 
-            console.log(data);
             // beforebegin | afterbegin | beforeend | afterend
             document.querySelector(".comments ul")
                .insertAdjacentHTML("beforeend", data);
-            //로딩이 끝났다고 표시한다.
-            isLoading=false;
             //새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록 하기 
             addUpdateListener(".page-"+currentPage+" .update-link");
             addDeleteListener(".page-"+currentPage+" .delete-link");
             addReplyListener(".page-"+currentPage+" .reply-link");
             //새로 추가된 댓글 li 요소 안에 있는 댓글 수정폼에 이벤트 리스너 등록하기
             addUpdateFormListener(".page-"+currentPage+" .update-form");
-            
-            //로딩바 숨기기
-            document.querySelector(".loader").style.display="none";
          });
-      }
+      	}
+		if(currentPage == lastPage){
+			document.querySelector("#view_more").style.display = "none";
+		}else{
+			document.querySelector("#view_more").style.display = "block";
+		}
    });
    
    //인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 

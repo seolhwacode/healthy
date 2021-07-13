@@ -4,10 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	//테스트로 응답을 3초 지연시키기
-	Thread.sleep(3000);
 	
-   //로그인된 아이디
    String id=(String)session.getAttribute("id");
    //ajax 요청 파라미터로 넘어오는 댓글의 페이지 번호를 읽어낸다
    int pageNum=Integer.parseInt(request.getParameter("pageNum"));
@@ -17,7 +14,7 @@
       [ 댓글 페이징 처리에 관련된 로직 ]
    */
    //한 페이지에 몇개씩 표시할 것인지
-   final int PAGE_ROW_COUNT=10;
+   final int PAGE_ROW_COUNT=5;
    
    //보여줄 페이지의 시작 ROWNUM
    int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;

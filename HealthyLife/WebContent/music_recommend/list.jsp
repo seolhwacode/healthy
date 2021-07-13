@@ -6,7 +6,7 @@
     pageEncoding="UTF-8"%>
 <%
 	//한 페이지에 몇개씩 표시할 것인지
-	final int PAGE_ROW_COUNT=10;
+	final int PAGE_ROW_COUNT=5;
 	//하단 페이지를 몇개씩 표시할 것인지
 	final int PAGE_DISPLAY_COUNT=5;
 
@@ -97,6 +97,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Gothic&display=swap" rel="stylesheet">
 <title>/music_recommend/list.jsp</title>
 <jsp:include page="/include/resource.jsp"></jsp:include>
 <style>
@@ -171,7 +174,9 @@
 	  background-color: lightgray;
 	  border-radius:  50%;
 	}
+	h1{font-family: 'Black Han Sans', sans-serif;}
 	
+	div{font-family: 'Nanum Gothic', sans-serif;}
 </style>
 </head>
 <body>
