@@ -18,12 +18,12 @@
 	*/
 	//여러 페이지에 나눠서 출력하기 - 여기서는 한 페이지에 10개!
 	//한 페이지에 몇개씩 표시할 것인지
-	final int PAGE_ROW_COUNT=10;
+	final int COMMENT_ROW_COUNT=5;
 	
 	//보여줄 페이지의 시작 ROWNUM
-	int startRowNum = 1 + (pageNum - 1) * PAGE_ROW_COUNT;
+	int startRowNum = 1 + (pageNum - 1) * COMMENT_ROW_COUNT;
 	//보여줄 페이지의 끝 ROWNUM
-	int endRowNum = pageNum * PAGE_ROW_COUNT;
+	int endRowNum = pageNum * COMMENT_ROW_COUNT;
 	
 	//원글의 글번호를 이용해서 해당 글에 달린 댓글 목록을 얻어온다.
 	VideosCommentDto commentDto = new VideosCommentDto();
@@ -70,7 +70,7 @@
 					</svg>
 				<%}else{ %>
 					<%-- 해당 이미지 출력 --%>
-					<img class="commet_profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile() %>" alt="프로필 사진" />
+					<img class="commet_profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile() %>" alt="" />
 				<%} %>
 				</span>
 			</div>

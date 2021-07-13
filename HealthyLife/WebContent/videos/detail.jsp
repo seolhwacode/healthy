@@ -98,15 +98,15 @@
 	
 //댓글 리스트 가져오기 - 댓글 pagination 처리(더보기 누르면 댓글 추가)
 	//한 페이지에 몇개씩 표시할 것인지
-	final int PAGE_ROW_COUNT=5;
+	final int COMMENT_ROW_COUNT=5;
 
 	//deatil.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. -> 더보기로 ajax 요청할 것
 	int pageNum = 1;
 	
 	//보여줄 페이지의 시작 ROWNUM
-	int startRowNum = 1 + (pageNum - 1) * PAGE_ROW_COUNT;
+	int startRowNum = 1 + (pageNum - 1) * COMMENT_ROW_COUNT;
 	//보여줄 페이지의 끝 ROWNUM
-	int endRowNum = pageNum * PAGE_ROW_COUNT;	
+	int endRowNum = pageNum * COMMENT_ROW_COUNT;	
 
 	//원글의 글번호를 이용해서 해당 글에 달린 댓글 목록을 얻어온다.
 	VideosCommentDto commentDto = new VideosCommentDto();
@@ -121,7 +121,7 @@
 	//게시글에 달린 댓글의 개수를 읽어옴
 	int totalRow = VideosCommentDao.getInstance().getCommentCount(num);
 	//전체 페이지의 개수 : (전체 row 의 개수 / 보여지는 리스트 개수) 올림
-	int totalPageCount = (int)Math.ceil(totalRow / (double)PAGE_ROW_COUNT);
+	int totalPageCount = (int)Math.ceil(totalRow / (double)COMMENT_ROW_COUNT);
 	
 	
 //좋아요 기능 추가
@@ -454,7 +454,7 @@
 							<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
 						</svg>
 					<%}else{ %>
-						<img class="profileImage" src="${pageContext.request.contextPath}<%=resultUsersDto.getProfile() %>" alt="프로필 사진" />
+						<img class="profileImage" src="${pageContext.request.contextPath}<%=resultUsersDto.getProfile() %>" alt="" />
 					<%} %>
 					</div>
 					<div class="post_writer_text">
@@ -556,7 +556,7 @@
 									</svg>
 								<%}else{ %>
 									<%-- 해당 이미지 출력 --%>
-									<img class="commet_profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile() %>" alt="프로필 사진" />
+									<img class="commet_profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile() %>" alt="" />
 								<%} %>
 								</span>
 							</div>
@@ -716,7 +716,8 @@
 		//마지막 페이지는 totalPageCount 이다.
 		let lastPage = <%=totalPageCount %>;
 		
-		if(<%=totalRow %> <= 10){
+		//댓글의 수가 댓글 출력 최대 개수보다 적거나 같다면 -> 더보기 표시 x
+		if(<%=totalRow %> <= <%=COMMENT_ROW_COUNT %>){
 			document.querySelector("#view_more").style.display = "none";
 		}
 		
@@ -751,7 +752,7 @@
 			if(currentPage == lastPage){
 				document.querySelector("#view_more").style.display = "none";
 			}else{
-				document.querySelector("#view_more").steyl.display = "block";
+				document.querySelector("#view_more").style.display = "block";
 			}
 		});
 		
