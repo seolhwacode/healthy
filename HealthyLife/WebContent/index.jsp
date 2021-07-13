@@ -167,7 +167,7 @@
 			<div class="card" id="rami_card">
 			<h4>팀원 양우람</h4>
 			<p>📍  PPT 제작</p>
-			<p>💻 소개 페이지 <br />건강 레시피 페이지 <br /> navbar & CSS 구성  </p>
+			<p>💻 index 페이지 <br />건강 레시피 페이지 <br /> navbar & CSS 구성  </p>
 			</div>
 			<div class="card" id="hyeoni_card">
 			<h4>팀원 이지현</h4>
@@ -175,7 +175,7 @@
 			</div>
 			<div class="card" id="hani_card">
 			<h4>팀원 전하은</h4>
-			<p>💻  소개 페이지 <br /> 원데이 클래스 페이지 </p>
+			<p>💻  index 페이지 <br /> 원데이 클래스 페이지 </p>
 			</div>
 		</div>
 		</div>

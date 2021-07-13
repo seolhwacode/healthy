@@ -17,7 +17,8 @@ dto= BookingDao.getInstance().getData(dto);
 
 String writer = (String)session.getAttribute("id");
 if(!writer.equals(dto.getWriter())){
-	response.sendError(HttpServletResponse.SC_FORBIDDEN,"접근할 수 없습니다.");//error code를 전달해야한다.
+	
+	response.sendRedirect("error.jsp");//errorpage로 이동
 	return;
 }
 
@@ -34,7 +35,7 @@ if(id != null){
 */
 
 	//한 페이지에 몇개씩 표시할 것인지
-	final int PAGE_ROW_COUNT=10;
+	final int PAGE_ROW_COUNT=5;
 	
 	//detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다.
 	int pageNum=1;
@@ -273,23 +274,13 @@ if(id != null){
                      @<i><%=tmp.getTarget_id() %></i>
                   <%} %>
                      <span><%=tmp.getRegdate() %></span>
-                     <a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply-link">
-                     	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-plus" viewBox="0 0 16 16">
-						  <path fill-rule="evenodd" d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"/>
-						  <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
-						  <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
-						</svg>
-                     </a>
+                     <a data-num="<%=tmp.getNum() %>" class="reply-link" href="javascript:">답글</a>
                   <%if(id != null && tmp.getWriter().equals(id)){ %>
                      <a data-num="<%=tmp.getNum() %>" class="update-link" href="javascript:">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-					  	<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-					 </svg>
+                    	수정
                      </a>
                      <a data-num="<%=tmp.getNum() %>" class="delete-link" href="javascript:">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-					  <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-					</svg>
+                     	삭제
                      </a>
                   <%} %>
                   </dt>
@@ -298,7 +289,7 @@ if(id != null){
                   </dd>
                </dl>   
                <!-- 대댓글 폼 -->
-               <form id="reForm<%=tmp.getNum() %>" class="animate__animated comment-form re-insert-form" 
+               <form id="reForm<%=tmp.getNum() %>" class="comment-form re-insert-form" 
                   action="comment_insert.jsp" method="post">
                   <div class="input-group mb-3">
                   <input type="hidden" name="ref_group"
@@ -327,7 +318,7 @@ if(id != null){
    </div>
    <!-- 로더 버튼 -->
    <div class="loader">
-	<button type="button">댓글 더 보기</button>
+	<button type="button" class="btn btn-outline-secondary">댓글 더 보기</button>
 	</div>
 	 <!-- 원글에 댓글을 작성할 폼 -->
    <form class="comment-form insert-form" action="comment_insert.jsp" method="post">
@@ -372,7 +363,7 @@ if(id != null){
 	   
 	  
 	   //댓글의 수가 10개보다 적으면 버튼 감추기
-	   if(<%=totalRow%> < 10){
+	   if(<%=totalRow%> < 5){
 		   document.querySelector(".loader").style.display="none";
 	   } 
 	   
