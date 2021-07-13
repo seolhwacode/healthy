@@ -118,7 +118,7 @@
 				<input type="hidden" name="target_id" value="<%=tmp.getWriter()%>"/>
                 		<!-- '댓글' 의 comment_group 을 따라간다. -->
                 		<input type="hidden" name="comment_group" value="<%=tmp.getComment_group()%>"/>
-                		<textarea name="content"></textarea>
+                		<textarea name="content" placeholder="댓글을 입력하세요."></textarea>
                 		<div class="form_control_btns">
 					<button class="btn submit_btn" type="submit">등록</button>
 					<button class="btn reset_btn" type="reset">취소</button>
@@ -131,7 +131,7 @@
 		<div class="comment_form_wrapper update">
 			<form id="update_form_<%=tmp.getNum() %>" class="comment_form update_form" action="${pageContext.request.contextPath}/videos/private/comment_update.jsp" method="post">
 				<input type="hidden" name="num" value="<%=tmp.getNum() %>" />
-				<textarea name="content"><%=tmp.getContent() %></textarea>
+				<textarea name="content" placeholder="댓글을 입력하세요."><%=tmp.getContent() %></textarea>
 				<div class="form_control_btns">
 					<button class="btn submit_btn" type="submit">수정</button>
 					<button class="btn reset_btn" type="reset">취소</button>

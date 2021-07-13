@@ -28,17 +28,30 @@
 <head>
 <meta charset="UTF-8">
 <title>/videos/private/delete.jsp</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 <%if(isSuccess){ %>
 	<script>
-		alert("삭제되었습니다.");
-		location.href="${pageContext.request.contextPath}/videos/list.jsp";
+		//alert("삭제되었습니다.");
+		swal({
+		  	title: "삭제되었습니다!",
+		  	icon: "success",
+		})
+		.then(function(){
+			location.href="${pageContext.request.contextPath}/videos/list.jsp";
+		});
 	</script>
 <%}else{ %>
 	<script>
-		alert("삭제 실패!");
-		location.href="${pageContext.request.contextPath}/videos/detail.jsp?num<%=num %>";
+		//alert("삭제 실패!");
+		swal({
+			title: "삭제에 실패했습니다ㅠㅠ",
+			icon: "warning"
+		})
+		.then(function(){
+			location.href="${pageContext.request.contextPath}/videos/detail.jsp?num<%=num %>";
+		});
 	</script>
 <%} %>
 </body>

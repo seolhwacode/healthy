@@ -29,17 +29,30 @@
 <head>
 <meta charset="UTF-8">
 <title>/videos/private/insert.jsp</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 <%if(isSuccess){ %>
 	<script>
-		alert("새 글이 추가되었습니다.");
-		location.href = "${pageContext.request.contextPath}/videos/list.jsp";
+		//alert("새 글이 추가되었습니다.");
+		swal({
+		  	title: "새 글이 추가되었습니다!",
+		  	icon: "success",
+		})
+		.then(function(){
+			location.href = "${pageContext.request.contextPath}/videos/list.jsp";
+		});
 	</script>
 <%}else{ %>
 	<script>
-		alert("새 글이 추가되었습니다.");
-		location.href = "${pageContext.request.contextPath}/videos/private/insert_form.jsp";
+		//alert("추가 실패ㅠㅠ");
+		swal({
+		  	title: "추가 실패ㅠㅠ",
+		  	icon: "warning"
+		})
+		.then(function(){
+			location.href = "${pageContext.request.contextPath}/videos/private/insert_form.jsp";
+		});
 	</script>
 <%} %>
 </body>

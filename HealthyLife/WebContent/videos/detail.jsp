@@ -143,6 +143,7 @@
 <meta charset="UTF-8">
 <title>/videos/detail.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 	/* 전체 content 크기 조절 */
 	.container{
@@ -618,7 +619,7 @@
 						<div class="comment_form_wrapper update">
 							<form id="update_form_<%=tmp.getNum() %>" class="comment_form update_form" action="${pageContext.request.contextPath}/videos/private/comment_update.jsp" method="post">
 								<input type="hidden" name="num" value="<%=tmp.getNum() %>" />
-								<textarea name="content"><%=tmp.getContent() %></textarea>
+								<textarea name="content" placeholder="댓글을 입력하세요."><%=tmp.getContent() %></textarea>
 								<div class="form_control_btns">
 									<button class="btn submit_btn" type="submit">수정</button>
 									<button class="btn reset_btn" type="reset">취소</button>
@@ -679,11 +680,24 @@
 		//게시글 삭제 confirm 함수
 		function deleteConfirm(){
 			//삭제할지 물어봄
-			let isDelete = confirm("삭제하시겠습니까?");
+			//let isDelete = confirm("삭제하시겠습니까?");
+			swal({
+			  	title: "삭제하시겠습니까?",
+			  	text: "복구할 수 없습니다.",
+			  	icon: "warning",
+			  	buttons: true,
+			  	dangerMode: true
+			})
+			.then(function(willDelete){
+			  	if (willDelete) {
+			    	location.href = "${pageContext.request.contextPath}/videos/private/delete.jsp?num=<%=num %>";
+			  	}
+			});
+			
 			//삭제 할 것 - ok = true
-			if(isDelete){
+			<%-- if(isDelete){
 				location.href = "${pageContext.request.contextPath}/videos/private/delete.jsp?num=<%=num %>";
-			}
+			} --%>
 			//no : false -> 아무 일도 없음
 		}
 		
@@ -694,11 +708,21 @@
 				//폼 전송 막기
 				e.preventDefault();
 				//로그인 폼으로 이동
-				const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
-				if(isMove){
+				//const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+				swal({
+				  	title: "로그인이 필요합니다.",
+				  	text: "로그인 페이지로 이동하시겠습니까?",
+				  	buttons: true
+				})
+				.then(function(isMove){
+				  	if (isMove) {
+				  		location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
+				  	}
+				});
+				<%-- if(isMove){
 					location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
 					return;
-				}
+				} --%>
 			}
 			
 			//댓글 내용 비었는지 검사
@@ -706,7 +730,11 @@
 			if(inputText === ""){
 				//폼 전송 막기
 				e.preventDefault();
-				alert("내용을 입력해주세요.");
+				//alert("내용을 입력해주세요.");
+				swal({
+				  	title: "내용을 입력해주세요.",
+				  	icon: "warning",
+				});
 			}
 		});
 		
@@ -772,10 +800,17 @@
 
 					//댓글을 달려면 로그인을 꼭 해야한다! -> 로그인 페이지로 이동
 					if(!isLogin){
-						const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
-						if(isMove){
-							location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
-						}
+						//const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+						swal({
+						  	title: "로그인이 필요합니다.",
+						  	text: "로그인 페이지로 이동하시겠습니까?",
+						  	buttons: true
+						})
+						.then(function(isMove){
+						  	if (isMove) {
+						  		location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";						
+						  	}
+						});
 						return;
 					}
 					
@@ -810,7 +845,7 @@
 		//sel = ".reply_link" : 처음 페이지에 출력할 때는 .page-N 클래스가 없다 -> 댓글 페이지
 		//sel = ".page-N .reply_link" (N : currentPage) 형식의 내용이다.
 		function addReplyFormListener(sel){
-			//댓글 수정 폼의 참조값을 배열에 담아오기
+			//댓글에 댓글 다는 폼의 참조값을 배열에 담아오기
 	 		let replyForms = document.querySelectorAll(sel);
 			for(let i = 0; i < replyForms.length; i++){
 				//폼에 submit 이벤트가 일어났을 때 호출되는 함수 등록
@@ -826,16 +861,26 @@
 						//textarea 가 빈칸
 						//폼 제출 막기
 						e.preventDefault();
-						alert("내용을 입력해주세요.");
+						//alert("내용을 입력해주세요.");
+						swal({
+						  	title: "내용을 입력해주세요.",
+						  	icon: "warning",
+						});
 					}
 				});
 				
 				//취소 버튼
  				replyForms[i].addEventListener("reset", function(e){
+ 					
+ 					//폼 reset 막기
+					e.preventDefault();
+ 					
 					//reset 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
 					const form = this;
 					//reset 이벤트가 일어난 form 의 부모 div
 					const formDiv = this.parentElement;
+					//댓글의 textarea 문서객체 가져오기
+					const textarea = this.querySelector("textarea");
 					
 					//form 의 id : reply_form_n 가져와서 n 추출
 					const id = form.getAttribute('id');
@@ -844,8 +889,24 @@
 					//id 를 사용해서 reply_link_num 완성해서 link 가져오기					
 					let replyLink = document.querySelector("#reply_link_" + num);
 					
-					let isReset = confirm("댓글 내용을 삭제하시겠습니까?");
-					if(isReset){
+					//let isReset = confirm("댓글 내용을 삭제하시겠습니까?");
+					swal({
+					  	title: "댓글 내용을 삭제하시겠습니까?",
+					  	icon: "warning",
+					  	buttons: true
+					})
+					.then(function(isReset){
+					  	if (isReset) {
+					  		//삭제
+					  		textarea.value = "";
+							//열려잇는 form 과 div 닫기
+							form.style.display="none";
+							formDiv.style.display = "none";
+							//링크 내용 : "취소" -> "댓글달기" 로 변경
+							replyLink.innerText = "댓글 달기";
+					  	}
+					});
+					/* if(isReset){
 						//삭제
 						//열려잇는 form 과 div 닫기
 						form.style.display="none";
@@ -855,7 +916,7 @@
 					}else{
 						//폼 reset 막기
 						e.preventDefault();
-					}
+					} */
 				});
 				
 			}
@@ -876,23 +937,30 @@
 					//data-num : 댓글의 num(pk) 을 가지고 있다.
 					const num = this.getAttribute("data-num");
 					//사용자에게 댓글 삭제 확인 메시지
-					const isDelete = confirm("댓글을 삭제하시겠습니까?");
-					if(isDelete){
-						//gura_util.js 에 있는 함수를 이용해서 ajax 요청
-						ajaxPromise("${pageContext.request.contextPath}/videos/private/comment_delete.jsp", "post", "num="+num)
-						.then(function(response){
-							return response.json();
-						})
-						.then(function(data){
-							//data : { isSuccess : true/false }
-							//댓글 삭제가 성공
-							if(data.isSuccess){
-								//댓글이 있는 곳에 삭제된 댓글입니다를 출력해준다.
-								document.querySelector("#commet_item_" + num).innerText = "삭제된 댓글입니다.";
-							}
-						});
-					}
-					
+					//const isDelete = confirm("댓글을 삭제하시겠습니까?");
+					swal({
+					  	title: "댓글을 삭제하시겠습니까?",
+					  	icon: "warning",
+					  	buttons: true,
+					  	dangerMode: true
+					})
+					.then(function(isDelete){
+						if(isDelete){
+							//gura_util.js 에 있는 함수를 이용해서 ajax 요청
+							ajaxPromise("${pageContext.request.contextPath}/videos/private/comment_delete.jsp", "post", "num="+num)
+							.then(function(response){
+								return response.json();
+							})
+							.then(function(data){
+								//data : { isSuccess : true/false }
+								//댓글 삭제가 성공
+								if(data.isSuccess){
+									//댓글이 있는 곳에 삭제된 댓글입니다를 출력해준다.
+									document.querySelector("#commet_item_" + num).innerText = "삭제된 댓글입니다.";
+								}
+							});
+						}
+					});					
 				});
 			}
 		}
@@ -917,7 +985,11 @@
 						//빈칸이면 -> 함수 끝
 						//폼 제출 막기
 						e.preventDefault();
-						alert("내용을 입력해주세요.");
+						//alert("내용을 입력해주세요.");
+						swal({
+						  	title: "내용을 입력해주세요.",
+						  	icon: "warning",
+						});
 						return;
 					}
 					
@@ -948,30 +1020,45 @@
 							formDiv.style.display = "none";
 						}else{
 							//수정 실패
-							alert("댓글 수정 실패");
+							//alert("댓글 수정 실패");
+							swal({
+							  	title: "댓글 수정 실패!",
+							  	icon: "warning",
+							});
 						}
 					});
 				});
 				
 				//취소 버튼
  				updateForms[i].addEventListener("reset", function(e){
+
 					//reset 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
 					const form = this;
 					//reset 이벤트가 일어난 form 의 부모 div
 					const formDiv = this.parentElement;
+					//댓글의 textarea 문서객체 가져오기
+					const textarea = this.querySelector("textarea");
+					//댓글 입력한 내용 가져오기
+					const inputText = textarea.value;
 					
-					let isReset = confirm("댓글 내용을 삭제하시겠습니까?");
-					if(isReset){
-						//삭제
-						//form 내용 삭제
-						form.reset();
-						//열려잇는 form 과 div 닫기
-						form.style.display="none";
-						formDiv.style.display = "none";
-					}else{
-						//폼 reset 막기
-						e.preventDefault();
-					}
+					//let isReset = confirm("댓글 내용을 삭제하시겠습니까?");
+					swal({
+					  	title: "댓글 내용을 삭제하시겠습니까?",
+					  	icon: "warning",
+					  	buttons: true
+					})
+					.then(function(isReset){
+					  	if (isReset) {
+							//열려잇는 form 과 div 닫기
+					  		form.style.display="none";
+							formDiv.style.display = "none";
+					  	}else{
+						  	//폼 reset 막기
+							e.preventDefault();
+						  	//입력한 내용 다시 넣어주기
+							textarea.value = inputText;
+					  	}
+					});
 				});
 				
 			}
@@ -1028,13 +1115,18 @@
 			//로그인 안된 상태 -> 로그인 하시겠습니까?
 			if(!isLogin){
 				//로그인 폼으로 이동
-				const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
-				if(isMove){
-					location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
-				}else{
-					//종료
-					return;
-				}
+				//const isMove = confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?");
+				swal({
+				  	title: "로그인이 필요합니다.",
+				  	text: "로그인 페이지로 이동하시겠습니까?",
+				  	buttons: true
+				})
+				.then(function(isMove){
+				  	if (isMove) {
+				  		location.href = "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/videos/detail.jsp?num=<%=num%>";
+				  	}
+				});
+				return;
 			}
 			
 			//로그인 ok
