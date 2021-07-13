@@ -13,7 +13,7 @@
 <style>
     html,
     body {
-        background-color: #f4f4ef;
+        background-color: white;
     }
     
     a,
@@ -72,7 +72,7 @@
     .product-card .card-content {
         position: absolute;
         bottom: 0;
-        background: #FFFFFF;
+        background: #F4F9F9;
         width: 100%;
         padding: 40px 30px;
         -webkti-box-sizing: border-box;
@@ -150,6 +150,10 @@
         color: inherit;
         text-decoration: none;
     }
+    .badge{
+    	position: relative;
+    	left: 320px;
+    }
     
      #book-link{
     	position: fixed;
@@ -205,15 +209,17 @@
 								 구라요가
 								</h2>
                                 <p class="description">
-                                    New York, the largest city in the U.S., is an architectural marvel with plenty of historic monuments, magnificent buildings and countless dazzling skyscrapers.
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias doloremque similique aut maxime quos nemo necessitatibus laudantium modi sapiente officiis accusantium a porro quis culpa magnam dignissimos numquam tenetur repellendus.
                                 </p>
                                 <p>💵80,000<p>
-                                <ul class="list-inline post-meta">
-                                    <li class="card-comment">
-                                        <i class="fa fa-comments"></i><a href="#"> 129 likes </a>
-                                    </li>
-                                </ul>
-                            </div>
+                                <button type="button" class="btn badge bg-secondary position-relative">
+								  상담
+									<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+			    						on
+									    <span class="visually-hidden">status</span>
+									 </span>
+								</button>
+							 </div>
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -238,14 +244,16 @@
 								 Gurafit
 							</h2>
                                 <p class="description">
-                                    New York, the largest city in the U.S., is an architectural marvel with plenty of historic monuments, magnificent buildings and countless dazzling skyscrapers.
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores aut libero sunt doloribus ipsam odio similique amet officiis molestias ducimus corrupti est? Maxime placeat necessitatibus officiis consectetur odio quae est.
                                 </p>
                                 <p>💵120,000</p>
-                                <ul class="list-inline post-meta">                                 
-                                    <li class="card-comment">
-                                        <i class="fa fa-comments"></i><a href="#">82 likes</a>
-                                    </li>
-                                </ul>
+                                 <button type="button" class="btn badge bg-secondary position-relative">
+								  상담
+								  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+			    						on
+									    <span class="visually-hidden">status</span>
+									 </span>
+								</button>
                             </div>
                         </div>
                     </div>
@@ -271,14 +279,16 @@
 								 구라블리 
 							</h2>
                                 <p class="description">
-                                    New York, the largest city in the U.S., is an architectural marvel with plenty of historic monuments, magnificent buildings and countless dazzling skyscrapers.
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. In corporis modi odio ipsum non enim ab architecto quisquam porro alias quaerat nemo! Modi repudiandae quo amet. Culpa incidunt sit fugiat?
                                 </p>
                                 <p>💵150,000</p>
-                                <ul class="list-inline post-meta">                               
-                                    <li class="card-comment">
-                                        <i class="fa fa-comments"></i><a href="#"> 390 likes </a>
-                                    </li>
-                                </ul>
+                                 <button type="button" class="btn badge bg-secondary position-relative">
+								  상담
+								 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+			    						off
+									    <span class="visually-hidden">status</span>
+									 </span>
+								</button>
                             </div>
                         </div>
                     </div>
@@ -304,14 +314,16 @@
 								 구라으뜸 
 								</h2>
                                 <p class="description">
-                                    New York, the largest city in the U.S., is an architectural marvel with plenty of historic monuments, magnificent buildings and countless dazzling skyscrapers.
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque quis vero debitis beatae molestias modi asperiores culpa deserunt consequuntur adipisci et voluptas aliquam amet obcaecati fuga recusandae porro voluptates voluptatibus!
                                 </p>
                                 <p>💵30,000</p>
-                                <ul class="list-inline post-meta">
-                                    <li class="card-comment">
-                                        <i class="fa fa-comments"></i><a href="#">22 likes</a>
-                                    </li>
-                                </ul>
+                                 <button type="button" class="btn badge bg-secondary position-relative">
+								  상담
+								  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+			    						on
+									    <span class="visually-hidden">status</span>
+									 </span>
+								</button>
                             </div>
                         </div>
                     </div>
@@ -337,14 +349,16 @@
 								 Gurara
 							</h2>
                                 <p class="description">
-                                    New York, the largest city in the U.S., is an architectural marvel with plenty of historic monuments, magnificent buildings and countless dazzling skyscrapers.
+									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae aliquam mollitia asperiores inventore expedita natus recusandae impedit quo repellat autem dicta ratione consequatur aliquid beatae voluptatibus veritatis pariatur. Accusamus tempora.
                                 </p>
-                                <p>Price $62</p>
-                                <ul class="list-inline post-meta">
-                                    <li class="card-comment">
-                                        <i class="fa fa-comments"></i><a href="#"> 58 likes </a>
-                                    </li>
-                                </ul>
+                                <p>💵90,000</p>
+                                 <button type="button" class="btn badge bg-secondary position-relative">
+								  상담
+								 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+			    						off
+									    <span class="visually-hidden">status</span>
+									 </span>
+								</button>
                             </div>
                         </div>
                     </div>
@@ -352,7 +366,6 @@
             </div>
         </div>
         
-<!-- 예약목록 확인 버튼 -->
 <!-- 예약목록 확인 버튼 -->
 	<div id="book-link" class="animate__animated" >
 		<a href="${pageContext.request.contextPath}/oneday_class/private/bookingList.jsp">
