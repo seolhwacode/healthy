@@ -11,7 +11,7 @@
 	int num=Integer.parseInt(request.getParameter("num"));
 	
 	//댓글 페이징 처리 
-	final int PAGE_ROW_COUNT=10;
+	final int PAGE_ROW_COUNT=5;
 	
 	int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
 	int endRowNum=pageNum*PAGE_ROW_COUNT;

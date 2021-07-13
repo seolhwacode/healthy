@@ -56,7 +56,7 @@
 	   	}
 	   	
 	  //한 페이지에 몇개씩 표시할 것인지
-	    final int PAGE_ROW_COUNT=10;
+	    final int PAGE_ROW_COUNT=5;
 	    
 	    //detail.jsp 페이지에서는 항상 1페이지의 댓글 내용만 출력한다. 
 	    int pageNum=1;
@@ -89,14 +89,23 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
 <style>
+
+	
 	.container{
 		width:800px !important;
+		font-family: 'Noto Sans KR', sans-serif;
+		
 	}
 	#content {
 		 margin-top:20px;
 	}
 	
+
 	#private {
 		margin: 5px;
 		padding: 0px;
@@ -163,14 +172,15 @@
    
   
    #view_more {
-   	    border: 2px solid #bfbebe;
-    	background-color: #e8e8e8;
-   	 	margin: 0px auto 10px;
-    	width: 75%;
-   		text-align: center;   
+   	      
+	    background-color: white;
+	    margin: 0px auto 10px;
+	    text-align: center;
+	    padding: 5px;
+	    box-shadow: 1px 1px 3px 0px lightgrey;
+	
  	}
  
- 	
    /* .reply_icon 을 li 요소를 기준으로 배치 하기 */
    .comments li{
       position: relative;
@@ -195,6 +205,21 @@
      border-radius: 4px;
    } 
    
+    .re_reply {
+		background-color: #f8f9fa;
+	    padding-left: 40px;
+	    border-radius: 15px;
+	}
+   
+   #del_reply {
+   		width : 100%;
+   		background-color: #e9ecef;
+	    color: #6c757d;
+	    border: 1px solid;
+	    margin: 3px;
+	    padding-left: 10px;
+	    font-size: 14px;
+   }
    #reply_info { 
    	font-size: 13px;
     margin-left: 65px;
@@ -233,13 +258,13 @@
 </head>
 <body>
 <jsp:include page="/include/navbar.jsp"></jsp:include>
-<div class="container">
+<div id="font" class="container">
 	
-	  <div class="row">
-	    <div class="col-sm"><a href="list.jsp">건강레시피</a></div>
+	  <div class="row" >
+	    <div class="col-sm"><a href="list.jsp" ><strong>건강레시피</strong></a></div>
 	  </div>
 	  <div class="row">
-	    <div class="col-sm" style="font-size:20px; font-weight:bold;"><%=dto.getTitle() %></div>
+	    <div class="col-sm" style="font-size:30px; font-weight:bold;"><%=dto.getTitle() %></div>
 	  </div>	
 	  <div class="row">
 	    <div class="col-sm"><%=dto.getWriter() %></div>
@@ -247,7 +272,7 @@
 	  <div class="row">
 	    <div class="col-sm" id="content"><%=dto.getContent() %></div>
 	  </div>
-	  <div class="row">
+	  <div class="row" style="margin-top:20px;">
 	    <div class="col-sm-3" style="font-size:13px; padding-right:0px; width:160px;"><%=dto.getRegdate() %></div>
 	    <div class="col-sm-2" style="font-size:13px; padding-left:0px; ">조회수 <%=dto.getViewCount() %></div>
 	  </div>
@@ -267,7 +292,7 @@
       	<ul class="comment_list">
          <%for(Hfood_comment_dto tmp: commentList){ %>
             <%if(tmp.getDeleted().equals("yes")){ %>
-               <li>삭제된 댓글 입니다.</li>
+               <li id="del_reply" >삭제된 댓글 입니다.</li>
             <% 
                // continue; 아래의 코드를 수행하지 않고 for 문으로 실행순서 다시 보내기 
                continue;
@@ -276,13 +301,10 @@
             <%if(tmp.getNum() == tmp.getComment_group()){ %>
             <li id="reli<%=tmp.getNum()%>">
             <%}else{ %>
-            <li id="reli<%=tmp.getNum()%>" style="padding-left:50px;">
-               <svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
-               </svg>
+            <li id="reli<%=tmp.getNum()%>" class="re_reply" >
             <%} %>
                <dl>
-                  <dt>
+                  <dd>
                   <%if(tmp.getProfile() == null){ %>
                      <svg class="profile-image" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                           <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
@@ -291,19 +313,20 @@
                   <%}else{ %>
                      <img class="profile-image" src="${pageContext.request.contextPath}<%=tmp.getProfile()%>"/>
                   <%} %>
-                     <span><%=tmp.getWriter() %></span>
+                     <span style="font-weight: bold;"><%=tmp.getWriter() %></span>
                   <%if(tmp.getNum() != tmp.getComment_group()){ %>
-                     @<i><%=tmp.getTarget_id() %></i>
+                     <span style="color:#2252e3;">@<i><%=tmp.getTarget_id() %></i></span>
                   <%} %>
-                     <span><%=tmp.getRegdate() %></span>
-                     <a data-num="<%=tmp.getNum() %>" href="javascript:" class="reply-link">답글</a>
+                  		 <span id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></span>  
+                     
+                     <a data-num="<%=tmp.getNum() %>" href="javascript:" style="font-size:13.5px;" class="reply-link">답글</a>
                   <%if(id != null && tmp.getWriter().equals(id)){ %>
-                     <a data-num="<%=tmp.getNum() %>" class="update-link" href="javascript:">수정</a>
-                     <a data-num="<%=tmp.getNum() %>" class="delete-link" href="javascript:">삭제</a>
+                     <a data-num="<%=tmp.getNum() %>" class="update-link" style="font-size:13.5px;" href="javascript:">수정</a>
+                     <a data-num="<%=tmp.getNum() %>" class="delete-link" style="font-size:13.5px;" href="javascript:">삭제</a>
                   <%} %>
-                  </dt>
+                  </dd>
                   <dd>
-                     <pre id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></pre>                  
+                     <span style="margin-left:30px; font-size:13.5px;"><%=tmp.getRegdate() %></span>               
                   </dd>
                </dl>   
                <form id="reForm<%=tmp.getNum() %>" class="comment-form re-insert-form" 
@@ -331,7 +354,7 @@
       
       	<div id="view_more" >
 			<%-- ajax 로 전송할 것 --%>
-			<a href="javascript:" >댓글 더 보러 가기(ง ᵕᴗᵕ)ว</a>
+			<a class="link-dark" href="javascript:" >댓글 더 보러 가기(ง ᵕᴗᵕ)ว</a>
 		</div>
    
    </div>
@@ -402,13 +425,13 @@
    
    
    //댓글의 현재 페이지 번호를 관리할 변수를 만들고 초기값 1 대입하기
-//댓글의 현재 페이지 번호를 관리할 변수를 만들고, 초기값 1 대입하기
+
 		let currentPage = 1;
 		
 		//마지막 페이지는 totalPageCount 이다.
 		let lastPage = <%=totalPageCount %>;
 		
-		if(<%=totalRow %> <= 10){
+		if(<%=totalRow %> <= 5){
 			document.querySelector("#view_more").style.display = "none";
 		}
 		

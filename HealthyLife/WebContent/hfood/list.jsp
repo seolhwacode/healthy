@@ -97,6 +97,9 @@
 <meta charset="UTF-8">
 <title>/h_food/list.jsp</title>
 <jsp:include page="/include/resource.jsp"></jsp:include>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 <style>
 	#thead{
 		background:white;
@@ -107,6 +110,7 @@
 	.container {
 		text-align: center;
 		width:75%;
+		font-family: 'Noto Sans KR', sans-serif;
 	}
 	
 	#insert {
