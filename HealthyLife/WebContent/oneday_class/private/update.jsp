@@ -28,15 +28,34 @@ boolean isSuccess = BookingDao.getInstance().update(dto);
 <title>update.jsp</title>
 </head>
 <body>
-<%if(isSuccess){ %>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <%if(isSuccess){%>
       <script>
-         alert("수정 완료!");
-         location.href="detail.jsp?num=<%=dto.getNum()%>";
+      swal({
+		  	title: "수정 완료!",
+		  	text: "예약 정보가 수정되었습니다.",
+		  	icon: "success",
+		  	buttons: true,
+		})
+		.then(function(willUpdate){
+		  	if (willUpdate) {
+		    	location.href = "${pageContext.request.contextPath}/oneday_class/private/detail.jsp?num=<%=num%>";
+		  	}
+		});
       </script>
-   <%}else{ %>
-  	 <script>
-         alert("수정 실패!");
-         location.href="detail.jsp?num=<%=dto.getNum()%>";
+   <%}else{%>
+      <script>
+      swal({
+		  	title: "수정 실패!",
+		  	text: "예약 정보 수정에 실패했습니다.",
+		  	icon: "warning",
+		  	buttons: true,
+		})
+		.then(function(willUpdate){
+		  	if (willUpdate) {
+		    	location.href = "${pageContext.request.contextPath}/oneday_class/private/detail.jsp?num=<%=num%>";
+		  	}
+		});
       </script>
    <%} %>
 </body>

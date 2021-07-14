@@ -60,6 +60,9 @@ if(id != null){
 	int totalRow = BookingCommentDao.getInstance().getCount(num);
 	//댓글 전체 페이지의 개수
 	int totalPageCount = (int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
+	
+	//navbar 에 전달할 현재 주소
+	String url = request.getRequestURI() + "?" + request.getQueryString();
 %>
 <!DOCTYPE html>
 <html>
@@ -159,7 +162,10 @@ if(id != null){
 		text-align: center;
 	}
 </style>
-<jsp:include page="/include/resource.jsp"></jsp:include>
+<jsp:include page="/include/resource.jsp">
+		<jsp:param value="oneday_class" name="thisPage"/>
+		<jsp:param value="<%=url %>" name="url"/>
+</jsp:include>
 </head>
 <body>
 <div class="container">
@@ -214,19 +220,20 @@ if(id != null){
 					<input type="hidden" class="form-control" name="num" id="num" value="<%= dto.getNum() %>">
 						<div class="mb-3">
 							<label for="name" class="col-form-label">이름</label> 
-							<input type="text" class="form-control" name="name" id="name">
+							<input type="hidden" class="form-control" name="name" id="name" value="<%= dto.getName()%>">
+							<input type="text" class="form-control" name="name1" id="name1" value="<%= dto.getName()%>" disabled>
 						</div>
 						<div class="mb-3">
 							<label for="phone" class="col-form-label">번호</label> 
-							<input type="text" class="form-control" name="phone" id="phone" placeholder="010-1234-5678">
+							<input type="text" class="form-control" name="phone" id="phone" value="<%= dto.getPhone() %>" placeholder="010-1234-5678">
 						</div>
 						<div class="mb-3">
 							<label for="date" class="col-form-label">신청 날짜</label> 
-							<input type="date" class="form-control" name="date" id="date" />
+							<input type="date" class="form-control" name="date" id="date" value="<%= dto.getClassDate() %>" />
 						</div>
 						<div class="mb-3">
 							<label for="mention" class="col-form-label">기타</label> 
-							<input type="text" class="form-control" name="mention" id="mention" />
+							<input type="text" class="form-control" name="mention" id="mention" <%=dto.getMention() %> />
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
@@ -310,6 +317,7 @@ if(id != null){
                   <input type="hidden" name="num" value="<%=tmp.getNum() %>" />
                   <textarea name="content" type="text" class="form-control" placeholder="댓글을 입력하세요..." aria-label="Recipient's username" aria-describedby="button-addon2"><%=tmp.getContent() %></textarea>
                   <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정</button>
+               </div>
                </form>
                <%} %>                  
             </li>
@@ -333,10 +341,18 @@ if(id != null){
    </form>
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script>
 
-	//클라이언트가 로그인 했는지 여부
-	let isLogin=<%=isLogin%>;
+	  //클라이언트가 로그인 했는지 여부
+	  let isLogin=<%=isLogin%>;
+	
+	  addUpdateFormListener(".update-form");
+	  addUpdateListener(".update-link");
+	  addDeleteListener(".delete-link");
+	  addReplyListener(".reply-link");
+	  addReplyFormListener(".re-insert-form");
 	
 	  document.querySelector(".insert-form")
       .addEventListener("submit", function(e){
@@ -348,13 +364,16 @@ if(id != null){
             location.href=
                "${pageContext.request.contextPath}/users/loginform.jsp?url=${pageContext.request.contextPath}/cafe/detail.jsp?num=<%=num%>";
          }
+         //댓글 내용 비었는지 검사하기
+         const inputText = this.querySelector("textarea").value;
+         if(inputText==""){
+         	e.preventDefault();
+         	swal("댓글 작성 실패!", "내용을 입력해주세요", "warning");
+         }
       });
    
 
-	  addUpdateFormListener(".update-form");
-	  addUpdateListener(".update-link");
-	  addDeleteListener(".delete-link");
-	  addReplyListener(".reply-link");
+
 	  
 	  //댓글의 현재 페이지 번호를 관리할 변수를 만들고 초기값 1 대입하기
 	   let currentPage=1;
@@ -362,8 +381,8 @@ if(id != null){
 	   let lastPage=<%=totalPageCount%>;
 	   
 	  
-	   //댓글의 수가 10개보다 적으면 버튼 감추기
-	   if(<%=totalRow%> < 5){
+	   //댓글의 수가 5개보다 적으면 버튼 감추기
+	   if(<%=totalRow%><6){
 		   document.querySelector(".loader").style.display="none";
 	   } 
 	   
@@ -417,12 +436,22 @@ if(id != null){
 	const deleteBtn = document.querySelector("#deleteBtn")
 
 	function goDelete(){
-		let isConfirm = confirm("정말 삭제하시겠습니까?");
-		if(isConfirm){
-		location.href="delete.jsp?num=<%=dto.getNum()%>";
-		}
+		swal({
+		  	title: "글을 삭제하시겠습니까?",
+		  	text: "글을 삭제하면 예약도 취소됩니다.",
+		  	icon: "warning",
+		  	buttons: true,
+		  	dangerMode: true
+		})
+		.then(function(willDelete){
+		  	if (willDelete) {
+		    	location.href = "${pageContext.request.contextPath}/oneday_class/private/delete.jsp?num=<%=num %>";
+		  	}
+		});
 	}
 	
+	// location.href="delete.jsp?num=<%=dto.getNum()%>"
+			
 	deleteBtn.addEventListener("click", goDelete);
 	
 	//대댓글 추가 리스너
@@ -460,6 +489,23 @@ if(id != null){
          });
       }
    }
+	
+	//대댓글 폼 리스너
+	function addReplyFormListener(sel){
+		//댓글 수정 폼의 참조값을 배열에 담아오기
+		let replyForms = document.querySelectorAll(sel);
+		for(let i=0; i<replyForms.length; i++){
+			replyForms[i].addEventListener("submit", function(e){
+				const replyText = this.querySelector("textarea").value;
+				if(replyText==""){
+					e.preventDefault();
+	            	swal("댓글 작성 실패!", "내용을 입력해주세요", "warning");
+	            	return;
+				}
+			});
+		}
+	}
+	
 	// 댓글 수정 리스너
 	  function addUpdateFormListener(sel){
       //댓글 수정 폼의 참조값을 배열에 담아오기
@@ -469,6 +515,14 @@ if(id != null){
          updateForms[i].addEventListener("submit", function(e){
             //submit 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기 
             const form=this;
+            
+            const inputText = this.querySelector("textarea").value;
+            if(inputText==""){
+            	e.preventDefault();
+            	swal("댓글 작성 실패!", "내용을 입력해주세요", "warning");
+            	return;
+            }
+            
             //폼 제출을 막은 다음 
             e.preventDefault();
             //이벤트가 일어난 폼을 ajax 전송하도록 한다.
@@ -539,7 +593,6 @@ if(id != null){
 	      }
 	   }
 	
-
 </script>
 </body>
 </html>

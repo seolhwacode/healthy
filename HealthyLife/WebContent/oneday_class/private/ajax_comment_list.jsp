@@ -81,23 +81,27 @@
             <pre id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></pre>                  
          </dd>
       </dl>   
-      <form id="reForm<%=tmp.getNum() %>" class="animate__animated comment-form re-insert-form" 
-         action="private/comment_insert.jsp" method="post">
+      <form id="reForm<%=tmp.getNum() %>" class="comment-form re-insert-form" 
+         action="comment_insert.jsp" method="post">
+          <div class="input-group mb-3">
          <input type="hidden" name="ref_group"
             value="<%=num%>"/>
          <input type="hidden" name="target_id"
             value="<%=tmp.getWriter()%>"/>
          <input type="hidden" name="comment_group"
             value="<%=tmp.getComment_group()%>"/>
-         <textarea name="content"></textarea>
-         <button type="submit">등록</button>
+  		<textarea name="content" type="text" class="form-control" placeholder="댓글을 입력하세요..." aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
+ 		<button class="btn btn-outline-secondary" type="submit" id="button-addon2">등록</button>	
+      </div>
       </form>   
       <%if(tmp.getWriter().equals(id)){ %>   
       <form id="updateForm<%=tmp.getNum() %>" class="comment-form update-form" 
-         action="private/comment_update.jsp" method="post">
+         action="comment_update.jsp" method="post">
+         <div class="input-group mb-3">
          <input type="hidden" name="num" value="<%=tmp.getNum() %>" />
-         <textarea name="content"><%=tmp.getContent() %></textarea>
-         <button type="submit">수정</button>
+         <textarea name="content" type="text" class="form-control" placeholder="댓글을 입력하세요..." aria-label="Recipient's username" aria-describedby="button-addon2"><%=tmp.getContent() %></textarea>
+         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정</button>
+      </div>
       </form>
       <%} %>                  
    </li>
