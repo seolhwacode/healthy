@@ -320,14 +320,14 @@
                   <input type="hidden" name="comment_group"
                      value="<%=tmp.getComment_group()%>"/>
                   <textarea name="content"></textarea>
-                  <button type="submit">등록</button>
+                  <button class="btn btn-outline-primary" type="submit">등록</button>
                </form>   
                <%if(tmp.getWriter().equals(id)){ %>   
                <form id="updateForm<%=tmp.getNum() %>" class="comment-form update-form" 
                   action="private/comment_update.jsp" method="post">
                   <input type="hidden" name="num" value="<%=tmp.getNum() %>" />
                   <textarea name="content"><%=tmp.getContent() %></textarea>
-                  <button type="submit">수정</button>
+                  <button type="submit" class="btn btn-outline-primary">수정</button>
                </form>
                <%} %>                  
             </li>
