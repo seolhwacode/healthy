@@ -80,7 +80,7 @@
 	    </div>
     	<div style="text-align:center;">
 	      	<button class="btn btn-primary me-md-3" type="submit" onclick="submitContents(this)">수정하기</button>
-	      	<button class="btn btn-primary me-md-3" type="reset">취소하기</button>
+	      	<button class="btn btn-primary me-md-3" type="reset" onclick="resetContents(this)">취소하기</button>
       	</div> 
    </form>
 </div>
@@ -130,6 +130,15 @@
          elClickedObj.form.submit();
       } catch(e) {}
    }
+   
+   function resetContents() { //취소버튼을 누르면 content창이 reset 됩니다. 
+	   
+	   oEditors.getById["content"].exec("SET_IR",['']);
+
+	      
+	   }
+   
+   
    
    function setDefaultFont() {
       var sDefaultFont = '궁서';
