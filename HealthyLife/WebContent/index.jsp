@@ -72,7 +72,7 @@
 		height: 300px;
 		width: 200px;
 		border-radius: 7%;
-		background-color: rgba(255, 201, 71, 0.8);
+		background-color: #f8f9fa;
 		box-shadow: 10px 10px 10px 0 #AAAAAA;
 	}
 	
