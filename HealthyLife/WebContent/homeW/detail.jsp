@@ -184,18 +184,14 @@
    .loader{
    		/*로딩 이미지를 가운데 정렬하기 위해*/
    		text-align: center;
-   		margin-top:120px;
-   		
-   		position:relative; right:80px;
-   		
-   		
-   		
+   		/*margin-top:120px;*/
+   		clear:both;
+   		position:relative; right:80px;	
    }
-   
-   .loader svg{
-   		animation: rotateAni 1s ease-out infinite;
-   }
-   
+   #moreBtn{
+    	 background-color:#464646;
+    	 color:white;
+    }
    @keyframes rotateAni{
    		0%{
    			transform: rotate(0deg);
@@ -240,10 +236,6 @@
     }
     #shareBtn{
     	color:black;
-    }
-    #moreBtn{
-    	 background-color:#464646;
-    	 color:white;
     }
 </style>
 </head>
