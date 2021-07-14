@@ -21,6 +21,11 @@
 <meta charset="UTF-8">
 <title>/users/private/profile_update_form.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&family=Jua&display=swap" rel="stylesheet">
+
+
 <style>
    	/* 프로필 이미지를 작은 원형으로 만든다 */
    	#profileImage{
@@ -37,7 +42,8 @@
    	}
 	.container{
    		width: 500px;
-		margin-top: 100px;
+		margin-top: 150px;
+		
    	}
    	#image{
    		display: none;
@@ -61,10 +67,14 @@
    	}
    	
    	#profile_update{
-		border : thick double lightgray;
-		padding: 30px;
-
-   	}
+		border: thick double #2252e3;
+    	padding: 30px;
+    }
+    
+    .ps-4 {
+    	font-family: 'Jua', sans-serif;
+    	font-size: 45px;
+    }
    	.row{
    		padding: 0 12px;
    	}
@@ -77,6 +87,7 @@
 </style>
 </head>
 <body>
+<jsp:include page="../../include/navbar.jsp"></jsp:include>
 	<div class="container">
 		<div id="profile_update" class="rounded">
 		<h1 class="ps-4" >프로필 사진 수정</h1>

@@ -19,6 +19,11 @@
 <meta charset="UTF-8">
 <title>/users/private/info.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&family=Jua&display=swap" rel="stylesheet">
+
+
 <style>
 	/* 프로필 이미지를 작은 원형으로 만든다 */
    #profileImage{
@@ -29,28 +34,32 @@
    }
    .container{
    		width: 500px;
-   		margin-top: 100px;
+   		margin-top: 150px;
    }
    .data{
-   		margin: auto 0px;
+   		margin:0px;
+   		padding: 50px 0px 0px 40px;
    }
-   .row{
-   		padding: 0 12px;
+   
+   .ps-4 {
+	   	font-family: 'Jua', sans-serif;
+    	font-size: 45px;
    }
    
    	#profile_update{
-		border : thick double lightgray;
-		padding: 30px;
-		text-align: -webkit-center;
+		border: thick double #2252e3;
+    	padding: 30px;
+		text-align: center;
    	}
 </style>
 </head>
 <body>
+<jsp:include page="../../include/navbar.jsp"></jsp:include>
 	<div id="profile_update" class="container">
-		<h1 class="ps-4">가입 정보입니다.</h1>
+		<h1 class="ps-4">가입 정보</h1>
 
 		<!-- 가입 정보 출력 -->
-		<div class="row mt-5">
+		<div class="row mt-6">
 			<div class="col-4 text-center">
 			<%-- null 이면 기본 이미지 보여주기 --%>
 			<%if(resultDto.getProfile() == null){ %>
