@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>/users/signup_form.jsp</title>
 <jsp:include page="../include/resource.jsp"></jsp:include>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 	h1{
 		text-align: center;
@@ -233,7 +234,11 @@
 				//폼 전송 막기
 				e.preventDefault();
 				//다시 입력해달라는 alert 띄우기
-				alert("다시 입력해주세요.");
+				//alert("다시 입력해주세요.");
+				swal({
+		    	  	title: "다시 입력해주세요.",
+		    	  	icon: "warning"
+		    	});
 			}
 		});
 		

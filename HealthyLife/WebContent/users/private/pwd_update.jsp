@@ -34,18 +34,45 @@
 <head>
 <meta charset="UTF-8">
 <title>/users/private/pwd_update.jsp</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 	<%if(isValid){ %>
-		<p>
+		<%-- <p>
 			<strong><%=id %></strong> 님, 성공적으로 비밀번호를 변경하였습니다.
 			<a href="${pageContext.request.contextPath}/users/login_form.jsp">로그인 하러 가기</a>
-		</p>
+		</p> --%>
+		<script>
+			swal({
+	    	  	title: "성공적으로 비밀번호를 변경하였습니다.",
+	    	  	text: "로그인 페이지로 이동하시겠습니까?",
+	    	  	icon: "success",
+	    	  	buttons: true
+	    	})
+	    	.then(function(goLogin){
+	    		if(goLogin){
+	    			//ok -> 로그인 페이지로
+		    		location.href = "${pageContext.request.contextPath}/users/login_form.jsp";
+	    		}else{
+	    			//취소 -> index 페이지로 이동
+	    			location.href = "${pageContext.request.contextPath}/index.jsp";
+	    		}
+	    	});
+		</script>
 	<%}else{ %>
-		<p>
+		<%-- <p>
 			가용하지 않은 비밀번호 입니다.
 			<a href="${pageContext.request.contextPath}/users/private/pwd_update_form.jsp">다시 시도</a>
-		</p>
+		</p> --%>
+		<script>
+			swal({
+	    	  	title: "가용하지 않은 비밀번호 입니다.",
+	    	  	icon: "warning"
+	    	})
+	    	.then(function(){
+	    		location.href = "${pageContext.request.contextPath}/users/private/pwd_update_form.jsp";
+	    	});
+		</script>
 	<%} %>
 </body>
 </html>
