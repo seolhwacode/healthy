@@ -90,6 +90,8 @@ if(endPageNum > totalPageCount){
    endPageNum=totalPageCount; //보정해 준다.
 }
 
+//navbar 에 전달할 현재 주소
+String url = request.getRequestURI() + "?" + request.getQueryString();
 %>
 <!DOCTYPE html>
 <html>
@@ -156,7 +158,10 @@ if(endPageNum > totalPageCount){
 </style>
 </head>
 <body>
-<jsp:include page="/include/navbar.jsp"></jsp:include>
+<jsp:include page="/include/navbar.jsp">
+	<jsp:param value="oneday_class" name="thisPage"/>
+	<jsp:param value="<%=url %>" name="url"/>
+</jsp:include>
 <div class="container">
 	<h1>예약 목록</h1>
 	<table class="table">
@@ -246,7 +251,7 @@ if(endPageNum > totalPageCount){
          <strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
       </p>
    	<%} %>
-      
+</div>
 </div>
 </body>
 </html>
