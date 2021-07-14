@@ -24,12 +24,15 @@
 		text-align: center;
 	}
 	.form-container{
-		width: 400px;
+		border: thick double #2252e3;
+		padding: 50px;
+		width: 450px;
 		margin: 100px auto;
 	}
 </style>
 </head>
 <body>
+<jsp:include page="../../include/navbar.jsp"></jsp:include>
 	<div class="container">
 		
 		<div class="form-container">
@@ -59,8 +62,8 @@
 					<div class="valid-feedback" id="pwd2-valid-feedback">ok</div>
 				</div>
 				<div class="mt-3 text-center">
-					<button class="btn btn-primary" type="submit">변경</button>
-					<button class="btn btn-danger" type="reset">리셋</button>
+					<button class="btn btn-light" type="submit">변경</button>
+					<button class="btn btn-outline-danger" type="reset">리셋</button>
 				</div>
 			</form>
 		</div>
