@@ -113,10 +113,10 @@ if(endPageNum > totalPageCount){
 	
 	.pagination a {
 	  color: black;
-	  float: left;
+	  float: left !important;
 	  padding: 5px 13px;
 	  text-decoration: none;
-	  margin:10px -3px 10px -3px;
+	  margin:20px -3px 20px -3px;
 	  line-height:23px;
 	  vertical-align:middle;
 	  font-size:16px;
@@ -217,24 +217,24 @@ if(endPageNum > totalPageCount){
 				</a>
             </a>
          <%} %>
-        
+      </div>
      <div style="clear:both;"></div>
      
    <div class="input-group mb-3">
    	<form class="input-group-text" id="search" action="bookingList.jsp" method="get"> 
-      <select name="condition" id="condition">
-         <option value="className" <%=condition.equals("className") ? "selected" : ""%>>클래스명</option>
-         <option value="name" <%=condition.equals("name") ? "selected" : ""%>>예약자</option>
-         <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
-      </select>
-     <div class="input-group-text">
-	   <input class= "border border-secondary" type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" value="<%=keyword%>"/>
-	   	<button type="submit" style="background-color: #2252e3; color:white;" class="input-group-text" id="inputGroupPrepend2">
-	   		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-	  			<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-			</svg>
-		</button>
-	</div>
+	      <select name="condition" id="condition">
+	         <option value="className" <%=condition.equals("className") ? "selected" : ""%>>클래스명</option>
+	         <option value="name" <%=condition.equals("name") ? "selected" : ""%>>예약자</option>
+	         <option value="writer" <%=condition.equals("writer") ? "selected" : ""%>>작성자</option>
+	      </select>
+     	<div class="input-group-text">
+		   <input class= "border border-secondary" type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" value="<%=keyword%>"/>
+		   	<button type="submit" style="background-color: #2252e3; color:white;" class="input-group-text" id="inputGroupPrepend2">
+		   		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+		  			<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+				</svg>
+			</button>
+		</div>
    	</form>
    	</div>
    	
@@ -246,7 +246,6 @@ if(endPageNum > totalPageCount){
          <strong><%=totalRow %></strong> 개의 글이 검색 되었습니다.
       </p>
    	<%} %>
-      
 </div>
 </body>
 </html>
