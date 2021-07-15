@@ -332,6 +332,7 @@
 	/* 오른쪽 margin 추가*/
 	.comment_profile_wrapper{
 		margin-right: 6px;
+		border-radius: 50%;
 	}
 	/* 댓글의 날짜, 댓글 달기 -> 작고 회색 글씨로 만들기 */
 	.commet_function{
@@ -396,6 +397,7 @@
 	.commet_profile-image{
 		width: 35px;
 		height: 35px;
+		border-radius: 50%;
 	}
 	/*댓글에 댓글을 다는 form 은 처음에는 숨겨져있다.*/
 	.comment_form_wrapper.reply{
