@@ -16,8 +16,7 @@ dto.setNum(num);
 dto= BookingDao.getInstance().getData(dto);
 
 String writer = (String)session.getAttribute("id");
-if(!writer.equals(dto.getWriter())){
-	
+if(!writer.equals("admin") && !writer.equals(dto.getWriter())){
 	response.sendRedirect("error.jsp");//errorpage로 이동
 	return;
 }
@@ -84,7 +83,7 @@ if(id != null){
 	
 	/*게시글을 담는 div*/
 	.content{
-		border: 2px solid #B2B1B9;
+		border: 2px solid #125D98;
 		margin: 40px auto 20px;
 		align: center;
 		width: 900px;
@@ -93,7 +92,7 @@ if(id != null){
     
     /*예약 클래스명을 담는 div*/
     .title-block{
-    	background-color: #B2B1B9;
+    	background-color: #125D98;
     	height: 150px;
     	width: 900px;
     }
@@ -108,11 +107,11 @@ if(id != null){
     
       /*예약 목록 가는 링크*/
     .title-block > a{
-    	color: #DDDDDD;
+    	color: white;
     }
 	
 	 .title-block > a:hover{
-    	color: black;
+    	color: #04009A;
     }
 	
 	/*댓글 프로필 이미지를 작은 원형으로 만든다.*/
@@ -177,7 +176,7 @@ if(id != null){
 	
 	/*예약 상세 내용 담는 div*/
 	.detail-info{
-		margin-bottom: 40px;
+		margin: 10px 0 40px 0;
 	}
 	
 	/*예약 상세 내용 글*/
@@ -188,14 +187,14 @@ if(id != null){
 	/*예약 상세 내용 中 이름, 연락처, 클래스 날짜*/
 	.detail-info .info-name{
 		position: relative;
+		width: 120px;
 		left: 10px;
+		color: #04009A;
 	}
 	
 	/*예약 상세 내용 정보*/
 	.detail-info .customer-info{
 		color: black;
-		position: relative;
-		left: 80px;
 	}
 	
 	/*경계선*/
@@ -212,13 +211,14 @@ if(id != null){
 	
 	/*멘션 내용 담는 div*/
 	.detail-mention{
+		margin-top: 20px;
 		height: 200px;
 	}
 	
 	/*멘션 내용*/
 	.detail-mention > p{
 		position: relative;
-		left: 10px;
+		left: 20px;
 	}
 	
 	
@@ -270,8 +270,7 @@ if(id != null){
 	<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
 		data-bs-target="#exampleModal" data-bs-whatever="@mdo">수정</button>
 	<button type="button" id="deleteBtn" class="btn btn-sm btn-outline-dark">삭제</button>
-	</div>
-	
+	</div>	
 	
 		<!-- 수정 modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1"
