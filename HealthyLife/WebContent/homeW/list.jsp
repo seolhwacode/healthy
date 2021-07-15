@@ -92,6 +92,8 @@
       endPageNum=totalPageCount; //보정해 준다.
    }
    
+	//navbar 에 전달할 현재 주소
+ 	String url = request.getRequestURI() + "?" + request.getQueryString();
 %>   
 <!DOCTYPE html>
 <html>
@@ -204,7 +206,10 @@
 </style>
 </head>
 <body>
-<jsp:include page="../include/navbar.jsp"></jsp:include>
+<jsp:include page="../include/navbar.jsp">
+	<jsp:param value="homeW" name="thisPage"/>
+	<jsp:param value="<%=url %>" name="url"/>
+</jsp:include>
 <div class="container">
 	<button class="btn btn-secondary" style="float:right" type="submit">
 		<a id="saveId" href="${pageContext.request.contextPath}/homeW/private/insert_form.jsp">작성하기</a>

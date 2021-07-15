@@ -82,6 +82,9 @@
 	    int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
 	    
 	    //글정보를 응답한다.
+	    
+	    //navbar 에 전달할 현재 주소
+		String url = request.getRequestURI() + "?" + request.getQueryString();
 %>
 <!DOCTYPE html>
 <html>
@@ -242,7 +245,10 @@
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
-<jsp:include page="/include/navbar.jsp"></jsp:include>
+<jsp:include page="/include/navbar.jsp">
+	<jsp:param value="hfood" name="thisPage"/>
+	<jsp:param value="<%=url %>" name="url"/>
+</jsp:include>
 <div id="font" class="container">
 	  <div class="row" >
 	    <div class="col-sm"><a href="list.jsp" ><strong>건강레시피</strong></a></div>

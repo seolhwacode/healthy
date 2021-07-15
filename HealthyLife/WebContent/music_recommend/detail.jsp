@@ -101,6 +101,9 @@
    //댓글 전체 페이지의 갯수
    int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
    //글정보를 응답한다.
+   
+   	//navbar 에 전달할 현재 주소
+	String url = request.getRequestURI() + "?" + request.getQueryString();
 %>
 <!DOCTYPE html>
 <html>
@@ -186,7 +189,10 @@
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
-<jsp:include page="/include/navbar.jsp"></jsp:include>
+<jsp:include page="/include/navbar.jsp">
+	<jsp:param value="music_recommend" name="thisPage"/>
+	<jsp:param value="<%=url %>" name="url"/>
+</jsp:include>
 <div class="container">
    <% if(!keyword.equals("")){ %>
       <p>   
