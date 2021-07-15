@@ -242,7 +242,10 @@
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
-<jsp:include page="/include/navbar.jsp"></jsp:include>
+<jsp:include page="/include/navbar.jsp">
+<jsp:param value="hfood" name="thisPage"/>
+</jsp:include>
+
 <div id="font" class="container">
 	  <div class="row" >
 	    <div class="col-sm"><a href="list.jsp" ><strong>건강레시피</strong></a></div>
@@ -299,8 +302,6 @@
                      <span style="color:#2252e3;">@<i><%=tmp.getTarget_id() %></i></span>
                   <%} %>
                   		 <span id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></span>  
-                     
-                     
                   </dd>
                   <dd>
                      <span style="margin-left:30px; font-size:13.5px;"><%=tmp.getRegdate() %></span>
@@ -382,6 +383,7 @@ p 번호가 된다. -->
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <script>
    
+
 	//클라이언트가 로그인 했는지 여부
    let isLogin=<%=isLogin%>;
    
@@ -395,7 +397,11 @@ p 번호가 된다. -->
             location.href=
                "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/hfood/detail.jsp?num=<%=num%>";
          }
+         
+			
       });
+   
+  
    
    /*
       detail.jsp 페이지 로딩 시점에 만들어진 1 페이지에 해당하는 
