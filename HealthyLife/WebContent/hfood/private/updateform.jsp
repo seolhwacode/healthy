@@ -54,6 +54,10 @@
 </style>
 </head>
 <body>
+<jsp:include page="../../include/navbar.jsp">
+<jsp:param value="hfood" name="thisPage"/>
+</jsp:include>
+
 <div class="container rounded-3">
 	<form action="update.jsp" method="post">
 	<p>

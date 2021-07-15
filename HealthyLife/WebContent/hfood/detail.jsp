@@ -82,9 +82,9 @@
 	    int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
 	    
 	    //글정보를 응답한다.
-	    
+      
 	    //navbar 에 전달할 현재 주소
-		String url = request.getRequestURI() + "?" + request.getQueryString();
+	    String url = request.getRequestURI() + "?" + request.getQueryString();
 %>
 <!DOCTYPE html>
 <html>
@@ -249,6 +249,7 @@
 	<jsp:param value="hfood" name="thisPage"/>
 	<jsp:param value="<%=url %>" name="url"/>
 </jsp:include>
+
 <div id="font" class="container">
 	  <div class="row" >
 	    <div class="col-sm"><a href="list.jsp" ><strong>건강레시피</strong></a></div>
@@ -305,8 +306,6 @@
                      <span style="color:#2252e3;">@<i><%=tmp.getTarget_id() %></i></span>
                   <%} %>
                   		 <span id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></span>  
-                     
-                     
                   </dd>
                   <dd>
                      <span style="margin-left:30px; font-size:13.5px;"><%=tmp.getRegdate() %></span>
@@ -326,14 +325,14 @@
                   <input type="hidden" name="comment_group"
                      value="<%=tmp.getComment_group()%>"/>
                   <textarea name="content"></textarea>
-                  <button type="submit">등록</button>
+                  <button class="btn btn-outline-primary" type="submit">등록</button>
                </form>   
                <%if(tmp.getWriter().equals(id)){ %>   
                <form id="updateForm<%=tmp.getNum() %>" class="comment-form update-form" 
                   action="private/comment_update.jsp" method="post">
                   <input type="hidden" name="num" value="<%=tmp.getNum() %>" />
                   <textarea name="content"><%=tmp.getContent() %></textarea>
-                  <button type="submit">수정</button>
+                  <button type="submit" class="btn btn-outline-primary">수정</button>
                </form>
                <%} %>                  
             </li>
@@ -388,6 +387,7 @@ p 번호가 된다. -->
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <script>
    
+
 	//클라이언트가 로그인 했는지 여부
    let isLogin=<%=isLogin%>;
    
@@ -401,7 +401,11 @@ p 번호가 된다. -->
             location.href=
                "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/hfood/detail.jsp?num=<%=num%>";
          }
+         
+			
       });
+   
+  
    
    /*
       detail.jsp 페이지 로딩 시점에 만들어진 1 페이지에 해당하는 
