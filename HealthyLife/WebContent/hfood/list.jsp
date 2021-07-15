@@ -90,6 +90,8 @@
 	   	if(endPageNum > totalPageCount){
 	      endPageNum=totalPageCount; //보정해 준다.
 	   }
+	   //navbar 에 전달할 현재 주소
+	   String url = request.getRequestURI() + "?" + request.getQueryString();
 %>
 <!DOCTYPE html>
 <html>
@@ -179,7 +181,8 @@
 </head>
 <body>
 <jsp:include page="/include/navbar.jsp">
-<jsp:param value="hfood" name="thisPage"/>
+	<jsp:param value="hfood" name="thisPage"/>
+	<jsp:param value="<%=url %>" name="url"/>
 </jsp:include>
 
 <div class="container">
