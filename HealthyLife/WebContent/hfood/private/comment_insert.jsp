@@ -27,6 +27,37 @@
 	
 	boolean isSuccess = Hfood_comment_dao.getInstance().insert(dto);
 	
-	String cPath=request.getContextPath();
-	response.sendRedirect(cPath+"/hfood/detail.jsp?num="+ref_group);
+	//String cPath=request.getContextPath();
+	//response.sendRedirect(cPath+"/hfood/detail.jsp?num="+ref_group);
 %>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<%if(isSuccess){ %>
+	<script>
+		location.href = "${pageContext.request.contextPath}/hfood/detail.jsp?num="+<%=ref_group%>;
+	</script>
+<%}else{ %>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+    swal({
+        title: "댓글창 확인해주세요!",
+        icon: "warning"
+	  })
+	  .then(function(){
+    location.href = "${pageContext.request.contextPath}/hfood/detail.jsp?num="+<%=ref_group%>;
+	  });
+    </script>
+<%} %>
+
+</body>
+</html>
+
+
