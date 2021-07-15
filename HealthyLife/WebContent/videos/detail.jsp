@@ -751,6 +751,39 @@
 			}
 		});
 		
+		//게시글에 댓글 다는 form 취소 버튼 조절
+		document.querySelector(".insert_form").addEventListener("reset", function(e){
+			//폼 reset 막기
+			e.preventDefault();
+			
+			//로그인 안한 경우 -> 아무 동작 안해야한다.
+			if(!isLogin){
+				return;
+			}
+			
+			//댓글 입력한 내용 가져오기
+			const inputText = this.querySelector("textarea").value;
+			//현재 form 의 textarea 가져오기
+			const textarea = this.querySelector("textarea");
+			
+			//alert 띄우기
+			swal({
+			  	title: "작성 중인 내용을 삭제하시겠습니까?",
+			  	text: "복구할 수 없습니다.",
+			  	icon: "warning",
+			  	buttons: true,
+			  	dangerMode: true
+			})
+			.then(function(isDelete){
+				//삭제
+				if(isDelete){
+					//textarea 의 내용을 지운다.
+					textarea.value = "";
+				}
+			});
+			
+		});
+		
 //댓글의 페이지네이션
 		//댓글의 현재 페이지 번호를 관리할 변수를 만들고, 초기값 1 대입하기
 		let currentPage = 1;
