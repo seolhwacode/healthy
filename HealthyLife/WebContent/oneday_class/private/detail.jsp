@@ -82,13 +82,38 @@ if(id != null){
 		left: 20px;
 	}
 	
+	/*게시글을 담는 div*/
 	.content{
-		border: 3px solid #C6E2FF;
-		margin: 0 auto;
+		border: 2px solid #B2B1B9;
+		margin: 40px auto 20px;
 		align: center;
-		width: 800px;
-		height: 600px;
+		width: 900px;
 	}
+	
+    
+    /*예약 클래스명을 담는 div*/
+    .title-block{
+    	background-color: #B2B1B9;
+    	height: 150px;
+    	width: 900px;
+    }
+    
+    /*클래스명*/
+    .title-block > h2, h4{
+    	position: relative;
+    	top: 10px;
+    	color: white;
+    	text-align: center;
+    }
+    
+      /*예약 목록 가는 링크*/
+    .title-block > a{
+    	color: #DDDDDD;
+    }
+	
+	 .title-block > a:hover{
+    	color: black;
+    }
 	
 	/*댓글 프로필 이미지를 작은 원형으로 만든다.*/
 	.profile-image{
@@ -100,8 +125,8 @@ if(id != null){
 	
 	/*댓글 폼 크기 수정*/
 	.comment-form textarea{
-		width: 84%;
-		height: 100px;
+		width: 60%;
+		height: 60%;
 	}
 	
 	.comments {
@@ -131,10 +156,13 @@ if(id != null){
 		text-align: center;
 	}
 	
+	/*기본 정보를 출력하는 div 안의 글자들*/
 	.profile > p{
 		position: relative;
-		left: 20px;
-		margin-bottom: 5px;
+		display: inline-block;
+		color: gray;
+		left: 600px;
+		margin: 5px 0px;
 	}
 	
 	.mention-block{
@@ -146,20 +174,63 @@ if(id != null){
 		width: 400px;
 		margin: 5px; 5px; 
 	}
-	.buttons{
-		position: relative;
-		top: -5px;
-		left: 650px;
+	
+	/*예약 상세 내용 담는 div*/
+	.detail-info{
+		margin-bottom: 40px;
 	}
 	
-	.table{
-		margin-top: 20px;
+	/*예약 상세 내용 글*/
+	.detail-info > p{
+		display: inline-block;
 	}
-
-	#mention-block {
+	
+	/*예약 상세 내용 中 이름, 연락처, 클래스 날짜*/
+	.detail-info .info-name{
 		position: relative;
-		top: 20px;
-		text-align: center;
+		left: 10px;
+	}
+	
+	/*예약 상세 내용 정보*/
+	.detail-info .customer-info{
+		color: black;
+		position: relative;
+		left: 80px;
+	}
+	
+	/*경계선*/
+	.detail-border{
+		border-bottom: 1px solid #CDD0CB;
+	}
+	
+	/*경계선 위 카테고리 명*/
+	.detail-border .detail-content{
+		position: relative;
+		left: 10px;
+		color: #687980;
+	}
+	
+	/*멘션 내용 담는 div*/
+	.detail-mention{
+		height: 200px;
+	}
+	
+	/*멘션 내용*/
+	.detail-mention > p{
+		position: relative;
+		left: 10px;
+	}
+	
+	
+	/*우측 상단에 있는 수정,삭제 버튼 */
+	.buttons{
+		position: relative;
+		left: 790px;
+	}
+	
+	.comment-border{
+		margin-top: 20px;
+		border-bottom: 2px dotted #CDD0CB;
 	}
 </style>
 <jsp:include page="/include/resource.jsp">
@@ -171,41 +242,38 @@ if(id != null){
 <div class="container">
 	<jsp:include page="/include/navbar.jsp"></jsp:include>
 	<div class="content">
+	<div class="title-block">
 	<a id="back_list" href="bookingList.jsp">예약 목록 ></a>
-	<div class="buttons">
-	<button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
-		data-bs-target="#exampleModal" data-bs-whatever="@mdo">수정</button>
-	<button type="button" id="deleteBtn" class="btn btn-outline-danger">삭제</button>
+	<h4>your reservation is confirmed</h4>
+	<h2><%=dto.getClassName() %></h2>
 	</div>
-	<h1 id="className">🧘‍♂️예약 내역🏄‍♀️</h1>
 	<div class="profile">
-		<p id="num">글 번호 | <%=dto.getNum() %></p>
-		<p id="id">작성자 | <%=dto.getWriter() %></p>
-		<p id="viewCount">조회수 | <%=dto.getViewCount() %></p>
+		<p id="num">No. <%=dto.getNum() %></p>
+		<p id="id">| 작성자: <%=dto.getWriter() %></p>
+		<p id="viewCount">| 조회수 : <%=dto.getViewCount() %></p>
 	</div>
-	<table class="table table-light">
-		<tbody>
-			<tr>
-				<th>📌</th>
-				<td colspan="5"><%=dto.getClassName() %></td>
-			</tr>
-			<tr>
-				<th>👨‍🦲</th>
-				<td colspan="5"><%=dto.getName() %></td>
-			</tr>
-			<tr>
-				<th>📞</th>
-				<td><%=dto.getPhone() %></td>
-				<th>📆</th>
-				<td> <%=dto.getClassDate() %></td>
-			</tr>
-		</tbody>
-	</table>
-	<div class="metion-block">
-		<h4 id="mention-block"><%=dto.getMention() %></h4>
+	<div class="detail-border">
+		<h6 class="detail-content">상세 예약 내용</h6>
 	</div>
+	<div class="detail-info">
+	<p class="info-name">이름:</p><p class="customer-info"><%=dto.getName() %></p><br />
+	<p class="info-name">연락처:</p><p class="customer-info"><%=dto.getPhone() %></p><br />
+	<p class="info-name">클래스 날짜:</p><p class="customer-info"><%=dto.getClassDate() %></p>
 	</div>
-	<!-- 수정 modal -->
+	<div class="detail-border">
+		<h6 class="detail-content">내가 남긴 멘션</h6>
+	</div>
+	<div class="detail-mention">
+		<p><%=dto.getMention() %></p>
+	</div>
+	<div class="buttons">
+	<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+		data-bs-target="#exampleModal" data-bs-whatever="@mdo">수정</button>
+	<button type="button" id="deleteBtn" class="btn btn-sm btn-outline-dark">삭제</button>
+	</div>
+	
+	
+		<!-- 수정 modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -246,7 +314,7 @@ if(id != null){
 			</div>
 		</div>
 	</div>
-	
+	<div class="comment-border"></div>
 	<!-- 댓글 목록 -->
 	   <div class="comments">
       <ul>
@@ -339,6 +407,7 @@ if(id != null){
       <button class="btn btn-outline-secondary"id="button-addon2" type="submit">등록</button>
   	</div>
    </form>
+   </div>
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -592,6 +661,7 @@ if(id != null){
 	         });
 	      }
 	   }
+	
 	
 </script>
 </body>
