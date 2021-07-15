@@ -1042,17 +1042,22 @@
 					});
 				});
 				
+				
+				//원래 댓글 from textarea 에 담겨 있는 입력된 값
+				const originText = updateForms[i].querySelector("textarea").value;
+				
 				//취소 버튼
  				updateForms[i].addEventListener("reset", function(e){
-
+					
+ 					//폼 reset 막기
+					e.preventDefault();
+ 					
 					//reset 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
 					const form = this;
 					//reset 이벤트가 일어난 form 의 부모 div
 					const formDiv = this.parentElement;
 					//댓글의 textarea 문서객체 가져오기
 					const textarea = this.querySelector("textarea");
-					//댓글 입력한 내용 가져오기
-					const inputText = textarea.value;
 					
 					//let isReset = confirm("댓글 내용을 삭제하시겠습니까?");
 					swal({
@@ -1062,15 +1067,13 @@
 					})
 					.then(function(isReset){
 					  	if (isReset) {
+					  		//입력한 댓글을 원래 입력했던 댓글 내용으로 덮어쓰기
+					  		textarea.value = originText;
 							//열려잇는 form 과 div 닫기
 					  		form.style.display="none";
 							formDiv.style.display = "none";
-					  	}else{
-						  	//폼 reset 막기
-							e.preventDefault();
-						  	//입력한 내용 다시 넣어주기
-							textarea.value = inputText;
 					  	}
+					  	//취소하면 -> 아무 일 없음
 					});
 				});
 				
