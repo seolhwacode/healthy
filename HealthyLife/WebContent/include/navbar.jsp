@@ -76,7 +76,6 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       	<div class="navbar-nav me-auto">
       		<%-- intro(소개) / homeW(홈트) / videos(영상자료) / oneday_class(원데이클래스) / hfood(건강레시피) / music_recommend(추천음악) 중 선택 --%>
-	        <a class="nav-link <%=thisPage.equals("intro")?"active":"" %>" href="#">소개</a>
 	        <a class="nav-link <%=thisPage.equals("homeW")?"active":"" %>" href="${pageContext.request.contextPath}/homeW/list.jsp">홈트</a>
 	        <a class="nav-link <%=thisPage.equals("videos")?"active":"" %>" href="${pageContext.request.contextPath}/videos/list.jsp">영상자료</a>
 	        <a class="nav-link <%=thisPage.equals("oneday_class")?"active":"" %>" href="${pageContext.request.contextPath}/oneday_class/class.jsp">원데이클래스</a>
