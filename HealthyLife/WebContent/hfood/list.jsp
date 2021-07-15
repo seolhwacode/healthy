@@ -90,6 +90,7 @@
 	   	if(endPageNum > totalPageCount){
 	      endPageNum=totalPageCount; //보정해 준다.
 	   }
+
 	   //navbar 에 전달할 현재 주소
 	   String url = request.getRequestURI() + "?" + request.getQueryString();
 %>

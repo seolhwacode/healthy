@@ -26,17 +26,30 @@
 <head>
 <meta charset="UTF-8">
 <title>/users/private/profile_update.jsp</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 	<%if(isSuccess){ %>
 		<script>
-			alert("<%=id %> 님의 정보가 수정되었습니다.");
-			location.href = "${pageContext.request.contextPath}/users/private/info.jsp";
+			//alert("<%=id %> 님의 정보가 수정되었습니다.");
+			swal({
+	    	  	title: "정보가 수정되었습니다.",
+	    	  	icon: "success"
+	    	})
+	    	.then(function(){
+	    		location.href = "${pageContext.request.contextPath}/users/private/info.jsp";
+	    	});
 		</script>
 	<%}else{ %>
 		<script>
-			alert("수정에 실패했습니다.");
-			location.href = "${pageContext.request.contextPath}/users/private/profile_update_form.jsp";
+			//alert("수정에 실패했습니다.");
+			swal({
+	    	  	title: "수정에 실패했습니다.",
+	    	  	icon: "error"
+	    	})
+	    	.then(function(){
+	    		location.href = "${pageContext.request.contextPath}/users/private/profile_update_form.jsp";
+	    	});
 		</script>
 	<%} %>
 </body>

@@ -24,17 +24,28 @@
 <title>/homeW/private/update.jsp</title>
 </head>
 <body>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<%if(isSuccess){ %>
       <script>
-         alert("수정 되었습니다");
-         location.href="../detail.jsp?num=<%=dto.getNum()%>";
+	      swal({
+		 	  title: "수정 되었습니다",
+		 	  icon: "success",
+		 	  button: "확인",
+		 	  
+		 	}).then(function() {
+		 		location.href="../detail.jsp?num=<%=dto.getNum()%>";
+		 	});   
       </script>
    <%}else{ %>
-      <h1>알림</h1>
-      <p>
-         글 수정을 실패했습니다
-         <a href="updateform.jsp?num=<%=dto.getNum()%>">다시 시도</a>
-      </p>
+   	<script>
+	   	swal({
+		 	  title: "❌수정 실패 ❌",
+		 	  button: "다시 시도",
+		 	  
+		 	}).then(function() {
+		 		location.href="update_form.jsp?num=<%=dto.getNum()%>";
+		 	});
+   	</script>
    <%} %>
 </body>
 </html>

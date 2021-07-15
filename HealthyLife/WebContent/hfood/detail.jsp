@@ -82,6 +82,7 @@
 	    int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
 	    
 	    //글정보를 응답한다.
+      
 	    //navbar 에 전달할 현재 주소
 	    String url = request.getRequestURI() + "?" + request.getQueryString();
 %>

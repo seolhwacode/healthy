@@ -26,7 +26,9 @@
 </style>
 </head>
 <body>
-<jsp:include page="/include/navbar.jsp"></jsp:include>
+<jsp:include page="/include/navbar.jsp">
+	<jsp:param value="music_recommend" name="thisPage"/>
+</jsp:include>
 <div class="container">
    <h1 class="text-primary">게시글 작성</h1>
    <form action="insert.jsp" method="post" id="insertForm">

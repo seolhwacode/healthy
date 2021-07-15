@@ -16,8 +16,7 @@ dto.setNum(num);
 dto= BookingDao.getInstance().getData(dto);
 
 String writer = (String)session.getAttribute("id");
-if(!writer.equals(dto.getWriter())){
-	
+if(!writer.equals("admin") && !writer.equals(dto.getWriter())){
 	response.sendRedirect("error.jsp");//errorpage로 이동
 	return;
 }
@@ -60,6 +59,9 @@ if(id != null){
 	int totalRow = BookingCommentDao.getInstance().getCount(num);
 	//댓글 전체 페이지의 개수
 	int totalPageCount = (int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
+	
+	//navbar 에 전달할 현재 주소
+	String url = request.getRequestURI() + "?" + request.getQueryString();
 %>
 <!DOCTYPE html>
 <html>
@@ -79,13 +81,38 @@ if(id != null){
 		left: 20px;
 	}
 	
+	/*게시글을 담는 div*/
 	.content{
-		border: 3px solid #C6E2FF;
-		margin: 0 auto;
+		border: 2px solid #125D98;
+		margin: 40px auto 20px;
 		align: center;
-		width: 800px;
-		height: 600px;
+		width: 900px;
 	}
+	
+    
+    /*예약 클래스명을 담는 div*/
+    .title-block{
+    	background-color: #125D98;
+    	height: 150px;
+    	width: 900px;
+    }
+    
+    /*클래스명*/
+    .title-block > h2, h4{
+    	position: relative;
+    	top: 10px;
+    	color: white;
+    	text-align: center;
+    }
+    
+      /*예약 목록 가는 링크*/
+    .title-block > a{
+    	color: white;
+    }
+	
+	 .title-block > a:hover{
+    	color: #04009A;
+    }
 	
 	/*댓글 프로필 이미지를 작은 원형으로 만든다.*/
 	.profile-image{
@@ -97,8 +124,8 @@ if(id != null){
 	
 	/*댓글 폼 크기 수정*/
 	.comment-form textarea{
-		width: 84%;
-		height: 100px;
+		width: 60%;
+		height: 60%;
 	}
 	
 	.comments {
@@ -128,10 +155,13 @@ if(id != null){
 		text-align: center;
 	}
 	
+	/*기본 정보를 출력하는 div 안의 글자들*/
 	.profile > p{
 		position: relative;
-		left: 20px;
-		margin-bottom: 5px;
+		display: inline-block;
+		color: gray;
+		left: 600px;
+		margin: 5px 0px;
 	}
 	
 	.mention-block{
@@ -143,63 +173,106 @@ if(id != null){
 		width: 400px;
 		margin: 5px; 5px; 
 	}
-	.buttons{
-		position: relative;
-		top: -5px;
-		left: 650px;
+	
+	/*예약 상세 내용 담는 div*/
+	.detail-info{
+		margin: 10px 0 40px 0;
 	}
 	
-	.table{
-		margin-top: 20px;
+	/*예약 상세 내용 글*/
+	.detail-info > p{
+		display: inline-block;
 	}
-
-	#mention-block {
+	
+	/*예약 상세 내용 中 이름, 연락처, 클래스 날짜*/
+	.detail-info .info-name{
 		position: relative;
-		top: 20px;
-		text-align: center;
+		width: 120px;
+		left: 10px;
+		color: #04009A;
+	}
+	
+	/*예약 상세 내용 정보*/
+	.detail-info .customer-info{
+		color: black;
+	}
+	
+	/*경계선*/
+	.detail-border{
+		border-bottom: 1px solid #CDD0CB;
+	}
+	
+	/*경계선 위 카테고리 명*/
+	.detail-border .detail-content{
+		position: relative;
+		left: 10px;
+		color: #687980;
+	}
+	
+	/*멘션 내용 담는 div*/
+	.detail-mention{
+		margin-top: 20px;
+		height: 200px;
+	}
+	
+	/*멘션 내용*/
+	.detail-mention > p{
+		position: relative;
+		left: 20px;
+	}
+	
+	
+	/*우측 상단에 있는 수정,삭제 버튼 */
+	.buttons{
+		position: relative;
+		left: 790px;
+	}
+	
+	.comment-border{
+		margin-top: 20px;
+		border-bottom: 2px dotted #CDD0CB;
 	}
 </style>
-<jsp:include page="/include/resource.jsp"></jsp:include>
+<jsp:include page="/include/resource.jsp">
+		<jsp:param value="oneday_class" name="thisPage"/>
+		<jsp:param value="<%=url %>" name="url"/>
+</jsp:include>
 </head>
 <body>
 <div class="container">
 	<jsp:include page="/include/navbar.jsp"></jsp:include>
 	<div class="content">
+	<div class="title-block">
 	<a id="back_list" href="bookingList.jsp">예약 목록 ></a>
-	<div class="buttons">
-	<button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
-		data-bs-target="#exampleModal" data-bs-whatever="@mdo">수정</button>
-	<button type="button" id="deleteBtn" class="btn btn-outline-danger">삭제</button>
+	<h4>your reservation is confirmed</h4>
+	<h2><%=dto.getClassName() %></h2>
 	</div>
-	<h1 id="className">🧘‍♂️예약 내역🏄‍♀️</h1>
 	<div class="profile">
-		<p id="num">글 번호 | <%=dto.getNum() %></p>
-		<p id="id">작성자 | <%=dto.getWriter() %></p>
-		<p id="viewCount">조회수 | <%=dto.getViewCount() %></p>
+		<p id="num">No. <%=dto.getNum() %></p>
+		<p id="id">| 작성자: <%=dto.getWriter() %></p>
+		<p id="viewCount">| 조회수 : <%=dto.getViewCount() %></p>
 	</div>
-	<table class="table table-light">
-		<tbody>
-			<tr>
-				<th>📌</th>
-				<td colspan="5"><%=dto.getClassName() %></td>
-			</tr>
-			<tr>
-				<th>👨‍🦲</th>
-				<td colspan="5"><%=dto.getName() %></td>
-			</tr>
-			<tr>
-				<th>📞</th>
-				<td><%=dto.getPhone() %></td>
-				<th>📆</th>
-				<td> <%=dto.getClassDate() %></td>
-			</tr>
-		</tbody>
-	</table>
-	<div class="metion-block">
-		<h4 id="mention-block"><%=dto.getMention() %></h4>
+	<div class="detail-border">
+		<h6 class="detail-content">상세 예약 내용</h6>
 	</div>
+	<div class="detail-info">
+	<p class="info-name">이름:</p><p class="customer-info"><%=dto.getName() %></p><br />
+	<p class="info-name">연락처:</p><p class="customer-info"><%=dto.getPhone() %></p><br />
+	<p class="info-name">클래스 날짜:</p><p class="customer-info"><%=dto.getClassDate() %></p>
 	</div>
-	<!-- 수정 modal -->
+	<div class="detail-border">
+		<h6 class="detail-content">내가 남긴 멘션</h6>
+	</div>
+	<div class="detail-mention">
+		<p><%=dto.getMention() %></p>
+	</div>
+	<div class="buttons">
+	<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+		data-bs-target="#exampleModal" data-bs-whatever="@mdo">수정</button>
+	<button type="button" id="deleteBtn" class="btn btn-sm btn-outline-dark">삭제</button>
+	</div>	
+	
+		<!-- 수정 modal -->
 	<div class="modal fade" id="exampleModal" tabindex="-1"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -214,19 +287,20 @@ if(id != null){
 					<input type="hidden" class="form-control" name="num" id="num" value="<%= dto.getNum() %>">
 						<div class="mb-3">
 							<label for="name" class="col-form-label">이름</label> 
-							<input type="text" class="form-control" name="name" id="name">
+							<input type="hidden" class="form-control" name="name" id="name" value="<%= dto.getName()%>">
+							<input type="text" class="form-control" name="name1" id="name1" value="<%= dto.getName()%>" disabled>
 						</div>
 						<div class="mb-3">
 							<label for="phone" class="col-form-label">번호</label> 
-							<input type="text" class="form-control" name="phone" id="phone" placeholder="010-1234-5678">
+							<input type="text" class="form-control" name="phone" id="phone" value="<%= dto.getPhone() %>" placeholder="010-1234-5678">
 						</div>
 						<div class="mb-3">
 							<label for="date" class="col-form-label">신청 날짜</label> 
-							<input type="date" class="form-control" name="date" id="date" />
+							<input type="date" class="form-control" name="date" id="date" value="<%= dto.getClassDate() %>" />
 						</div>
 						<div class="mb-3">
 							<label for="mention" class="col-form-label">기타</label> 
-							<input type="text" class="form-control" name="mention" id="mention" />
+							<input type="text" class="form-control" name="mention" id="mention" <%=dto.getMention() %> />
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
@@ -239,7 +313,7 @@ if(id != null){
 			</div>
 		</div>
 	</div>
-	
+	<div class="comment-border"></div>
 	<!-- 댓글 목록 -->
 	   <div class="comments">
       <ul>
@@ -310,6 +384,7 @@ if(id != null){
                   <input type="hidden" name="num" value="<%=tmp.getNum() %>" />
                   <textarea name="content" type="text" class="form-control" placeholder="댓글을 입력하세요..." aria-label="Recipient's username" aria-describedby="button-addon2"><%=tmp.getContent() %></textarea>
                   <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정</button>
+               </div>
                </form>
                <%} %>                  
             </li>
@@ -331,12 +406,21 @@ if(id != null){
       <button class="btn btn-outline-secondary"id="button-addon2" type="submit">등록</button>
   	</div>
    </form>
+   </div>
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script>
 
-	//클라이언트가 로그인 했는지 여부
-	let isLogin=<%=isLogin%>;
+	  //클라이언트가 로그인 했는지 여부
+	  let isLogin=<%=isLogin%>;
+	
+	  addUpdateFormListener(".update-form");
+	  addUpdateListener(".update-link");
+	  addDeleteListener(".delete-link");
+	  addReplyListener(".reply-link");
+	  addReplyFormListener(".re-insert-form");
 	
 	  document.querySelector(".insert-form")
       .addEventListener("submit", function(e){
@@ -348,13 +432,16 @@ if(id != null){
             location.href=
                "${pageContext.request.contextPath}/users/loginform.jsp?url=${pageContext.request.contextPath}/cafe/detail.jsp?num=<%=num%>";
          }
+         //댓글 내용 비었는지 검사하기
+         const inputText = this.querySelector("textarea").value;
+         if(inputText==""){
+         	e.preventDefault();
+         	swal("댓글 작성 실패!", "내용을 입력해주세요", "warning");
+         }
       });
    
 
-	  addUpdateFormListener(".update-form");
-	  addUpdateListener(".update-link");
-	  addDeleteListener(".delete-link");
-	  addReplyListener(".reply-link");
+
 	  
 	  //댓글의 현재 페이지 번호를 관리할 변수를 만들고 초기값 1 대입하기
 	   let currentPage=1;
@@ -362,8 +449,8 @@ if(id != null){
 	   let lastPage=<%=totalPageCount%>;
 	   
 	  
-	   //댓글의 수가 10개보다 적으면 버튼 감추기
-	   if(<%=totalRow%> < 5){
+	   //댓글의 수가 5개보다 적으면 버튼 감추기
+	   if(<%=totalRow%><6){
 		   document.querySelector(".loader").style.display="none";
 	   } 
 	   
@@ -417,12 +504,22 @@ if(id != null){
 	const deleteBtn = document.querySelector("#deleteBtn")
 
 	function goDelete(){
-		let isConfirm = confirm("정말 삭제하시겠습니까?");
-		if(isConfirm){
-		location.href="delete.jsp?num=<%=dto.getNum()%>";
-		}
+		swal({
+		  	title: "글을 삭제하시겠습니까?",
+		  	text: "글을 삭제하면 예약도 취소됩니다.",
+		  	icon: "warning",
+		  	buttons: true,
+		  	dangerMode: true
+		})
+		.then(function(willDelete){
+		  	if (willDelete) {
+		    	location.href = "${pageContext.request.contextPath}/oneday_class/private/delete.jsp?num=<%=num %>";
+		  	}
+		});
 	}
 	
+	// location.href="delete.jsp?num=<%=dto.getNum()%>"
+			
 	deleteBtn.addEventListener("click", goDelete);
 	
 	//대댓글 추가 리스너
@@ -460,6 +557,23 @@ if(id != null){
          });
       }
    }
+	
+	//대댓글 폼 리스너
+	function addReplyFormListener(sel){
+		//댓글 수정 폼의 참조값을 배열에 담아오기
+		let replyForms = document.querySelectorAll(sel);
+		for(let i=0; i<replyForms.length; i++){
+			replyForms[i].addEventListener("submit", function(e){
+				const replyText = this.querySelector("textarea").value;
+				if(replyText==""){
+					e.preventDefault();
+	            	swal("댓글 작성 실패!", "내용을 입력해주세요", "warning");
+	            	return;
+				}
+			});
+		}
+	}
+	
 	// 댓글 수정 리스너
 	  function addUpdateFormListener(sel){
       //댓글 수정 폼의 참조값을 배열에 담아오기
@@ -469,6 +583,14 @@ if(id != null){
          updateForms[i].addEventListener("submit", function(e){
             //submit 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기 
             const form=this;
+            
+            const inputText = this.querySelector("textarea").value;
+            if(inputText==""){
+            	e.preventDefault();
+            	swal("댓글 작성 실패!", "내용을 입력해주세요", "warning");
+            	return;
+            }
+            
             //폼 제출을 막은 다음 
             e.preventDefault();
             //이벤트가 일어난 폼을 ajax 전송하도록 한다.
@@ -539,7 +661,7 @@ if(id != null){
 	      }
 	   }
 	
-
+	
 </script>
 </body>
 </html>

@@ -12,15 +12,34 @@
 <title>Insert title here</title>
 </head>
 <body>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <%if(isSuccess){%>
       <script>
-         alert("삭제 했습니다.");
-         location.href="bookingList.jsp";
+      swal({
+		  	title: "삭제 완료!",
+		  	text: "예약이 취소 되었습니다.",
+		  	icon: "success",
+		  	buttons: true,
+		})
+		.then(function(willDelete){
+		  	if (willDelete) {
+		    	location.href = "${pageContext.request.contextPath}/oneday_class/private/bookingList.jsp";
+		  	}
+		});
       </script>
    <%}else{%>
       <script>
-         alert("삭제 실패!");
-         location.href="detail.jsp?num=<%=num%>";
+      swal({
+		  	title: "삭제 실패!",
+		  	text: "글 삭제를 실패했습니다.",
+		  	icon: "warning",
+		  	buttons: true,
+		})
+		.then(function(willDelete){
+		  	if (willDelete) {
+		    	location.href = "${pageContext.request.contextPath}/oneday_class/private/detail.jsp?num=<%=num%>";
+		  	}
+		});
       </script>
    <%} %>
 </body>

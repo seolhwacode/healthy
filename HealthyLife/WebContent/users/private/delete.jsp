@@ -24,17 +24,30 @@
 <head>
 <meta charset="UTF-8">
 <title>/users/private/delete.jsp</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 <%if(isSuccess){ %>
 	<script>
-		alert("<%=id %> 님이 탈퇴처리 되었습니다.");
-		location.href = "${pageContext.request.contextPath}/index.jsp";
+		//alert("<%=id %> 님이 탈퇴처리 되었습니다.");
+		swal({
+    	  	title: "<%=id %> 님이 탈퇴처리 되었습니다.",
+    	  	icon: "success"
+    	})
+    	.then(function(){
+    		location.href = "${pageContext.request.contextPath}/index.jsp";
+    	});
 	</script>
 <%}else{%>
 	<script>
-		alert("탈퇴하지 못했습니다.");
-		location.href = "${pageContext.request.contextPath}/users/private/info.jsp";
+		//alert("탈퇴하지 못했습니다.");
+		swal({
+    	  	title: "탈퇴하지 못했습니다.",
+    	  	icon: "error"
+    	})
+    	.then(function(){
+    		location.href = "${pageContext.request.contextPath}/users/private/info.jsp";
+    	});
 	</script>
 <%} %>
 </body>

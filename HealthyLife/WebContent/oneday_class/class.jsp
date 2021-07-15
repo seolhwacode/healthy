@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+//navbar 에 전달할 현재 주소
+	String url = request.getRequestURI() + "?" + request.getQueryString();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -183,7 +187,10 @@
 </style>
 </head>
 <body>
-<jsp:include page="/include/navbar.jsp"></jsp:include>
+<jsp:include page="/include/navbar.jsp">
+		<jsp:param value="oneday_class" name="thisPage"/>
+		<jsp:param value="<%=url %>" name="url"/>
+</jsp:include>
         <div class="product-container">
             <div class="container">
                 <div class="row">
@@ -195,7 +202,7 @@
       						</video>
                             </div>
                             <div class="card-content">
-                                <div class="send"  data-bs-toggle="modal" data-bs-target="#exampleModal" data-class="60분 아쉬탕가">
+                                <div class="send"  data-bs-toggle="modal" data-bs-target="#exampleModal" data-class="60분 아쉬탕가 요가">
                                     <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-journal-check" viewBox="0 0 16 16">
   										<path fill-rule="evenodd" d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
   										<path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
@@ -230,7 +237,7 @@
       						</video>
                             </div>
                             <div class="card-content">
-                                <div class="send"  data-bs-toggle="modal" data-bs-target="#exampleModal" data-class="보드타기 클래스">
+                                <div class="send"  data-bs-toggle="modal" data-bs-target="#exampleModal" data-class="보드 타기 클래스">
                                     <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" class="bi bi-journal-check" viewBox="0 0 16 16">
   										<path fill-rule="evenodd" d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
   										<path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
@@ -387,8 +394,9 @@
 				<div class="modal-body">
 					<form action="${pageContext.request.contextPath}/oneday_class/private/booking.jsp" method="get" id="submitForm">
 						<div class="mb-3">
-							<label for="className" class="col-form-label">클래스명</label> 
-							<input type="text" class="form-control" name="className" id="className" />
+							<label for="className" class="col-form-label">클래스명</label> 							
+							<input type="text" class="form-control" name="className1" id="className1" disabled />
+							<input type="hidden" class="form-control" name="className" id="className" />
 						</div>
 						<div class="mb-3">
 							<label for="name" class="col-form-label">이름</label> 
@@ -442,6 +450,8 @@ function classNameSend(sel) {
 			//click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다. 
 			const className = this.getAttribute("data-class");
 			document.querySelector("#className").value = className;
+			document.querySelector("#className1").value = className;
+
 		});
 		
 	}

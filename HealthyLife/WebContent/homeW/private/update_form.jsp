@@ -83,7 +83,7 @@
          <textarea class="form-control" name="content" id="content"><%=dto.getContent() %></textarea>
       </div>
       <button class="btn btn-primary" type="submit" onclick="submitContents(this);">수정확인</button>
-      <button class="btn btn-primary" type="reset">취소</button>
+      <button class="btn btn-primary" type="reset" id="resetBtn">취소</button>
    </form>
 </div>
 	<%--
@@ -103,6 +103,12 @@
 	<!-- SmartEditor 에서 필요한 javascript 로딩  -->
 <script src="${pageContext.request.contextPath }/SmartEditor/js/HuskyEZCreator.js"></script>
 <script>
+	document.querySelector("#resetBtn").addEventListener("click", function(){
+		location.href="${pageContext.request.contextPath}/homeW/list.jsp";
+	});
+
+
+
    var oEditors = [];
    
    //추가 글꼴 목록

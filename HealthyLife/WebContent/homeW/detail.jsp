@@ -1,5 +1,3 @@
-
-
 <%@page import="java.util.List"%>
 <%@page import="test.homeW.dao.HomeWCommentDao"%>
 <%@page import="test.homeW.dto.HomeWCommentDto"%>
@@ -89,7 +87,8 @@
   	//댓글 전체 페이지의 갯수
   	int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
   
-	
+  	//navbar 에 전달할 현재 주소
+   	String url = request.getRequestURI() + "?" + request.getQueryString();
 	
 %>
 <!DOCTYPE html>
@@ -186,7 +185,11 @@
    .loader{
    		/*로딩 이미지를 가운데 정렬하기 위해*/
    		text-align: center;
+   		margin-top:120px;
+   		
    		position:relative; right:80px;
+   		
+   		
    		
    }
    
@@ -246,6 +249,10 @@
 </style>
 </head>
 <body>
+<jsp:include page="../include/navbar.jsp">
+	<jsp:param value="homeW" name="thisPage"/>
+	<jsp:param value="<%=url %>" name="url"/>
+</jsp:include>
 <div class="container">
 	 <%if(dto.getPrevNum()!=0){ %>
       <a id="preNum" class="btn btn-outline-primary" href="detail.jsp?num=<%=dto.getPrevNum() %>&keyword=<%=encodedK %>&condition=<%=condition%>">이전글</a>
@@ -418,6 +425,7 @@
 	  </form>		
 </div>
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 	//공유하기 버튼을 눌렀을 때 현재 페이지의 url 복사해주는 함수	
 	function copy(){
@@ -429,21 +437,46 @@
 		textarea.select();
 		document.execCommand("copy");
 		document.body.removeChild(textarea);
-		alert("URL이 복사되었습니다.");
-		
+		swal({
+		 	  title: "url 복사완료",
+		 	  icon: "success",
+		 	  button: "확인",
+		 	})
 	}
 	//로그인했는지 여부
 	let isLogin=<%=isLogin%>;
 	
+	//댓글이 null인지 여부
+	let isNull=<%=commentDto.getContent()%>==null;
+	
 	//원글의 댓글을 작성할 때
 	document.querySelector(".insert-form").addEventListener("submit", function(e){
+		console.log(isNull);
+		/*
+			textarea는 null 값이 아니라 ""(빈문자열)로 값을 읽어온다
+			밑의 식을 넣어주지 않으면 , 로딩시에 isNull에 대입된 값이 변하지 않고 
+			그대로 대입이 된다.
+		*/ 
+		isNull = (this.querySelector("textarea").value == "");
 		//만약 로그인 안했을 경우
-		if(!isLogin){
+		if(!isLogin ){
 			//폼 전송 막기
 			e.preventDefault();
 			//로그인 폼으로 이동하기
 			location.href=
 				"${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/homeW/detail.jsp?num=<%=num%>";
+		}
+		//만약 댓글을 작성 안했을 경우
+		
+		if(isNull){
+			//폼 전송 막기
+			console.log("작동하는중");
+			e.preventDefault();
+			swal({
+			 	  title: "❌댓글을 입력하세요❌",
+				  button: "확인",
+			 	  
+			 	})
 		}
 	});
 	
@@ -475,6 +508,7 @@
 		      //현재 페이지가 마지막 페이지보다 같거나 작으면 페이지 로딩
 		      if(currentPage <= lastPage){
 		        
+		    	  
 		         //현재 댓글 페이지를 1 증가 시키고 
 		         currentPage++;
 		         
@@ -515,10 +549,7 @@
 		      
 		   });
 		   
-		   //공유하기 버튼을 눌렀을 때 주소가 나오는 함수
-		   document.querySelector("#shareBtn").addEventListener("click", function(){
-			   <% %>
-		   });
+		  
 		   
 		   //인자로 전달되는 선택자를 이용해서 이벤트 리스너를 등록하는 함수 
 		   function addUpdateListener(sel){
@@ -530,7 +561,7 @@
 		            //click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다. 
 		            const num=this.getAttribute("data-num"); //댓글의 글번호
 		            document.querySelector("#updateForm"+num).style.display="block";
-		            
+		           	
 		         });
 		      }
 		   }
@@ -559,13 +590,14 @@
 		         });
 		      }
 		   }
+		   
 		   function addReplyListener(sel){
 		      //댓글 링크의 참조값을 배열에 담아오기 
 		      let replyLinks=document.querySelectorAll(sel);
 		      //반복문 돌면서 모든 링크에 이벤트 리스너 함수 등록하기
 		      for(let i=0; i<replyLinks.length; i++){
 		         replyLinks[i].addEventListener("click", function(){
-		            
+		        	 
 		            if(!isLogin){
 		               const isMove=confirm("로그인이 필요 합니다. 로그인 페이지로 이동 하시겠습니까?");
 		               if(isMove){
@@ -575,6 +607,7 @@
 		               return;
 		            }
 		            
+		            
 		            //click 이벤트가 일어난 바로 그 요소의 data-num 속성의 value 값을 읽어온다. 
 		            const num=this.getAttribute("data-num"); //댓글의 글번호
 		            
@@ -582,22 +615,15 @@
 		            
 		            //현재 문자열을 읽어온다 ( "답글" or "취소" )
 		            let current = this.innerText;
-		            
+	        
 		            if(current == "답글"){
 		               //번호를 이용해서 댓글의 댓글폼을 선택해서 보이게 한다. 
 		               form.style.display="block";
-		               form.classList.add("animate__flash");
-		               this.innerText="취소";   
-		               form.addEventListener("animationend", function(){
-		                  form.classList.remove("animate__flash");
-		               }, {once:true});
+		               this.innerText="취소"; 
+		         
 		            }else if(current == "취소"){
-		               form.classList.add("animate__fadeOut");
-		               this.innerText="답글";
-		               form.addEventListener("animationend", function(){
-		                  form.classList.remove("animate__fadeOut");
+		        		 this.innerText="답글";
 		                  form.style.display="none";
-		               },{once:true});
 		            }
 		         });
 		      }
