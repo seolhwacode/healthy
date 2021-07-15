@@ -768,6 +768,11 @@
 			//현재 form 의 textarea 가져오기
 			const textarea = this.querySelector("textarea");
 			
+			//댓글 입력한 내용이 없으면("" 와 일치) -> 아무 일도 없음 
+			if(inputText === ""){
+				return;
+			}
+			
 			//alert 띄우기
 			swal({
 			  	title: "작성 중인 내용을 삭제하시겠습니까?",
@@ -880,10 +885,43 @@
 						replyFormDiv.style.display = "block";
 						replyForm.style.display = "block";
 					}else if(current === "취소"){
-						//텍스트가 "취소" -> "답글" 로 바꾸고, reForm 의 display = "none" 으로 변경
-						this.innerText = "댓글 달기";
-						replyFormDiv.style.display = "none";
-						replyForm.style.display = "none";
+						//현재 form 의 textarea 가져오기
+						const textarea = replyForm.querySelector("textarea");
+						//현재 링크 읽어옴
+						const replyLink = this;
+						
+						//입력한 값이 없으면 ? -> 그냥 닫히게 한다.
+						if(textarea.value == ""){
+							//텍스트가 "취소" -> "답글" 로 바꾸고, reForm 의 display = "none" 으로 변경
+							replyLink.innerText = "댓글 달기";
+							
+							//textarea 의 내용을 지운다.
+							textarea.value = "";
+							replyFormDiv.style.display = "none";
+							replyForm.style.display = "none";
+							
+							return;
+						}
+						//alert 띄우기
+						swal({
+						  	title: "작성 중인 내용을 삭제하시겠습니까?",
+						  	text: "복구할 수 없습니다.",
+						  	icon: "warning",
+						  	buttons: true,
+						  	dangerMode: true
+						})
+						.then(function(isDelete){
+							//삭제
+							if(isDelete){
+								//텍스트가 "취소" -> "답글" 로 바꾸고, reForm 의 display = "none" 으로 변경
+								replyLink.innerText = "댓글 달기";
+								
+								//textarea 의 내용을 지운다.
+								textarea.value = "";
+								replyFormDiv.style.display = "none";
+								replyForm.style.display = "none";
+							}
+						});
 					}
 				});
 			}
