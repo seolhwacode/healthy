@@ -97,9 +97,11 @@
 <meta charset="UTF-8">
 <title>/h_food/list.jsp</title>
 <jsp:include page="/include/resource.jsp"></jsp:include>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+
 <style>
 	#thead{
 		background:white;
@@ -176,7 +178,10 @@
 </style>
 </head>
 <body>
-<jsp:include page="/include/navbar.jsp"></jsp:include>
+<jsp:include page="/include/navbar.jsp">
+<jsp:param value="hfood" name="thisPage"/>
+</jsp:include>
+
 <div class="container">
 	<div id="insert">
 	<button class="btn btn-secondary" type="button"><a href="private/insertform.jsp" class="link-light">새글 작성</a></button>
