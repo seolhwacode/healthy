@@ -332,6 +332,7 @@
 	/* 오른쪽 margin 추가*/
 	.comment_profile_wrapper{
 		margin-right: 6px;
+		border-radius: 50%;
 	}
 	/* 댓글의 날짜, 댓글 달기 -> 작고 회색 글씨로 만들기 */
 	.commet_function{
@@ -396,6 +397,7 @@
 	.commet_profile-image{
 		width: 35px;
 		height: 35px;
+		border-radius: 50%;
 	}
 	/*댓글에 댓글을 다는 form 은 처음에는 숨겨져있다.*/
 	.comment_form_wrapper.reply{
@@ -751,6 +753,44 @@
 			}
 		});
 		
+		//게시글에 댓글 다는 form 취소 버튼 조절
+		document.querySelector(".insert_form").addEventListener("reset", function(e){
+			//폼 reset 막기
+			e.preventDefault();
+			
+			//로그인 안한 경우 -> 아무 동작 안해야한다.
+			if(!isLogin){
+				return;
+			}
+			
+			//댓글 입력한 내용 가져오기
+			const inputText = this.querySelector("textarea").value;
+			//현재 form 의 textarea 가져오기
+			const textarea = this.querySelector("textarea");
+			
+			//댓글 입력한 내용이 없으면("" 와 일치) -> 아무 일도 없음 
+			if(inputText === ""){
+				return;
+			}
+			
+			//alert 띄우기
+			swal({
+			  	title: "작성 중인 내용을 삭제하시겠습니까?",
+			  	text: "복구할 수 없습니다.",
+			  	icon: "warning",
+			  	buttons: true,
+			  	dangerMode: true
+			})
+			.then(function(isDelete){
+				//삭제
+				if(isDelete){
+					//textarea 의 내용을 지운다.
+					textarea.value = "";
+				}
+			});
+			
+		});
+		
 //댓글의 페이지네이션
 		//댓글의 현재 페이지 번호를 관리할 변수를 만들고, 초기값 1 대입하기
 		let currentPage = 1;
@@ -845,10 +885,43 @@
 						replyFormDiv.style.display = "block";
 						replyForm.style.display = "block";
 					}else if(current === "취소"){
-						//텍스트가 "취소" -> "답글" 로 바꾸고, reForm 의 display = "none" 으로 변경
-						this.innerText = "댓글 달기";
-						replyFormDiv.style.display = "none";
-						replyForm.style.display = "none";
+						//현재 form 의 textarea 가져오기
+						const textarea = replyForm.querySelector("textarea");
+						//현재 링크 읽어옴
+						const replyLink = this;
+						
+						//입력한 값이 없으면 ? -> 그냥 닫히게 한다.
+						if(textarea.value == ""){
+							//텍스트가 "취소" -> "답글" 로 바꾸고, reForm 의 display = "none" 으로 변경
+							replyLink.innerText = "댓글 달기";
+							
+							//textarea 의 내용을 지운다.
+							textarea.value = "";
+							replyFormDiv.style.display = "none";
+							replyForm.style.display = "none";
+							
+							return;
+						}
+						//alert 띄우기
+						swal({
+						  	title: "작성 중인 내용을 삭제하시겠습니까?",
+						  	text: "복구할 수 없습니다.",
+						  	icon: "warning",
+						  	buttons: true,
+						  	dangerMode: true
+						})
+						.then(function(isDelete){
+							//삭제
+							if(isDelete){
+								//텍스트가 "취소" -> "답글" 로 바꾸고, reForm 의 display = "none" 으로 변경
+								replyLink.innerText = "댓글 달기";
+								
+								//textarea 의 내용을 지운다.
+								textarea.value = "";
+								replyFormDiv.style.display = "none";
+								replyForm.style.display = "none";
+							}
+						});
 					}
 				});
 			}
@@ -1042,17 +1115,22 @@
 					});
 				});
 				
+				
+				//원래 댓글 from textarea 에 담겨 있는 입력된 값
+				const originText = updateForms[i].querySelector("textarea").value;
+				
 				//취소 버튼
  				updateForms[i].addEventListener("reset", function(e){
-
+					
+ 					//폼 reset 막기
+					e.preventDefault();
+ 					
 					//reset 이벤트가 일어난 form 의 참조값을 form 이라는 변수에 담기
 					const form = this;
 					//reset 이벤트가 일어난 form 의 부모 div
 					const formDiv = this.parentElement;
 					//댓글의 textarea 문서객체 가져오기
 					const textarea = this.querySelector("textarea");
-					//댓글 입력한 내용 가져오기
-					const inputText = textarea.value;
 					
 					//let isReset = confirm("댓글 내용을 삭제하시겠습니까?");
 					swal({
@@ -1062,15 +1140,13 @@
 					})
 					.then(function(isReset){
 					  	if (isReset) {
+					  		//입력한 댓글을 원래 입력했던 댓글 내용으로 덮어쓰기
+					  		textarea.value = originText;
 							//열려잇는 form 과 div 닫기
 					  		form.style.display="none";
 							formDiv.style.display = "none";
-					  	}else{
-						  	//폼 reset 막기
-							e.preventDefault();
-						  	//입력한 내용 다시 넣어주기
-							textarea.value = inputText;
 					  	}
+					  	//취소하면 -> 아무 일 없음
 					});
 				});
 				
