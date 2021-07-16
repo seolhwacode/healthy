@@ -202,7 +202,7 @@
    	}
    	h1{
    		margin-top: 150px;
-   		margin-bottom: 70px;
+   		margin-bottom: 50px;
    	}
 </style>
 </head>
