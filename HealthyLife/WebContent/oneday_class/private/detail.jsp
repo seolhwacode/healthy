@@ -130,27 +130,40 @@ if(id != null){
 	
 	.comments {
 		width: 850px;
-		margin: 20px auto;
+		margin-top: 20px;
 	}
 	
 	/*댓글에 댓글을 다는 폼과 수정폼은 일단 숨긴다.*/
 	.comments .comment-form{
 		display: none;
-	}
-	
-	.comment-form{
 		margin: 0 auto;
 		width: 800px;
 	}
 	
+	/*댓글 더보기 창*/
 	.loader{
+		margin-bottom: 10px;
 		text-align: center;
 	}
 	
-	li{
-		list-style: none;
-	}
+	/*댓글 하나*/
+	.comments li{
+	  position: relative;
+      list-style: none;
+   	}
 	
+	/*답댓글 옆에 있는 아이콘*/
+	 .comments .reply-icon{
+      position: absolute;
+      top: 1em;
+      left: 1em;
+   }
+   
+   /*답댓글 내용*/
+   .comments .pre-comment{
+   		margin-top: 10px;
+   }
+   
 	#className{
 		text-align: center;
 	}
@@ -228,10 +241,20 @@ if(id != null){
 		left: 790px;
 	}
 	
-	.comment-border{
+	/*댓글 위 경계선*/
+	.content-border{
 		margin-top: 20px;
 		border-bottom: 2px dotted #CDD0CB;
 	}
+	
+	/*댓글 사이 사이 경계선*/
+	.comments-border{
+		position:relative;
+		width:100%;
+		border-bottom: 2px solid #CDD0CB;
+	}
+	
+	
 </style>
 <jsp:include page="/include/resource.jsp">
 		<jsp:param value="oneday_class" name="thisPage"/>
@@ -313,7 +336,7 @@ if(id != null){
 			</div>
 		</div>
 	</div>
-	<div class="comment-border"></div>
+	<div class="content-border"></div>
 	<!-- 댓글 목록 -->
 	   <div class="comments">
       <ul>
@@ -329,7 +352,7 @@ if(id != null){
             <li id="reli<%=tmp.getNum()%>">
             <%}else{ %>
             <li id="reli<%=tmp.getNum()%>" style="padding-left:50px;">
-               <svg class="reply-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="reply-icon bi bi-arrow-return-right" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
                </svg>
             <%} %>
@@ -359,7 +382,8 @@ if(id != null){
                   <%} %>
                   </dt>
                   <dd>
-                     <pre id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></pre>                  
+                     <pre class="pre-comment" id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></pre>
+                 	<div class="comments-border"></div>                   
                   </dd>
                </dl>   
                <!-- 대댓글 폼 -->

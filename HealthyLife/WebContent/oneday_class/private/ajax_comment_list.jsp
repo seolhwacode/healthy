@@ -78,7 +78,8 @@
          <%} %>
          </dt>
          <dd>
-            <pre id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></pre>                  
+            <pre id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></pre>
+            <div class="comments-border"></div>                     
          </dd>
       </dl>   
       <form id="reForm<%=tmp.getNum() %>" class="comment-form re-insert-form" 
