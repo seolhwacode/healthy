@@ -201,8 +201,8 @@
    		
    	}
    	h1{
-   		margin-top: 90px;
-   		margin-bottom: 40px;
+   		margin-top: 150px;
+   		margin-bottom: 70px;
    	}
 </style>
 </head>

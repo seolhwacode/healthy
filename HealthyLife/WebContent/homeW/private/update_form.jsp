@@ -106,7 +106,7 @@
 	document.querySelector("#resetBtn").addEventListener("click", function(){
 		location.href="${pageContext.request.contextPath}/homeW/list.jsp";
 	});
-
+	
 
 
    var oEditors = [];

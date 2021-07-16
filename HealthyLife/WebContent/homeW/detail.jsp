@@ -465,8 +465,9 @@
 			console.log("작동하는중");
 			e.preventDefault();
 			swal({
-			 	  title: "❌댓글을 입력하세요❌",
-				  button: "확인",
+			 	  title: "댓글을 입력하세요",
+			 	  icon: "warning",
+			 	  button: "확인",
 			 	  
 			 	})
 		}
@@ -620,6 +621,9 @@
 		         });
 		      }
 		   }
+		   
+		   
+		   
 		   
 		   function addUpdateFormListener(sel){
 		      //댓글 수정 폼의 참조값을 배열에 담아오기

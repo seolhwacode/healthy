@@ -39,7 +39,8 @@
    <%}else{ %>
    	<script>
 	   	swal({
-		 	  title: "❌수정 실패 ❌",
+		 	  title: "수정 실패",
+		 	  icon: "warning",
 		 	  button: "다시 시도",
 		 	  
 		 	}).then(function() {
