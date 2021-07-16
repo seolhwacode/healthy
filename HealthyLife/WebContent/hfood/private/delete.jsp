@@ -14,15 +14,24 @@
 </head>
 <body>
 	<%if(isSuccess){ %>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 		<script>
-			alert("삭제 완료!");
+		 swal({
+			 title: "레시피가 삭제되었습니다.",
+	    	 button: "넵",
+		}).then(function() {
 			location.href="${pageContext.request.contextPath }/hfood/list.jsp"
-		</script>
+		});
+		 </script>
 	<%}else{ %>
 		<script>
-			alert("삭제 실패!");
-			location.href="detail.jsp?num=<%=num%>";
-		</script>
+		 swal({
+			 title: "삭제를 다시 시도해주세요",
+	    	 button: "넵",
+		}).then(function() {
+			location.href="${pageContext.request.contextPath }/hfood/list.jsp"
+		});
+		 </script>
 	<%} %>
 </body>
 </html>
