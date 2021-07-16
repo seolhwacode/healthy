@@ -87,8 +87,8 @@
   	//댓글 전체 페이지의 갯수
   	int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
   
-  	//navbar 에 전달할 현재 주소
-   	String url = request.getRequestURI() + "?" + request.getQueryString();
+   //navbar 에 전달할 현재 주소
+   String url = request.getRequestURI() + "?" + request.getQueryString();
 	
 %>
 <!DOCTYPE html>
@@ -185,18 +185,14 @@
    .loader{
    		/*로딩 이미지를 가운데 정렬하기 위해*/
    		text-align: center;
-   		margin-top:120px;
-   		
-   		position:relative; right:80px;
-   		
-   		
-   		
+   		/*margin-top:120px;*/
+   		clear:both;
+   		position:relative; right:80px;	
    }
-   
-   .loader svg{
-   		animation: rotateAni 1s ease-out infinite;
-   }
-   
+   #moreBtn{
+    	 background-color:#464646;
+    	 color:white;
+    }
    @keyframes rotateAni{
    		0%{
    			transform: rotate(0deg);
@@ -242,16 +238,12 @@
     #shareBtn{
     	color:black;
     }
-    #moreBtn{
-    	 background-color:#464646;
-    	 color:white;
-    }
 </style>
 </head>
 <body>
-<jsp:include page="../include/navbar.jsp">
-	<jsp:param value="homeW" name="thisPage"/>
-	<jsp:param value="<%=url %>" name="url"/>
+<jsp:include page="/include/navbar.jsp">
+		<jsp:param value="homeW" name="thisPage"/>
+		<jsp:param value="<%=url %>" name="url"/>
 </jsp:include>
 <div class="container">
 	 <%if(dto.getPrevNum()!=0){ %>
@@ -473,8 +465,9 @@
 			console.log("작동하는중");
 			e.preventDefault();
 			swal({
-			 	  title: "❌댓글을 입력하세요❌",
-				  button: "확인",
+			 	  title: "댓글을 입력하세요",
+			 	  icon: "warning",
+			 	  button: "확인",
 			 	  
 			 	})
 		}
@@ -628,6 +621,9 @@
 		         });
 		      }
 		   }
+		   
+		   
+		   
 		   
 		   function addUpdateFormListener(sel){
 		      //댓글 수정 폼의 참조값을 배열에 담아오기
