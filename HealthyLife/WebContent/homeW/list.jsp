@@ -141,7 +141,7 @@
 	  float: left;
 	  padding: 5px 13px;
 	  text-decoration: none;
-	  margin: 5px;
+	  margin:20px -3px 20px -3px;
 	  vertical-align:middle;
 	  font-size:16px;
 	}

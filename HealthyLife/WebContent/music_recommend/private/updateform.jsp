@@ -32,6 +32,9 @@
 </style>
 </head>
 <body>
+<jsp:include page="/include/navbar.jsp">
+	<jsp:param value="music_recommend" name="thisPage"/>
+</jsp:include>
 <div class="container">
    <h1 class="text-primary">게시글 수정</h1>
    <form action="update.jsp" method="post" id="updateForm">

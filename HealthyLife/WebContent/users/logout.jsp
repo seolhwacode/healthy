@@ -9,12 +9,19 @@
 <head>
 <meta charset="UTF-8">
 <title>/users/logout.jsp</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
 	<script>
-		alert("성공적으로 로그아웃 되었습니다.");
-		//index.jsp 로 리다이렉트
-		location.href = "${pageContext.request.contextPath}/index.jsp";
+		//alert("성공적으로 로그아웃 되었습니다.");
+		swal({
+    	  	title: "성공적으로 로그아웃 되었습니다.",
+    	  	icon: "success"
+    	})
+    	.then(function(){
+    		//index.jsp 로 리다이렉트
+    		location.href = "${pageContext.request.contextPath}/index.jsp";
+    	});
 	</script>
 </body>
 </html>

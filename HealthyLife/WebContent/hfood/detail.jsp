@@ -23,8 +23,7 @@
 	
 	HfoodDto dto=new HfoodDto();
 	dto.setNum(num);
-	
-	HfoodDto resultDto =null;
+
 	
 	 if(!keyword.equals("")){
 	      //검색 조건이 무엇이냐에 따라 분기 하기
@@ -83,19 +82,21 @@
 	    int totalPageCount=(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
 	    
 	    //글정보를 응답한다.
+      
+	    //navbar 에 전달할 현재 주소
+	    String url = request.getRequestURI() + "?" + request.getQueryString();
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>/hfood/detail.jsp</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 
 <style>
 
-	
 	.container{
 		width:800px !important;
 		font-family: 'Noto Sans KR', sans-serif;
@@ -122,8 +123,6 @@
 
 	}
 	
-
-   
    /* 댓글 프로필 이미지를 작은 원형으로 만든다. */
    .profile-image{
       width: 35px;
@@ -169,8 +168,6 @@
    }
    
    /* 댓글 더보러가기 CSS */
-   
-  
    #view_more {
    	      
 	    background-color: white;
@@ -200,8 +197,6 @@
      color: #333333;
      word-break: break-all;
      word-wrap: break-word;
-     background-color: #f5f5f5;
-     border: 1px solid #ccc;
      border-radius: 4px;
    } 
    
@@ -244,22 +239,18 @@
     .content_loading>#cl {
    		margin: 20px;
    }
-   @keyframes rotateAni{
-      0%{
-         transform: rotate(0deg);
-      }
-      100%{
-         transform: rotate(360deg);
-      }
-   }
+   
 </style>
 
 <jsp:include page="/include/resource.jsp"></jsp:include>
 </head>
 <body>
-<jsp:include page="/include/navbar.jsp"></jsp:include>
+<jsp:include page="/include/navbar.jsp">
+	<jsp:param value="hfood" name="thisPage"/>
+	<jsp:param value="<%=url %>" name="url"/>
+</jsp:include>
+
 <div id="font" class="container">
-	
 	  <div class="row" >
 	    <div class="col-sm"><a href="list.jsp" ><strong>건강레시피</strong></a></div>
 	  </div>
@@ -283,9 +274,6 @@
 	      <%} %>
 	   	</ul>
 
-
-
-		
 	   	<!-- 댓글  -->
       
 		<div class="comments">
@@ -318,15 +306,14 @@
                      <span style="color:#2252e3;">@<i><%=tmp.getTarget_id() %></i></span>
                   <%} %>
                   		 <span id="pre<%=tmp.getNum()%>"><%=tmp.getContent() %></span>  
-                     
+                  </dd>
+                  <dd>
+                     <span style="margin-left:30px; font-size:13.5px;"><%=tmp.getRegdate() %></span>
                      <a data-num="<%=tmp.getNum() %>" href="javascript:" style="font-size:13.5px;" class="reply-link">답글</a>
                   <%if(id != null && tmp.getWriter().equals(id)){ %>
                      <a data-num="<%=tmp.getNum() %>" class="update-link" style="font-size:13.5px;" href="javascript:">수정</a>
                      <a data-num="<%=tmp.getNum() %>" class="delete-link" style="font-size:13.5px;" href="javascript:">삭제</a>
-                  <%} %>
-                  </dd>
-                  <dd>
-                     <span style="margin-left:30px; font-size:13.5px;"><%=tmp.getRegdate() %></span>               
+                  <%} %>              
                   </dd>
                </dl>   
                <form id="reForm<%=tmp.getNum() %>" class="comment-form re-insert-form" 
@@ -338,14 +325,14 @@
                   <input type="hidden" name="comment_group"
                      value="<%=tmp.getComment_group()%>"/>
                   <textarea name="content"></textarea>
-                  <button type="submit">등록</button>
+                  <button class="btn btn-outline-primary" type="submit">등록</button>
                </form>   
                <%if(tmp.getWriter().equals(id)){ %>   
                <form id="updateForm<%=tmp.getNum() %>" class="comment-form update-form" 
                   action="private/comment_update.jsp" method="post">
                   <input type="hidden" name="num" value="<%=tmp.getNum() %>" />
                   <textarea name="content"><%=tmp.getContent() %></textarea>
-                  <button type="submit">수정</button>
+                  <button type="submit" class="btn btn-outline-primary">수정</button>
                </form>
                <%} %>                  
             </li>
@@ -367,7 +354,8 @@
    
       <!-- 원글에 댓글을 작성할 폼 -->
    <form class="comment-form insert-form" action="private/comment_insert.jsp" method="post">
-      <!-- 원글의 글번호가 댓글의 ref_group 번호가 된다. -->
+      <!-- 원글의 글번호가 댓글의 ref_grou
+p 번호가 된다. -->
       <input type="hidden" name="ref_group" value="<%=num%>"/>
       <!-- 원글의 작성자가 댓글의 대상자가 된다. -->
       <input type="hidden" name="target_id" value="<%=dto.getWriter()%>"/>
@@ -399,7 +387,8 @@
 <script src="${pageContext.request.contextPath}/js/gura_util.js"></script>
 <script>
    
-   //클라이언트가 로그인 했는지 여부
+
+	//클라이언트가 로그인 했는지 여부
    let isLogin=<%=isLogin%>;
    
    document.querySelector(".insert-form")
@@ -412,7 +401,11 @@
             location.href=
                "${pageContext.request.contextPath}/users/login_form.jsp?url=${pageContext.request.contextPath}/hfood/detail.jsp?num=<%=num%>";
          }
+         
+			
       });
+   
+  
    
    /*
       detail.jsp 페이지 로딩 시점에 만들어진 1 페이지에 해당하는 
@@ -436,28 +429,29 @@
 		}
 		
 		document.querySelector("#view_more").addEventListener("click", function(){
-			//현재 댓글 페이지를 1 증가시키고
-			currentPage++;			
 			
 			//현재 페이지가 마지막 페이지보다 작거나 같을 때 -> 댓글 페이지 출력하기
-			if(currentPage <= lastPage){				
+			if(currentPage <= lastPage){	
+				
+				currentPage++;	
 				/*
 					해당 페이지의 내용을 ajax 요청을 통해서 받아온다.
 					"pageNum=xxx&num=xxx" 형식으로 GET 방식 파라미터를 전달한다.
 				*/
-				ajaxPromise("${pageContext.request.contextPath}/hfood/ajax_comment_list.jsp", "post", "pageNum="+currentPage+"&num="+<%=num %>)
+				ajaxPromise("${pageContext.request.contextPath}/hfood/ajax_comment_list.jsp", 
+						"post", "pageNum="+currentPage+"&num="+<%=num %>)
 				.then(function(response){
 					return response.text();
 				})
 				.then(function(data){
 					//data 에는 html text 가 들어있다.
-					document.querySelector(".comment_list").insertAdjacentHTML("beforeend", data);
-					
+					document.querySelector(".comments ul").insertAdjacentHTML("beforeend", data);
+					isLoading=false;
 					//새로 추가된 댓글 li 요소 안에 있는 a 요소를 찾아서 이벤트 리스너 등록하기
-					addDeleteListener(".page-" + currentPage + " .delete_link");
-					addReplyListener(".page-" + currentPage + " .reply_link");
-					addUpdateFormListener(".page-" + currentPage + " .update_form");
-					addUpdateListener(".page-" + currentPage + " .update_link");
+					addDeleteListener(".page-"+currentPage+" .delete_link");
+					addReplyListener(".page-"+ currentPage+" .reply_link");
+					addUpdateFormListener(".page-"+ currentPage + " .update_form");
+					addUpdateListener(".page-"+currentPage+" .update_link");
 				});
 			}
 			

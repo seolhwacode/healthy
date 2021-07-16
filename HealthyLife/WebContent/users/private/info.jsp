@@ -19,6 +19,7 @@
 <meta charset="UTF-8">
 <title>/users/private/info.jsp</title>
 <jsp:include page="../../include/resource.jsp"></jsp:include>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&family=Jua&display=swap" rel="stylesheet">
@@ -96,11 +97,20 @@
 	
 	<script>
 	function deleteConfirm(){
-		let isDelete = confirm("<%=id %> 님 정말로 탈퇴하시겠습니까?");
-		if(isDelete){
-			//탈퇴
-			location.href = "${pageContext.request.contextPath}/users/private/delete.jsp";
-		}
+		//let isDelete = confirm("<%=id %> 님 정말로 탈퇴하시겠습니까?");
+		swal({
+		  	title: "정말로 탈퇴하시겠습니까?",
+		  	text: "복구할 수 없습니다.",
+		  	icon: "warning",
+		  	buttons: true,
+		  	dangerMode: true
+		})
+		.then(function(isDelete){
+			if(isDelete){
+				//탈퇴
+				location.href = "${pageContext.request.contextPath}/users/private/delete.jsp";
+			}
+		});
 		//no 면 탈퇴 안함 : 아무 일도 없다.
 	}
 	</script>
